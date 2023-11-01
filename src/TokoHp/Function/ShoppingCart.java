@@ -12,11 +12,10 @@ public class ShoppingCart {
         for (Product item : items) {
             if (item.getIdProduk() == product.getIdProduk()) {
                 // Jika sudah ada, tambahkan jumlahnya
-                Variable.popUpErrorMessage("Error", "Data sudah ada");
+                Variable.popUpErrorMessage("Error", "Barang sudah ada di keranjang");
                 return;
             }
         }
-
         items.add(product);
     }
 
@@ -25,8 +24,11 @@ public class ShoppingCart {
         for (Product item : items) {
             if (product.getIdProduk() == item.getIdProduk()) {
                 items.remove(item);
+                return;
             }
         }
+        
+        Variable.popUpErrorMessage("Error", "Tidak ada produk yang dihapus");
     }
 
     public void updateItemQuantity(Product product, int stokBaru) {
@@ -34,10 +36,11 @@ public class ShoppingCart {
         for (Product item : items) {
             if (item.getIdProduk() == product.getIdProduk()) {
                 item.setStok(stokBaru);
-            } else {
-                Variable.popUpErrorMessage("Produk tidak ada", "Silahkan tambah produk terlebih dahulu");
+                return;
             }
         }
+        
+        Variable.popUpErrorMessage("Produk tidak ada", "Silahkan tambah produk terlebih dahulu");
     }
 
     public List<Product> getItems() {

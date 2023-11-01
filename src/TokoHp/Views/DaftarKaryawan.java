@@ -3,7 +3,6 @@ package TokoHp.Views;
 
 import TokoHp.Function.Variable;
 import java.sql.*;
-import javax.swing.DefaultComboBoxModel;
 import javax.swing.table.DefaultTableModel;
 
 public class DaftarKaryawan extends javax.swing.JInternalFrame {
@@ -244,6 +243,12 @@ public class DaftarKaryawan extends javax.swing.JInternalFrame {
         });
         jScrollPane2.setViewportView(table);
 
+        tfPencarian.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyReleased(java.awt.event.KeyEvent evt) {
+                tfPencarianKeyReleased(evt);
+            }
+        });
+
         jLabel8.setText("Cari");
 
         jLabel9.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
@@ -431,6 +436,10 @@ public class DaftarKaryawan extends javax.swing.JInternalFrame {
     private void tableMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tableMouseClicked
         getTableData();
     }//GEN-LAST:event_tableMouseClicked
+
+    private void tfPencarianKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_tfPencarianKeyReleased
+        // TODO add your handling code here:
+    }//GEN-LAST:event_tfPencarianKeyReleased
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables

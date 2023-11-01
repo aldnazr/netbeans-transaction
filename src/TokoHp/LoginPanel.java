@@ -41,24 +41,28 @@ public class LoginPanel extends javax.swing.JFrame {
                 }
             }
         } catch (SQLException ex) {
-            System.err.print(ex.getMessage());
+            System.err.print("Error in checkAdmin: " + ex.getMessage());
+        } finally {
+            closeResources();
         }
     }
 
     private void insertSession(String id) {
         try {
-//            delete login data
-            String dropTableQuery = "DELETE FROM SESSION_DATA";
+            // Delete existing session data
+            String queryDeleteTable = "DELETE FROM SESSION_DATA";
             statement = connection.createStatement();
-            statement.executeUpdate(dropTableQuery);
+            statement.executeUpdate(queryDeleteTable);
 
-//            Insert session data
+            // Insert session data
             query = "INSERT INTO SESSION_DATA VALUES (?)";
             pstat = connection.prepareStatement(query);
             pstat.setString(1, id);
             pstat.executeUpdate();
         } catch (SQLException ex) {
-            System.err.println(ex.getMessage());
+            System.err.println("Error in insertSession: " + ex.getMessage());
+        } finally {
+            closeResources();
         }
     }
 
@@ -67,32 +71,42 @@ public class LoginPanel extends javax.swing.JFrame {
             String username = tfUser.getText();
             String password = String.valueOf(tfPassword.getPassword());
 
-            query = "SELECT ID_USER, USERNAME, PASSWORD FROM USERS WHERE USERNAME = ? AND PASSWORD = ?";
+            query = "SELECT ID_USER, PASSWORD FROM USERS WHERE USERNAME = ?";
             pstat = connection.prepareStatement(query);
             pstat.setString(1, username);
-            pstat.setString(2, password);
             rset = pstat.executeQuery();
 
-            while (rset.next()) {
+            if (rset.next()) {
                 String idFromDB = rset.getString(1);
-                String userFromDB = rset.getString(2);
-                String passFromDB = rset.getString(3);
+                String passFromDB = rset.getString(2);
 
-                if (userFromDB.equalsIgnoreCase(username) && passFromDB.equalsIgnoreCase(password)) {
+                if (passFromDB.equals(password)) {
                     insertSession(idFromDB);
                     checkAdmin();
                     dispose();
-                    break;
                 } else {
-                    Variable.popUpErrorMessage("Login gagal", "Username atau Password salah");
+                    Variable.popUpErrorMessage("Login gagal", "Kata sandi salah");
                 }
+            } else {
+                Variable.popUpErrorMessage("Login gagal", "Username tidak ditemukan");
             }
-
-            pstat.close();
-            rset.close();
-
         } catch (SQLException ex) {
-            System.out.println(ex.getMessage());
+            System.err.println("Error in checkLogin: " + ex.getMessage());
+        } finally {
+            closeResources();
+        }
+    }
+
+    private void closeResources() {
+        try {
+            if (pstat != null) {
+                pstat.close();
+            }
+            if (rset != null) {
+                rset.close();
+            }
+        } catch (SQLException ex) {
+            System.err.println("Error while closing resources: " + ex.getMessage());
         }
     }
 
@@ -177,7 +191,7 @@ public class LoginPanel extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void btLoginActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btLoginActionPerformed
-        if (!tfUser.getText().isEmpty() && tfPassword.getPassword().length >= 1) {
+        if (!tfUser.getText().isEmpty() && tfPassword.getPassword().length > 0) {
             checkLogin();
         } else {
             Variable.popUpErrorMessage("Error", "Harap Masukkan Username dan Password");

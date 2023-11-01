@@ -24,7 +24,7 @@ public class AdminFrame extends javax.swing.JFrame {
         internalFrame.dispose();
         internalFrame = iFrame;
         desktopPane.add(internalFrame);
-        internalFrame.setLocation(250, 50);
+        internalFrame.setLocation(250, 10);
         internalFrame.setVisible(true);
     }
 

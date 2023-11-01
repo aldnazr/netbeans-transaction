@@ -26,7 +26,7 @@ public class Variable {
         try {
             connection = DriverManager.getConnection(server, "tokohp", "root");
         } catch (SQLException ex) {
-            System.out.println(ex.getMessage());
+            System.err.println(ex.getMessage());
         }
         return connection;
     }
