@@ -49,14 +49,18 @@ CREATE TABLE barang_keluar (
 ALTER TABLE phones
   ADD FOREIGN KEY (ID_BRAND) REFERENCES brand (ID_BRAND);
 
+
 ALTER TABLE transaksi
   ADD FOREIGN KEY (ID_USER) REFERENCES users (ID_USER);
+
 
 ALTER TABLE session_data
   ADD FOREIGN KEY (ID_USER) REFERENCES users (ID_USER);
 
+
 ALTER TABLE barang_keluar
     ADD FOREIGN KEY (ID_PHONE) REFERENCES phones (ID_PHONE);
+
 
 ALTER TABLE barang_keluar
     ADD FOREIGN KEY (ID_TRANSAKSI) REFERENCES transaksi (ID_TRANSAKSI);
@@ -70,15 +74,18 @@ CREATE SEQUENCE sequence_brand
     INCREMENT BY 1
 NOMAXVALUE;
 
+
 CREATE SEQUENCE sequence_phones
     START WITH 1
     INCREMENT BY 1
 NOMAXVALUE;
 
+
 CREATE SEQUENCE sequence_users
     START WITH 1
     INCREMENT BY 1
 NOMAXVALUE;
+
 
 CREATE SEQUENCE sequence_transaksi
     START WITH 1
@@ -99,6 +106,7 @@ BEGIN
     FROM dual;
 END;
 
+
 CREATE OR REPLACE TRIGGER autoincrement_phones
 BEFORE INSERT ON phones
 FOR EACH ROW
@@ -107,6 +115,7 @@ BEGIN
     INTO :new.ID_PHONE
     FROM dual;
 END;
+
 
 CREATE OR REPLACE TRIGGER autoincrement_users
 BEFORE INSERT ON users
@@ -117,6 +126,7 @@ BEGIN
     FROM dual;
 END;
 
+
 CREATE OR REPLACE TRIGGER autoincrement_transaksi
 BEFORE INSERT ON transaksi
 FOR EACH ROW
@@ -125,6 +135,7 @@ BEGIN
     INTO :new.id_transaksi
     FROM dual;
 END;
+
 
 //
 //  Function
