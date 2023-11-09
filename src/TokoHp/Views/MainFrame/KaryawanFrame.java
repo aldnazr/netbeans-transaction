@@ -10,7 +10,7 @@ public class KaryawanFrame extends javax.swing.JFrame {
     public KaryawanFrame() {
         initComponents();
         setTitle("Toko HP");
-        setSize(1100, 750);
+        setSize(1400, 750);
         setContentPane(desktopPane);
         setDefaultCloseOperation(EXIT_ON_CLOSE);
         setTitle("Kasir");
@@ -21,7 +21,7 @@ public class KaryawanFrame extends javax.swing.JFrame {
         internalFrame.dispose();
         internalFrame = iFrame;
         desktopPane.add(internalFrame);
-        internalFrame.setLocation(250, 50);
+        internalFrame.setLocation(180, 20);
         internalFrame.setVisible(true);
     }
 

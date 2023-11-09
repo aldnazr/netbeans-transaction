@@ -3,6 +3,7 @@ package TokoHp.Views.MainFrame;
 import TokoHp.Views.DaftarBrand;
 import TokoHp.Views.DaftarHandphone;
 import TokoHp.Views.DaftarKaryawan;
+import TokoHp.Views.RiwayatTransaksi;
 import TokoHp.Views.TransaksiBaru;
 import javax.swing.JInternalFrame;
 
@@ -13,7 +14,7 @@ public class AdminFrame extends javax.swing.JFrame {
     public AdminFrame() {
         initComponents();
         setTitle("Toko HP");
-        setSize(1100, 750);
+        setSize(1400, 750);
         setContentPane(desktopPane);
         setDefaultCloseOperation(EXIT_ON_CLOSE);
         setTitle("Kasir");
@@ -24,7 +25,7 @@ public class AdminFrame extends javax.swing.JFrame {
         internalFrame.dispose();
         internalFrame = iFrame;
         desktopPane.add(internalFrame);
-        internalFrame.setLocation(250, 10);
+        internalFrame.setLocation(180, 20);
         internalFrame.setVisible(true);
     }
 
@@ -96,6 +97,11 @@ public class AdminFrame extends javax.swing.JFrame {
         menuBarTransaksi.add(jMenuItem2);
 
         jMenuItem3.setText("Riwayat transaksi");
+        jMenuItem3.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenuItem3ActionPerformed(evt);
+            }
+        });
         menuBarTransaksi.add(jMenuItem3);
 
         jMenuBar1.add(menuBarTransaksi);
@@ -159,6 +165,10 @@ public class AdminFrame extends javax.swing.JFrame {
     private void jMenuItem2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem2ActionPerformed
         switchFrame(new TransaksiBaru());
     }//GEN-LAST:event_jMenuItem2ActionPerformed
+
+    private void jMenuItem3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem3ActionPerformed
+        switchFrame(new RiwayatTransaksi());
+    }//GEN-LAST:event_jMenuItem3ActionPerformed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
