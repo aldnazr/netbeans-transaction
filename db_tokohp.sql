@@ -95,9 +95,9 @@ CREATE SEQUENCE sequence_transaksi
 NOMAXVALUE;
 
 
---
---  TRIGGER FOR AUTO INCREMENT
---
+---------------------------
+--        TRIGGER        --
+---------------------------
 
 CREATE OR REPLACE TRIGGER autoincrement_brand
 BEFORE INSERT ON brand
@@ -149,28 +149,93 @@ BEGIN
 END;
 /
 
-COMMIT;
 
-
---
---  Function
---
+---------------------------
+--       FUNCTION        --
+---------------------------
 
 CREATE OR REPLACE FUNCTION getMaxTransaksiId 
 return int
-IS
-    maxid int;
+AS
+    maxTransaksiId int;
 BEGIN
     SELECT MAX(ID_TRANSAKSI) 
-    INTO maxid 
+    INTO maxTransaksiId 
     FROM TRANSAKSI;
     
-    return maxid;
+    return maxTransaksiId;
 END;
+/
+
+CREATE OR REPLACE FUNCTION getMaxBrandId 
+RETURN INT
+AS
+    maxBrandId INT;
+BEGIN
+    SELECT MAX(ID_BRAND) 
+    INTO maxBrandId
+    FROM BRAND;
+    
+    RETURN maxBrandId;
+END;
+/
+
+
+---------------------------
+--       PROCEDURE       --
+---------------------------
+
+CREATE OR REPLACE PROCEDURE insertBrand(
+    namaBrand IN VARCHAR
+)
+AS
+BEGIN
+    INSERT INTO BRAND (NAMA_BRAND) VALUES (namaBrand);
+END;
+/
+
+CREATE OR REPLACE PROCEDURE updateBrand(
+    idBrand IN INT,
+    namaBrand IN VARCHAR
+)
+AS
+BEGIN
+    UPDATE BRAND SET NAMA_BRAND = namaBrand WHERE ID_BRAND = idBrand;
+END;
+/
+
+CREATE OR REPLACE PROCEDURE deleteBrand (
+    idBrand IN INT
+)
+AS
+BEGIN
+    DELETE FROM BRAND WHERE ID_BRAND = idBrand;
+END;
+/
 
 COMMIT;
 
-SELECT getMaxTransaksiId AS "Max ID Transaksi" from dual;
+---------------------------
+--          RUN          --
+---------------------------
+
+-- FUNCTION
+SELECT getMaxTransaksiId FROM DUAL;
+SELECT getMaxBrandId FROM DUAL;
+
+-- PROCEDURE
+BEGIN
+    insertBrand();
+END;
+
+BEGIN
+    updatebrand();
+END;
+
+BEGIN
+    deletebrand();
+END;
+
 
 DROP SEQUENCE SEQUENCE_BRAND;
 DROP SEQUENCE SEQUENCE_PHONES;
@@ -191,9 +256,9 @@ SELECT * FROM SESSION_DATA;
 SELECT * FROM TRANSAKSI;
 SELECT * FROM BARANG_KELUAR;
 
-DELETE FROM SESSION_DATA;
-DELETE FROM TRANSAKSI;
-DELETE FROM BARANG_KELUAR;
+TRUNCATE FROM SESSION_DATA;
+TRUNCATE FROM TRANSAKSI;
+TRUNCATE FROM BARANG_KELUAR;
 
 INSERT INTO users (NAMA_LENGKAP, GENDER, ALAMAT, EMAIL, TIPE_AKUN, USERNAME, PASSWORD) VALUES (
     'Admin',

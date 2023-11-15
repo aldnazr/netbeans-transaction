@@ -1,5 +1,6 @@
 package TokoHp.Views.MainFrame;
 
+import TokoHp.Function.Variable;
 import TokoHp.Views.DaftarBrand;
 import TokoHp.Views.DaftarHandphone;
 import TokoHp.Views.DaftarKaryawan;

@@ -21,14 +21,14 @@ public class RiwayatTransaksi extends javax.swing.JInternalFrame {
 
     private void read() {
         try {
-            sql = Variable.sqlRiwayatBarang();
+            sql = Variable.sqlRiwayatBarang;
             preparedStatement = connection.prepareStatement(sql);
             preparedStatement.setString(1, "%" + tfPencarian.getText().toLowerCase() + "%");
             preparedStatement.setString(2, "%" + tfPencarian.getText().toLowerCase() + "%");
             preparedStatement.setString(3, "%" + tfPencarian.getText().toLowerCase() + "%");
             resultSet = preparedStatement.executeQuery();
             tableModel.setRowCount(0);
-            
+
             while (resultSet.next()) {
                 Object[] data = {
                     resultSet.getInt(1),

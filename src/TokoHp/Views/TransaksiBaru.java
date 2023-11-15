@@ -44,22 +44,26 @@ public class TransaksiBaru extends javax.swing.JInternalFrame {
                 pstat.setInt(4, shoppingCart.calculateTotal());
                 rsetInt = pstat.executeUpdate();
 
-                for (Product item : shoppingCart.getItems()) {
-                    String insertSql = "INSERT INTO BARANG_KELUAR (ID_PHONE, JUMLAH_KELUAR) VALUES (?,?)";
-                    PreparedStatement insertPstat = connection.prepareStatement(insertSql);
-//                    insertPstat.setInt(1, 5);
-                    insertPstat.setInt(1, item.getIdProduk());
-                    insertPstat.setInt(2, item.getStok());
-                    rsetInt = insertPstat.executeUpdate();
+                if (rsetInt > 0) {
+                    for (Product item : shoppingCart.getItems()) {
+                        String insertSql = "INSERT INTO BARANG_KELUAR (ID_PHONE, JUMLAH_KELUAR) VALUES (?,?)";
+                        PreparedStatement insertPstat = connection.prepareStatement(insertSql);
+                        insertPstat.setInt(1, item.getIdProduk());
+                        insertPstat.setInt(2, item.getStok());
+                        insertPstat.executeUpdate();
 
-                    String updateSql = "UPDATE PHONES SET STOK = STOK - ? WHERE ID_PHONE = ?";
-                    PreparedStatement updatePstat = connection.prepareStatement(updateSql);
-                    updatePstat.setInt(1, item.getStok());
-                    updatePstat.setInt(2, item.getIdProduk());
-                    rsetInt = updatePstat.executeUpdate();
+                        String updateSql = "UPDATE PHONES SET STOK = STOK - ? WHERE ID_PHONE = ?";
+                        PreparedStatement updatePstat = connection.prepareStatement(updateSql);
+                        updatePstat.setInt(1, item.getStok());
+                        updatePstat.setInt(2, item.getIdProduk());
+                        updatePstat.executeUpdate();
+                    }
+                    Variable.popUpSuccessMessage("Berhasil", "Transaksi berhasil");
+                } else {
+                    Variable.popUpErrorMessage("Error", "Transaksi gagal");
                 }
-
                 shoppingCart.getItems().clear();
+                pstat.close();
             } catch (SQLException ex) {
                 System.err.println(ex.getMessage());
             }
@@ -115,7 +119,7 @@ public class TransaksiBaru extends javax.swing.JInternalFrame {
 
     private void setTableListHp() {
         try {
-            query = "select id_phone, nama_brand, nama_handphone, stok, harga from phones join brand using (id_brand) where stok > 0 AND LOWER(nama_brand) like ? OR LOWER(nama_handphone) like ?";
+            query = Variable.sqlTableDaftarHP;
             pstat = connection.prepareStatement(query);
             pstat.setString(1, "%" + tfPencarian.getText().toLowerCase() + "%");
             pstat.setString(2, "%" + tfPencarian.getText().toLowerCase() + "%");
@@ -133,6 +137,8 @@ public class TransaksiBaru extends javax.swing.JInternalFrame {
                 modelTbListHp.addRow(data);
             }
             tbListHp.setModel(modelTbListHp);
+            pstat.close();
+            rset.close();
         } catch (SQLException ex) {
             System.err.println(ex.getMessage());
         }
@@ -252,9 +258,9 @@ public class TransaksiBaru extends javax.swing.JInternalFrame {
 
         textIdHp.setText("idHp");
 
-        jLabel1.setText("Jumlah");
+        jLabel1.setText("Jumlah :");
 
-        jLabel2.setText("Nama HP");
+        jLabel2.setText("Handphone :");
 
         tbCheckout.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
@@ -283,7 +289,7 @@ public class TransaksiBaru extends javax.swing.JInternalFrame {
         jLabel5.setFont(new java.awt.Font("Segoe UI", 0, 13)); // NOI18N
         jLabel5.setText("Checkout");
 
-        jLabel6.setText("Harga");
+        jLabel6.setText("Harga :");
 
         textSubtotal.setFont(new java.awt.Font("Segoe UI", 1, 15)); // NOI18N
         textSubtotal.setText("Total:");
@@ -318,7 +324,7 @@ public class TransaksiBaru extends javax.swing.JInternalFrame {
             }
         });
 
-        jLabel7.setText("Nama Pelanggan");
+        jLabel7.setText("Nama Pelanggan :");
 
         textIdKaryawan.setText("idKaryawan");
 

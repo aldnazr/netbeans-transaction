@@ -206,14 +206,14 @@
     </Component>
     <Component class="javax.swing.JLabel" name="jLabel1">
       <Properties>
-        <Property name="text" type="java.lang.String" value="Jumlah"/>
+        <Property name="text" type="java.lang.String" value="Jumlah :"/>
       </Properties>
     </Component>
     <Component class="javax.swing.JTextField" name="tfNamaHp">
     </Component>
     <Component class="javax.swing.JLabel" name="jLabel2">
       <Properties>
-        <Property name="text" type="java.lang.String" value="Nama HP"/>
+        <Property name="text" type="java.lang.String" value="Handphone :"/>
       </Properties>
     </Component>
     <Component class="javax.swing.JSeparator" name="jSeparator1">
@@ -267,7 +267,7 @@
     </Component>
     <Component class="javax.swing.JLabel" name="jLabel6">
       <Properties>
-        <Property name="text" type="java.lang.String" value="Harga"/>
+        <Property name="text" type="java.lang.String" value="Harga :"/>
       </Properties>
     </Component>
     <Component class="javax.swing.JLabel" name="textSubtotal">
@@ -335,7 +335,7 @@
     </Component>
     <Component class="javax.swing.JLabel" name="jLabel7">
       <Properties>
-        <Property name="text" type="java.lang.String" value="Nama Pelanggan"/>
+        <Property name="text" type="java.lang.String" value="Nama Pelanggan :"/>
       </Properties>
     </Component>
     <Component class="javax.swing.JLabel" name="textIdKaryawan">
