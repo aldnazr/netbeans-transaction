@@ -14,7 +14,7 @@ public class DaftarHandphone extends javax.swing.JInternalFrame {
     Statement stat;
     ResultSet rset;
     int rsetInt;
-    public static Object[] columnName = {"Id HP", "Id Brand", "Nama Brand", "Tipe", "Deskripsi", "Harga", "Stok"};
+    public static Object[] columnName = {"ID HP", "Id Brand", "Nama Brand", "Model", "Deskripsi", "Harga", "Stok"};
     DefaultTableModel tableModel = new DefaultTableModel(columnName, 0);
     DefaultComboBoxModel<String> comboBoxBrand = new DefaultComboBoxModel();
     SpinnerNumberModel spHargaModel = new SpinnerNumberModel(0, 0, Integer.MAX_VALUE, 1);
@@ -274,6 +274,12 @@ public class DaftarHandphone extends javax.swing.JInternalFrame {
         setTableRow();
     }
 
+    private boolean cekInput() {
+        return !tfNamaHP.getText().isEmpty()
+                && !taDeskripsi.getText().isEmpty()
+                && cbBrand.getSelectedIndex() != 0;
+    }
+
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
@@ -506,9 +512,7 @@ public class DaftarHandphone extends javax.swing.JInternalFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void btUpdateActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btUpdateActionPerformed
-        if (!tfNamaHP.getText().isEmpty()
-                && !taDeskripsi.getText().isEmpty()
-                && cbBrand.getSelectedIndex() != 0) {
+        if (cekInput()) {
             updateHp();
         } else {
             Variable.popUpErrorMessage("Error", "Data gagal diupdate");
@@ -528,9 +532,7 @@ public class DaftarHandphone extends javax.swing.JInternalFrame {
     }//GEN-LAST:event_btClearActionPerformed
 
     private void btTambahActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btTambahActionPerformed
-        if (!tfNamaHP.getText().isEmpty()
-                && !taDeskripsi.getText().isEmpty()
-                && cbBrand.getSelectedIndex() != 0) {
+        if (cekInput()) {
             tambahHp();
         } else {
             Variable.popUpErrorMessage("Error", "Tidak ada data ditambah");

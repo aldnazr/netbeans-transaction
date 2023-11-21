@@ -40,10 +40,11 @@ public class LoginPanel extends javax.swing.JFrame {
                     karyawanFrame.setVisible(true);
                 }
             }
+            
+            statement.close();
+            rset.close();
         } catch (SQLException ex) {
             System.err.print("Error in checkAdmin: " + ex.getMessage());
-        } finally {
-            closeResources();
         }
     }
 
@@ -59,10 +60,11 @@ public class LoginPanel extends javax.swing.JFrame {
             pstat = connection.prepareStatement(query);
             pstat.setString(1, id);
             pstat.executeUpdate();
+            
+            statement.close();
+            pstat.close();
         } catch (SQLException ex) {
             System.err.println("Error in insertSession: " + ex.getMessage());
-        } finally {
-            closeResources();
         }
     }
 
@@ -88,25 +90,12 @@ public class LoginPanel extends javax.swing.JFrame {
                     Variable.popUpErrorMessage("Login gagal", "Kata sandi salah");
                 }
             } else {
-                Variable.popUpErrorMessage("Login gagal", "Username tidak ditemukan");
+                Variable.popUpErrorMessage("Login gagal", "Username tidak ada");
             }
+            pstat.close();
+            rset.close();
         } catch (SQLException ex) {
             System.err.println("Error in checkLogin: " + ex.getMessage());
-        } finally {
-            closeResources();
-        }
-    }
-
-    private void closeResources() {
-        try {
-            if (pstat != null) {
-                pstat.close();
-            }
-            if (rset != null) {
-                rset.close();
-            }
-        } catch (SQLException ex) {
-            System.err.println("Error while closing resources: " + ex.getMessage());
         }
     }
 
