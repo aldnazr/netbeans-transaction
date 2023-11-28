@@ -1,6 +1,6 @@
 package TokoHp.Views;
 
-import TokoHp.Function.Variable;
+import TokoHp.Objects.Variable;
 import java.sql.*;
 import javax.swing.table.DefaultTableModel;
 
@@ -10,22 +10,26 @@ public class RiwayatTransaksi extends javax.swing.JInternalFrame {
     PreparedStatement preparedStatement;
     String sql;
     ResultSet resultSet;
-    DefaultTableModel tableModel = new DefaultTableModel(new Object[]{"ID TRANSAKSI", "NAMA PELAYAN", "NAMA_PELANGGAN", "WAKTU", "BRAND", "MODEL", "HARGA PRODUK", "JUMLAH BELI", "SUBTOTAL", "TOTAL"}, 0);
+    Object[] tableColumn = {"ID TRANSAKSI", "NAMA PELAYAN", "NAMA_PELANGGAN", "WAKTU", "BRAND", "MODEL", "HARGA PRODUK", "JUMLAH BELI", "SUBTOTAL", "TOTAL"};
+    DefaultTableModel tableModel = new DefaultTableModel(tableColumn, 0);
 
     public RiwayatTransaksi() {
         initComponents();
         setClosable(true);
         connection = Variable.koneksi();
         read();
+        Variable.setSearchbarPlaceholder(tfPencarian);
     }
 
     private void read() {
         try {
-            sql = Variable.sqlRiwayatBarang;
+            sql = Variable.sqlRiwayatTransaksi;
             preparedStatement = connection.prepareStatement(sql);
-            preparedStatement.setString(1, "%" + tfPencarian.getText().toLowerCase() + "%");
+            preparedStatement.setString(1, "%" + tfPencarian.getText() + "%");
             preparedStatement.setString(2, "%" + tfPencarian.getText().toLowerCase() + "%");
             preparedStatement.setString(3, "%" + tfPencarian.getText().toLowerCase() + "%");
+            preparedStatement.setString(4, "%" + tfPencarian.getText() + "%");
+            
             resultSet = preparedStatement.executeQuery();
             tableModel.setRowCount(0);
 
@@ -58,7 +62,8 @@ public class RiwayatTransaksi extends javax.swing.JInternalFrame {
         jScrollPane1 = new javax.swing.JScrollPane();
         tableRiwayat = new javax.swing.JTable();
         tfPencarian = new javax.swing.JTextField();
-        jLabel1 = new javax.swing.JLabel();
+
+        setPreferredSize(new java.awt.Dimension(1200, 730));
 
         jLabel8.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
         jLabel8.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
@@ -83,8 +88,6 @@ public class RiwayatTransaksi extends javax.swing.JInternalFrame {
             }
         });
 
-        jLabel1.setText("Cari");
-
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -96,8 +99,6 @@ public class RiwayatTransaksi extends javax.swing.JInternalFrame {
                     .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 1176, Short.MAX_VALUE)
                     .addGroup(layout.createSequentialGroup()
                         .addGap(0, 0, Short.MAX_VALUE)
-                        .addComponent(jLabel1)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(tfPencarian, javax.swing.GroupLayout.PREFERRED_SIZE, 170, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addContainerGap())
         );
@@ -107,9 +108,7 @@ public class RiwayatTransaksi extends javax.swing.JInternalFrame {
                 .addGap(36, 36, 36)
                 .addComponent(jLabel8)
                 .addGap(54, 54, 54)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(tfPencarian, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabel1))
+                .addComponent(tfPencarian, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 545, Short.MAX_VALUE)
                 .addContainerGap())
@@ -124,7 +123,6 @@ public class RiwayatTransaksi extends javax.swing.JInternalFrame {
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel8;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JTable tableRiwayat;

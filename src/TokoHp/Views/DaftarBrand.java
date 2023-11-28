@@ -1,6 +1,7 @@
 package TokoHp.Views;
 
-import TokoHp.Function.Variable;
+import TokoHp.Objects.Variable;
+import com.formdev.flatlaf.FlatClientProperties;
 import java.sql.*;
 import javax.swing.table.DefaultTableModel;
 
@@ -21,7 +22,8 @@ public class DaftarBrand extends javax.swing.JInternalFrame {
         connection = Variable.koneksi();
         table.setModel(tableModel);
         read();
-        textIdBrand.setVisible(false);
+        Variable.setSearchbarPlaceholder(tfPencarian);
+        textIdBrand.putClientProperty(FlatClientProperties.TEXT_FIELD_SHOW_CLEAR_BUTTON, true);
     }
     
     private void read() {
@@ -96,7 +98,7 @@ public class DaftarBrand extends javax.swing.JInternalFrame {
             cstat.setString(1, textIdBrand.getText());
             rsetInt = cstat.executeUpdate();
             
-            if (rsetInt >= 0) {
+            if (rsetInt > 0) {
                 Variable.popUpSuccessMessage("Berhasil", "Data berhasil dihapus");
                 read();
             } else {
@@ -124,9 +126,7 @@ public class DaftarBrand extends javax.swing.JInternalFrame {
     
     private void clearText() {
         textIdBrand.setText("");
-        tfNamaBrand.setText("");
         tfPencarian.setText("");
-        read();
     }
     
     @SuppressWarnings("unchecked")
@@ -143,9 +143,10 @@ public class DaftarBrand extends javax.swing.JInternalFrame {
         textIdBrand = new javax.swing.JLabel();
         btDelete = new javax.swing.JButton();
         tfPencarian = new javax.swing.JTextField();
-        jLabel4 = new javax.swing.JLabel();
-        btClear = new javax.swing.JButton();
         jLabel3 = new javax.swing.JLabel();
+        btDelete1 = new javax.swing.JButton();
+
+        setPreferredSize(new java.awt.Dimension(1200, 730));
 
         table.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
@@ -175,7 +176,7 @@ public class DaftarBrand extends javax.swing.JInternalFrame {
         jLabel1.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         jLabel1.setText("Daftar Brand");
 
-        btTambah.setBackground(new java.awt.Color(102, 153, 255));
+        btTambah.setBackground(new java.awt.Color(0, 122, 255));
         btTambah.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
         btTambah.setForeground(new java.awt.Color(255, 255, 255));
         btTambah.setText("Tambah");
@@ -185,7 +186,7 @@ public class DaftarBrand extends javax.swing.JInternalFrame {
             }
         });
 
-        btUpdate.setBackground(new java.awt.Color(102, 153, 255));
+        btUpdate.setBackground(new java.awt.Color(0, 122, 255));
         btUpdate.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
         btUpdate.setForeground(new java.awt.Color(255, 255, 255));
         btUpdate.setText("Update");
@@ -195,13 +196,12 @@ public class DaftarBrand extends javax.swing.JInternalFrame {
             }
         });
 
-        jLabel2.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        jLabel2.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
         jLabel2.setText("Nama Brand");
 
-        textIdBrand.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
         textIdBrand.setText("0");
 
-        btDelete.setBackground(new java.awt.Color(255, 51, 51));
+        btDelete.setBackground(new java.awt.Color(255, 59, 48));
         btDelete.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
         btDelete.setForeground(new java.awt.Color(255, 255, 255));
         btDelete.setText("Hapus");
@@ -217,49 +217,44 @@ public class DaftarBrand extends javax.swing.JInternalFrame {
             }
         });
 
-        jLabel4.setText("Cari");
+        jLabel3.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
+        jLabel3.setText("ID brand :");
 
-        btClear.setBackground(new java.awt.Color(153, 153, 153));
-        btClear.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
-        btClear.setForeground(new java.awt.Color(255, 255, 255));
-        btClear.setText("Clear");
-        btClear.addActionListener(new java.awt.event.ActionListener() {
+        btDelete1.setBackground(new java.awt.Color(142, 142, 147));
+        btDelete1.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
+        btDelete1.setForeground(new java.awt.Color(255, 255, 255));
+        btDelete1.setText("Reset");
+        btDelete1.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btClearActionPerformed(evt);
+                btDelete1ActionPerformed(evt);
             }
         });
-
-        jLabel3.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
-        jLabel3.setText("ID brand :");
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addComponent(jLabel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-            .addGroup(layout.createSequentialGroup()
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                        .addGap(0, 0, Short.MAX_VALUE)
-                        .addComponent(jLabel4)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(tfPencarian, javax.swing.GroupLayout.PREFERRED_SIZE, 138, javax.swing.GroupLayout.PREFERRED_SIZE))
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addGroup(layout.createSequentialGroup()
+                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(tfPencarian, javax.swing.GroupLayout.PREFERRED_SIZE, 144, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(layout.createSequentialGroup()
                         .addGap(19, 19, 19)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                             .addComponent(jLabel2)
-                            .addComponent(tfNamaBrand, javax.swing.GroupLayout.PREFERRED_SIZE, 345, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                                .addComponent(btClear, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                .addGroup(layout.createSequentialGroup()
-                                    .addComponent(btTambah, javax.swing.GroupLayout.PREFERRED_SIZE, 88, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                    .addComponent(btUpdate, javax.swing.GroupLayout.PREFERRED_SIZE, 88, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                .addComponent(btDelete, javax.swing.GroupLayout.PREFERRED_SIZE, 207, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addComponent(tfNamaBrand, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 345, Short.MAX_VALUE)
+                            .addGroup(layout.createSequentialGroup()
+                                .addComponent(btTambah, javax.swing.GroupLayout.PREFERRED_SIZE, 140, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addComponent(btUpdate, javax.swing.GroupLayout.PREFERRED_SIZE, 140, javax.swing.GroupLayout.PREFERRED_SIZE))
                             .addGroup(layout.createSequentialGroup()
                                 .addComponent(jLabel3)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(textIdBrand)))
+                                .addComponent(textIdBrand))
+                            .addComponent(btDelete, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(btDelete1, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 142, Short.MAX_VALUE)
                         .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 676, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addContainerGap())
@@ -270,9 +265,7 @@ public class DaftarBrand extends javax.swing.JInternalFrame {
                 .addGap(43, 43, 43)
                 .addComponent(jLabel1)
                 .addGap(29, 29, 29)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(tfPencarian, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabel4))
+                .addComponent(tfPencarian, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 563, Short.MAX_VALUE)
@@ -290,11 +283,13 @@ public class DaftarBrand extends javax.swing.JInternalFrame {
                             .addComponent(btUpdate))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addComponent(btDelete)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(btClear)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(btDelete1)
                         .addGap(0, 0, Short.MAX_VALUE)))
                 .addContainerGap())
         );
+
+        btDelete.getAccessibleContext().setAccessibleName("");
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
@@ -331,24 +326,24 @@ public class DaftarBrand extends javax.swing.JInternalFrame {
         getTableData();
     }//GEN-LAST:event_tableMouseClicked
 
-    private void btClearActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btClearActionPerformed
-        clearText();
-    }//GEN-LAST:event_btClearActionPerformed
-
     private void tfNamaBrandKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_tfNamaBrandKeyTyped
         Variable.capitalizeFirstLetter(tfNamaBrand);
     }//GEN-LAST:event_tfNamaBrandKeyTyped
 
+    private void btDelete1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btDelete1ActionPerformed
+        clearText();
+        read();
+    }//GEN-LAST:event_btDelete1ActionPerformed
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton btClear;
     private javax.swing.JButton btDelete;
+    private javax.swing.JButton btDelete1;
     private javax.swing.JButton btTambah;
     private javax.swing.JButton btUpdate;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
-    private javax.swing.JLabel jLabel4;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JTable table;
     private javax.swing.JLabel textIdBrand;

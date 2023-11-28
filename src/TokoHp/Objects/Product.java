@@ -1,4 +1,4 @@
-package TokoHp.Function;
+package TokoHp.Objects;
 
 public class Product {
 
@@ -12,6 +12,15 @@ public class Product {
         this.NamaProduk = NamaProduk;
         this.Stok = Stok;
         this.Harga = Harga;
+    }
+    
+    public Product(int idProduk, int Stok) {
+        this.idProduk = idProduk;
+        this.Stok = Stok;
+    }
+    
+    public Product(int idProduk){
+        this.idProduk = idProduk;
     }
 
     public void setHarga(int Harga) {

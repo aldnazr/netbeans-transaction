@@ -1,6 +1,6 @@
 package TokoHp.Views;
 
-import TokoHp.Function.Variable;
+import TokoHp.Objects.Variable;
 import java.sql.*;
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.SpinnerNumberModel;
@@ -14,7 +14,7 @@ public class DaftarHandphone extends javax.swing.JInternalFrame {
     Statement stat;
     ResultSet rset;
     int rsetInt;
-    public static Object[] columnName = {"ID HP", "Id Brand", "Nama Brand", "Model", "Deskripsi", "Harga", "Stok"};
+    public static Object[] columnName = {"ID HP", "Nama Brand", "Model", "Deskripsi", "Harga", "Stok"};
     DefaultTableModel tableModel = new DefaultTableModel(columnName, 0);
     DefaultComboBoxModel<String> comboBoxBrand = new DefaultComboBoxModel();
     SpinnerNumberModel spHargaModel = new SpinnerNumberModel(0, 0, Integer.MAX_VALUE, 1);
@@ -28,8 +28,7 @@ public class DaftarHandphone extends javax.swing.JInternalFrame {
         setComboBoxFilter();
         spHarga.setModel(spHargaModel);
         spStok.setModel(spStokModel);
-        textIdHp.setVisible(false);
-        textIdBrand.setVisible(false);
+        Variable.setSearchbarPlaceholder(tfPencarian);
     }
 
     private void setComboBoxFilter() {
@@ -58,35 +57,19 @@ public class DaftarHandphone extends javax.swing.JInternalFrame {
     }
 
     private void setTableRow() {
-        try {
-            query = "SELECT * FROM PHONES JOIN BRAND USING (ID_BRAND) WHERE LOWER(NAMA_HANDPHONE) LIKE ? OR LOWER(NAMA_BRAND) LIKE ?";
-            pstat = connection.prepareStatement(query);
-            pstat.setString(1, "%" + tfPencarian.getText().toLowerCase() + "%");
-            pstat.setString(2, "%" + tfPencarian.getText().toLowerCase() + "%");
-            rset = pstat.executeQuery();
-            tableModel.setRowCount(0);
-
-            while (rset.next()) {
-                Object[] dataQuery = {
-                    rset.getString(2),
-                    rset.getString(1),
-                    rset.getString(7),
-                    rset.getString(3),
-                    rset.getString(4),
-                    rset.getString(5),
-                    rset.getString(6)
-                };
-                tableModel.addRow(dataQuery);
-            }
-            table.setModel(tableModel);
-        } catch (SQLException ex) {
-            System.out.println(ex.getMessage());
+        switch (cbFilter.getSelectedIndex()) {
+            case 1:
+                query = Variable.sqlFilterPhoneAvailable;
+                break;
+            case 2:
+                query = Variable.sqlFilterPhoneNotAvailable;
+                break;
+            default:
+                query = Variable.sqlFilterPhone;
+                break;
         }
-    }
-
-    private void setTableRowAvailable() {
+        
         try {
-            query = "SELECT * FROM PHONES JOIN BRAND USING (ID_BRAND) WHERE STOK > 0 AND (LOWER(NAMA_HANDPHONE) LIKE ? OR LOWER(NAMA_BRAND) LIKE ?)";
             pstat = connection.prepareStatement(query);
             pstat.setString(1, "%" + tfPencarian.getText().toLowerCase() + "%");
             pstat.setString(2, "%" + tfPencarian.getText().toLowerCase() + "%");
@@ -94,37 +77,9 @@ public class DaftarHandphone extends javax.swing.JInternalFrame {
             tableModel.setRowCount(0);
 
             while (rset.next()) {
-                Object[] dataQuery = {
-                    rset.getString(2),
+                String[] dataQuery = {
                     rset.getString(1),
-                    rset.getString(7),
-                    rset.getString(3),
-                    rset.getString(4),
-                    rset.getString(5),
-                    rset.getString(6)
-                };
-                tableModel.addRow(dataQuery);
-            }
-            table.setModel(tableModel);
-        } catch (SQLException ex) {
-            System.out.println(ex.getMessage());
-        }
-    }
-
-    private void setTableRowNotAvailable() {
-        try {
-            query = "SELECT * FROM PHONES JOIN BRAND USING (ID_BRAND) WHERE STOK = 0 AND (LOWER(NAMA_HANDPHONE) LIKE ? OR LOWER(NAMA_BRAND) LIKE ?)";
-            pstat = connection.prepareStatement(query);
-            pstat.setString(1, "%" + tfPencarian.getText().toLowerCase() + "%");
-            pstat.setString(2, "%" + tfPencarian.getText().toLowerCase() + "%");
-            rset = pstat.executeQuery();
-            tableModel.setRowCount(0);
-
-            while (rset.next()) {
-                Object[] dataQuery = {
                     rset.getString(2),
-                    rset.getString(1),
-                    rset.getString(7),
                     rset.getString(3),
                     rset.getString(4),
                     rset.getString(5),
@@ -151,7 +106,6 @@ public class DaftarHandphone extends javax.swing.JInternalFrame {
 
             if (rsetInt > 0) {
                 Variable.popUpSuccessMessage("Berhasil", "Berhasil ditambah");
-                setTableRow();
             } else {
                 Variable.popUpErrorMessage("Error", "Data gagal ditambah");
             }
@@ -177,7 +131,6 @@ public class DaftarHandphone extends javax.swing.JInternalFrame {
 
             if (rsetInt > 0) {
                 Variable.popUpSuccessMessage("Berhasil", "Data berhasil diupdate");
-                setTableRow();
             } else {
                 Variable.popUpErrorMessage("Error", "Data gagal diupdate");
             }
@@ -196,7 +149,6 @@ public class DaftarHandphone extends javax.swing.JInternalFrame {
 
             if (rsetInt > 0) {
                 Variable.popUpSuccessMessage("Berhasil", "Data berhasil dihapus");
-                setTableRow();
             } else {
                 Variable.popUpErrorMessage("Error", "Tidak ada data yang dihapus");
             }
@@ -208,20 +160,18 @@ public class DaftarHandphone extends javax.swing.JInternalFrame {
 
     private void getTableRowData() {
         int row = table.getSelectedRow();
-        String idhp, idbrand, namaBrand, namaHp, deskripsi;
+        String idhp, namaBrand, namaHp, deskripsi;
         int harga, stok;
 
         if (row >= 0) {
             idhp = table.getValueAt(row, 0).toString();
-            idbrand = table.getValueAt(row, 1).toString();
-            namaBrand = table.getValueAt(row, 2).toString();
-            namaHp = table.getValueAt(row, 3).toString();
-            deskripsi = table.getValueAt(row, 4).toString();
-            harga = Integer.parseInt(table.getValueAt(row, 5).toString());
-            stok = Integer.parseInt(table.getValueAt(row, 6).toString());
+            namaBrand = table.getValueAt(row, 1).toString();
+            namaHp = table.getValueAt(row, 2).toString();
+            deskripsi = table.getValueAt(row, 3).toString();
+            harga = Integer.parseInt(table.getValueAt(row, 4).toString());
+            stok = Integer.parseInt(table.getValueAt(row, 5).toString());
 
             textIdHp.setText(idhp);
-            textIdBrand.setText(idbrand);
             cbBrand.setSelectedItem(namaBrand);
             tfNamaHP.setText(namaHp);
             taDeskripsi.setText(deskripsi);
@@ -230,7 +180,7 @@ public class DaftarHandphone extends javax.swing.JInternalFrame {
         }
     }
 
-    private void getBrandId() {
+    private void getIDBrandFromComboBox() {
         try {
             String cbSelectedItem = cbBrand.getSelectedItem().toString();
             query = "SELECT ID_BRAND FROM BRAND WHERE NAMA_BRAND = ?";
@@ -239,39 +189,22 @@ public class DaftarHandphone extends javax.swing.JInternalFrame {
             rset = pstat.executeQuery();
 
             if (rset.next()) {
-                int brandId = rset.getInt(1);
-                String brandIDString = String.valueOf(brandId);
-                textIdBrand.setText(brandIDString);
+                textIdBrand.setText(rset.getString(1));
             }
         } catch (SQLException ex) {
-            System.out.println(ex.getMessage());
-        }
-    }
-
-    private void getCbFilterActiveIndex() {
-        switch (cbFilter.getSelectedIndex()) {
-            case 0:
-                setTableRow();
-                break;
-            case 1:
-                setTableRowAvailable();
-                break;
-            case 2:
-                setTableRowNotAvailable();
-                break;
+            System.err.println(ex.getMessage());
         }
     }
 
     private void clearText() {
-        textIdHp.setText("");
-        textIdBrand.setText("");
+        textIdHp.setText("0");
+        textIdBrand.setText("0");
         cbBrand.setSelectedIndex(0);
         tfNamaHP.setText("");
         taDeskripsi.setText("");
         spHarga.setValue(0);
         spStok.setValue(0);
         tfPencarian.setText("");
-        setTableRow();
     }
 
     private boolean cekInput() {
@@ -290,7 +223,6 @@ public class DaftarHandphone extends javax.swing.JInternalFrame {
         jLabel1 = new javax.swing.JLabel();
         tfNamaHP = new javax.swing.JTextField();
         tfPencarian = new javax.swing.JTextField();
-        jLabel8 = new javax.swing.JLabel();
         jLabel2 = new javax.swing.JLabel();
         jLabel3 = new javax.swing.JLabel();
         jScrollPane2 = new javax.swing.JScrollPane();
@@ -308,8 +240,11 @@ public class DaftarHandphone extends javax.swing.JInternalFrame {
         jLabel9 = new javax.swing.JLabel();
         cbBrand = new javax.swing.JComboBox<>();
         cbFilter = new javax.swing.JComboBox<>();
+        jLabel6 = new javax.swing.JLabel();
 
         jTextField1.setText("jTextField1");
+
+        setPreferredSize(new java.awt.Dimension(1200, 700));
 
         table.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
@@ -329,6 +264,7 @@ public class DaftarHandphone extends javax.swing.JInternalFrame {
         });
         jScrollPane1.setViewportView(table);
 
+        jLabel1.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
         jLabel1.setText("Pilih Brand");
 
         tfPencarian.addActionListener(new java.awt.event.ActionListener() {
@@ -342,25 +278,27 @@ public class DaftarHandphone extends javax.swing.JInternalFrame {
             }
         });
 
-        jLabel8.setText("Cari");
-
+        jLabel2.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
         jLabel2.setText("Nama Handphone");
 
+        jLabel3.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
         jLabel3.setText("Deskripsi");
 
         taDeskripsi.setColumns(20);
         taDeskripsi.setRows(5);
         jScrollPane2.setViewportView(taDeskripsi);
 
+        jLabel4.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
         jLabel4.setText("Harga");
 
+        jLabel5.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
         jLabel5.setText("Stok");
 
         textIdBrand.setText("id_brand");
 
-        textIdHp.setText("id_hp");
+        textIdHp.setText("0");
 
-        btUpdate.setBackground(new java.awt.Color(102, 153, 255));
+        btUpdate.setBackground(new java.awt.Color(0, 122, 255));
         btUpdate.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
         btUpdate.setForeground(new java.awt.Color(255, 255, 255));
         btUpdate.setText("Update");
@@ -371,7 +309,7 @@ public class DaftarHandphone extends javax.swing.JInternalFrame {
             }
         });
 
-        btDelete.setBackground(new java.awt.Color(255, 51, 51));
+        btDelete.setBackground(new java.awt.Color(255, 59, 48));
         btDelete.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
         btDelete.setForeground(new java.awt.Color(255, 255, 255));
         btDelete.setText("Hapus");
@@ -381,17 +319,17 @@ public class DaftarHandphone extends javax.swing.JInternalFrame {
             }
         });
 
-        btClear.setBackground(new java.awt.Color(153, 153, 153));
+        btClear.setBackground(new java.awt.Color(142, 142, 147));
         btClear.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
         btClear.setForeground(new java.awt.Color(255, 255, 255));
-        btClear.setText("Clear");
+        btClear.setText("Reset");
         btClear.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btClearActionPerformed(evt);
             }
         });
 
-        btTambah.setBackground(new java.awt.Color(102, 153, 255));
+        btTambah.setBackground(new java.awt.Color(0, 122, 255));
         btTambah.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
         btTambah.setForeground(new java.awt.Color(255, 255, 255));
         btTambah.setText("Tambah");
@@ -418,93 +356,103 @@ public class DaftarHandphone extends javax.swing.JInternalFrame {
             }
         });
 
+        jLabel6.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
+        jLabel6.setText("ID Phone :");
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                 .addGap(0, 0, Short.MAX_VALUE)
-                .addComponent(textIdHp)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(textIdBrand))
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                 .addComponent(jLabel9, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addGap(27, 27, 27))
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                 .addGap(30, 30, 30)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(jLabel1)
-                    .addComponent(jLabel2)
-                    .addComponent(jLabel3)
-                    .addComponent(jLabel4)
-                    .addComponent(jLabel5)
-                    .addComponent(spStok)
-                    .addComponent(spHarga)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                        .addComponent(jLabel1)
+                        .addComponent(jLabel2)
+                        .addComponent(jLabel3)
+                        .addComponent(jLabel4)
+                        .addComponent(jLabel5)
+                        .addComponent(spStok)
+                        .addComponent(spHarga)
+                        .addGroup(layout.createSequentialGroup()
+                            .addComponent(btTambah, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(btUpdate, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                        .addComponent(btDelete, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(btClear, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(jScrollPane2)
+                        .addComponent(cbBrand, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(tfNamaHP, javax.swing.GroupLayout.PREFERRED_SIZE, 234, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(layout.createSequentialGroup()
-                        .addComponent(btTambah, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(btUpdate, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                    .addComponent(btDelete, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(btClear, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(jScrollPane2)
-                    .addComponent(cbBrand, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(tfNamaHP, javax.swing.GroupLayout.PREFERRED_SIZE, 234, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addComponent(jLabel6)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(textIdHp)))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 188, Short.MAX_VALUE)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                    .addGroup(layout.createSequentialGroup()
                         .addComponent(cbFilter, javax.swing.GroupLayout.PREFERRED_SIZE, 140, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(jLabel8)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(tfPencarian, javax.swing.GroupLayout.PREFERRED_SIZE, 138, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addComponent(tfPencarian, javax.swing.GroupLayout.PREFERRED_SIZE, 144, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addComponent(jScrollPane1, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 730, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addContainerGap())
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
             .addGroup(layout.createSequentialGroup()
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(textIdBrand)
-                    .addComponent(textIdHp))
+                .addComponent(textIdBrand)
                 .addGap(30, 30, 30)
                 .addComponent(jLabel9)
-                .addGap(54, 54, 54)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(cbFilter, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(tfPencarian, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabel8))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jScrollPane1)
                     .addGroup(layout.createSequentialGroup()
-                        .addComponent(jLabel1)
+                        .addGap(54, 54, 54)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                                .addComponent(jLabel6)
+                                .addComponent(textIdHp))
+                            .addComponent(cbFilter, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(cbBrand, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(20, 20, 20)
-                        .addComponent(jLabel2)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(tfNamaHP, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(jLabel3)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(jLabel4)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(spHarga, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(jLabel5)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(spStok, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(18, 18, 18)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(btTambah)
-                            .addComponent(btUpdate))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(btDelete)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(btClear)
-                        .addGap(0, 84, Short.MAX_VALUE)))
+                        .addComponent(jScrollPane1))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(layout.createSequentialGroup()
+                                .addGap(82, 82, 82)
+                                .addComponent(jLabel1)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(cbBrand, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                .addComponent(jLabel2)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(tfNamaHP, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                .addComponent(jLabel3)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                .addComponent(jLabel4)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(spHarga, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                .addComponent(jLabel5)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(spStok, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(18, 18, 18)
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                                    .addComponent(btTambah)
+                                    .addComponent(btUpdate))
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                .addComponent(btDelete)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(btClear))
+                            .addGroup(layout.createSequentialGroup()
+                                .addGap(54, 54, 54)
+                                .addComponent(tfPencarian, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addGap(0, 68, Short.MAX_VALUE)))
                 .addContainerGap())
         );
 
@@ -514,6 +462,7 @@ public class DaftarHandphone extends javax.swing.JInternalFrame {
     private void btUpdateActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btUpdateActionPerformed
         if (cekInput()) {
             updateHp();
+            setTableRow();
         } else {
             Variable.popUpErrorMessage("Error", "Data gagal diupdate");
         }
@@ -522,6 +471,7 @@ public class DaftarHandphone extends javax.swing.JInternalFrame {
     private void btDeleteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btDeleteActionPerformed
         if (!textIdHp.getText().isEmpty()) {
             deleteHp();
+            setTableRow();
         } else {
             Variable.popUpErrorMessage("Error", "Tidak ada data dihapus");
         }
@@ -529,18 +479,20 @@ public class DaftarHandphone extends javax.swing.JInternalFrame {
 
     private void btClearActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btClearActionPerformed
         clearText();
+        setTableRow();
     }//GEN-LAST:event_btClearActionPerformed
 
     private void btTambahActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btTambahActionPerformed
         if (cekInput()) {
             tambahHp();
+            setTableRow();
         } else {
             Variable.popUpErrorMessage("Error", "Tidak ada data ditambah");
         }
     }//GEN-LAST:event_btTambahActionPerformed
 
     private void cbBrandActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cbBrandActionPerformed
-        getBrandId();
+        getIDBrandFromComboBox();
     }//GEN-LAST:event_cbBrandActionPerformed
 
     private void tableMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tableMouseClicked
@@ -548,11 +500,11 @@ public class DaftarHandphone extends javax.swing.JInternalFrame {
     }//GEN-LAST:event_tableMouseClicked
 
     private void tfPencarianKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_tfPencarianKeyReleased
-        getCbFilterActiveIndex();
+        setTableRow();
     }//GEN-LAST:event_tfPencarianKeyReleased
 
     private void cbFilterActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cbFilterActionPerformed
-        getCbFilterActiveIndex();
+        setTableRow();
     }//GEN-LAST:event_cbFilterActionPerformed
 
     private void tfPencarianActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_tfPencarianActionPerformed
@@ -572,7 +524,7 @@ public class DaftarHandphone extends javax.swing.JInternalFrame {
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
-    private javax.swing.JLabel jLabel8;
+    private javax.swing.JLabel jLabel6;
     private javax.swing.JLabel jLabel9;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;

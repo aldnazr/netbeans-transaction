@@ -1,8 +1,9 @@
 package TokoHp.Views;
 
-import TokoHp.Function.Product;
-import TokoHp.Function.ShoppingCart;
-import TokoHp.Function.Variable;
+import TokoHp.Objects.Product;
+import TokoHp.Objects.ShoppingCart;
+import TokoHp.Objects.Variable;
+import com.formdev.flatlaf.FlatClientProperties;
 import java.sql.*;
 import javax.swing.SpinnerModel;
 import javax.swing.SpinnerNumberModel;
@@ -12,15 +13,15 @@ public class TransaksiBaru extends javax.swing.JInternalFrame {
 
     Connection connection;
     PreparedStatement pstat;
-    String query;
+    private String query;
     Statement stat;
     ResultSet rset;
-    int rsetInt;
-    Object[] columnCheckout = {"Id Hp", "Nama Handphone", "Jumlah", "Harga"};
-    Object[] columnListHp = {"Id HP", "Brand", "Model", "Stok", "Harga"};
+    private int rsetInt;
+    final Object[] columnCheckout = {"Id Hp", "Nama Handphone", "Jumlah", "Harga"};
+    final Object[] columnListHp = {"Id HP", "Brand", "Model", "Stok", "Harga"};
     DefaultTableModel modelTbCheckout = new DefaultTableModel(columnCheckout, 0);
     DefaultTableModel modelTbListHp = new DefaultTableModel(columnListHp, 0);
-    ShoppingCart shoppingCart = new ShoppingCart();
+    final ShoppingCart shoppingCart = new ShoppingCart();
 
     public TransaksiBaru() {
         initComponents();
@@ -29,7 +30,8 @@ public class TransaksiBaru extends javax.swing.JInternalFrame {
         disableEditableAndVisible();
         setTableCheckout();
         setTableListHp();
-        getSessionId();
+        Variable.setActiveIDUser(textIdKaryawan);
+        Variable.setSearchbarPlaceholder(tfPencarian);
     }
 
     private void bayarTransaksi() {
@@ -46,7 +48,7 @@ public class TransaksiBaru extends javax.swing.JInternalFrame {
 
                 if (rsetInt > 0) {
                     for (Product item : shoppingCart.getItems()) {
-                        String insertSql = "INSERT INTO BARANG_KELUAR (ID_PHONE, JUMLAH_KELUAR) VALUES (?,?)";
+                        String insertSql = "INSERT INTO DETAIL_TRANSAKSI (ID_PHONE, JUMLAH_PEMBELIAN) VALUES (?,?)";
                         PreparedStatement insertPstat = connection.prepareStatement(insertSql);
                         insertPstat.setInt(1, item.getIdProduk());
                         insertPstat.setInt(2, item.getStok());
@@ -73,29 +75,15 @@ public class TransaksiBaru extends javax.swing.JInternalFrame {
     }
 
     private void disableEditableAndVisible() {
-        textIdHp.setVisible(false);
-        tfNamaHp.setEditable(false);
         textIdKaryawan.setVisible(false);
+        tfNamaHp.setEditable(false);
         tfHargaItem.setEditable(false);
-    }
-
-    private void getSessionId() {
-        try {
-            query = "SELECT ID_USER FROM session_data";
-            stat = connection.createStatement();
-            rset = stat.executeQuery(query);
-
-            if (rset.next()) {
-                int idKaryawanFromDB = rset.getInt(1);
-                textIdKaryawan.setText(String.valueOf(idKaryawanFromDB));
-            }
-        } catch (SQLException ex) {
-            System.err.println(ex.getMessage());
-        }
+//        spJumlah.putClientProperty(FlatClientProperties.S, ui);
     }
 
     void setSpinnerValue(int maximumValue) {
-        SpinnerModel spinnerModel = new SpinnerNumberModel(1, 1, maximumValue, 1);
+        int minValue = maximumValue > 0 ? 1 : 0;
+        SpinnerModel spinnerModel = new SpinnerNumberModel(minValue, minValue, maximumValue, 1);
         spJumlah.setModel(spinnerModel);
     }
 
@@ -173,18 +161,22 @@ public class TransaksiBaru extends javax.swing.JInternalFrame {
 
     private void updateItem() {
         int id = Integer.parseInt(textIdHp.getText());
-        String namaHp = tfNamaHp.getText();
         int stok = Integer.parseInt(spJumlah.getValue().toString());
-        int harga = Integer.parseInt(tfHargaItem.getText());
-        shoppingCart.updateItemQuantity(new Product(id, namaHp, stok, harga), stok);
+        shoppingCart.updateItemQuantity(new Product(id, stok), stok);
     }
 
     private void deleteItem() {
         int id = Integer.parseInt(textIdHp.getText());
-        String namaHp = tfNamaHp.getText();
-        int stok = Integer.parseInt(spJumlah.getValue().toString());
-        int harga = Integer.parseInt(tfHargaItem.getText());
-        shoppingCart.removeItem(new Product(id, namaHp, stok, harga));
+        shoppingCart.removeItem(new Product(id));
+    }
+
+    private void clearText() {
+        tfNamaHp.setText("");
+        tfHargaItem.setText("");
+        tfPencarian.setText("");
+        tfNamaPelanggan.setText("");
+        spJumlah.setValue(0);
+        textIdHp.setText("0");
     }
 
     @SuppressWarnings("unchecked")
@@ -205,19 +197,19 @@ public class TransaksiBaru extends javax.swing.JInternalFrame {
         tbCheckout = new javax.swing.JTable();
         jLabel3 = new javax.swing.JLabel();
         tfPencarian = new javax.swing.JTextField();
-        jLabel4 = new javax.swing.JLabel();
         jLabel5 = new javax.swing.JLabel();
         jLabel6 = new javax.swing.JLabel();
         jlabel1 = new javax.swing.JLabel();
         btUpdate = new javax.swing.JButton();
         btHapus = new javax.swing.JButton();
-        btTambah3 = new javax.swing.JButton();
+        btClearText = new javax.swing.JButton();
         tfNamaPelanggan = new javax.swing.JTextField();
         jLabel7 = new javax.swing.JLabel();
         textIdKaryawan = new javax.swing.JLabel();
         jLabel8 = new javax.swing.JLabel();
         textSubtotal = new javax.swing.JLabel();
         tfHargaItem = new javax.swing.JTextField();
+        jLabel4 = new javax.swing.JLabel();
 
         tbListHp.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
@@ -237,7 +229,7 @@ public class TransaksiBaru extends javax.swing.JInternalFrame {
         });
         jScrollPane1.setViewportView(tbListHp);
 
-        btTambah.setBackground(new java.awt.Color(51, 153, 255));
+        btTambah.setBackground(new java.awt.Color(0, 122, 255));
         btTambah.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
         btTambah.setForeground(new java.awt.Color(255, 255, 255));
         btTambah.setText("Tambah item");
@@ -247,7 +239,7 @@ public class TransaksiBaru extends javax.swing.JInternalFrame {
             }
         });
 
-        btBayar.setBackground(new java.awt.Color(0, 204, 102));
+        btBayar.setBackground(new java.awt.Color(40, 205, 65));
         btBayar.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
         btBayar.setForeground(new java.awt.Color(255, 255, 255));
         btBayar.setText("Bayar");
@@ -257,10 +249,13 @@ public class TransaksiBaru extends javax.swing.JInternalFrame {
             }
         });
 
-        textIdHp.setText("idHp");
+        textIdHp.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        textIdHp.setText("0");
 
+        jLabel1.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
         jLabel1.setText("Jumlah :");
 
+        jLabel2.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
         jLabel2.setText("Handphone :");
 
         tbCheckout.setModel(new javax.swing.table.DefaultTableModel(
@@ -285,17 +280,16 @@ public class TransaksiBaru extends javax.swing.JInternalFrame {
             }
         });
 
-        jLabel4.setText("Cari");
-
         jLabel5.setFont(new java.awt.Font("Segoe UI", 0, 13)); // NOI18N
         jLabel5.setText("Checkout");
 
+        jLabel6.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
         jLabel6.setText("Harga Item :");
 
         jlabel1.setFont(new java.awt.Font("Segoe UI", 1, 15)); // NOI18N
         jlabel1.setText("Total:");
 
-        btUpdate.setBackground(new java.awt.Color(51, 153, 255));
+        btUpdate.setBackground(new java.awt.Color(0, 122, 255));
         btUpdate.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
         btUpdate.setForeground(new java.awt.Color(255, 255, 255));
         btUpdate.setText("Update jumlah");
@@ -305,7 +299,7 @@ public class TransaksiBaru extends javax.swing.JInternalFrame {
             }
         });
 
-        btHapus.setBackground(new java.awt.Color(255, 51, 51));
+        btHapus.setBackground(new java.awt.Color(255, 59, 48));
         btHapus.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
         btHapus.setForeground(new java.awt.Color(255, 255, 255));
         btHapus.setText("Hapus item");
@@ -315,16 +309,23 @@ public class TransaksiBaru extends javax.swing.JInternalFrame {
             }
         });
 
-        btTambah3.setBackground(new java.awt.Color(153, 153, 153));
-        btTambah3.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
-        btTambah3.setForeground(new java.awt.Color(255, 255, 255));
-        btTambah3.setText("Clear text");
-        btTambah3.addActionListener(new java.awt.event.ActionListener() {
+        btClearText.setBackground(new java.awt.Color(142, 142, 147));
+        btClearText.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
+        btClearText.setForeground(new java.awt.Color(255, 255, 255));
+        btClearText.setText("Clear text");
+        btClearText.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btTambah3ActionPerformed(evt);
+                btClearTextActionPerformed(evt);
             }
         });
 
+        tfNamaPelanggan.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyReleased(java.awt.event.KeyEvent evt) {
+                tfNamaPelangganKeyReleased(evt);
+            }
+        });
+
+        jLabel7.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
         jLabel7.setText("Nama Pelanggan :");
 
         textIdKaryawan.setText("idKaryawan");
@@ -336,39 +337,48 @@ public class TransaksiBaru extends javax.swing.JInternalFrame {
         textSubtotal.setFont(new java.awt.Font("Segoe UI", 1, 15)); // NOI18N
         textSubtotal.setText("Rp0");
 
+        jLabel4.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
+        jLabel4.setText("ID Phone :");
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addComponent(jSeparator1, javax.swing.GroupLayout.Alignment.TRAILING)
-            .addComponent(jLabel8, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                         .addContainerGap()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 1176, Short.MAX_VALUE)
+                            .addComponent(jScrollPane1)
                             .addGroup(layout.createSequentialGroup()
                                 .addComponent(jLabel3)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                .addComponent(jLabel4)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                 .addComponent(tfPencarian, javax.swing.GroupLayout.PREFERRED_SIZE, 138, javax.swing.GroupLayout.PREFERRED_SIZE))))
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                        .addGap(0, 0, Short.MAX_VALUE)
+                        .addComponent(textIdKaryawan))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                         .addGap(32, 32, 32)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(layout.createSequentialGroup()
+                                .addComponent(jLabel4)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(textIdHp))
+                            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                .addComponent(jLabel1)
+                                .addComponent(jLabel6)
+                                .addComponent(jLabel2)
+                                .addComponent(spJumlah)
+                                .addComponent(btTambah, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addComponent(btUpdate, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addComponent(tfNamaHp)
+                                .addComponent(btHapus, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addComponent(btClearText, javax.swing.GroupLayout.DEFAULT_SIZE, 232, Short.MAX_VALUE)
+                                .addComponent(tfHargaItem)))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 218, Short.MAX_VALUE)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addComponent(jLabel1)
-                            .addComponent(jLabel6)
-                            .addComponent(jLabel2)
-                            .addComponent(spJumlah)
-                            .addComponent(btTambah, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(btUpdate, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(tfNamaHp)
-                            .addComponent(btHapus, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(btTambah3, javax.swing.GroupLayout.DEFAULT_SIZE, 232, Short.MAX_VALUE)
-                            .addComponent(tfHargaItem))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addComponent(jScrollPane2)
                             .addGroup(layout.createSequentialGroup()
                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                     .addComponent(jLabel5)
@@ -377,42 +387,39 @@ public class TransaksiBaru extends javax.swing.JInternalFrame {
                                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                         .addComponent(textSubtotal))
                                     .addComponent(jLabel7)
-                                    .addComponent(tfNamaPelanggan, javax.swing.GroupLayout.PREFERRED_SIZE, 185, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addComponent(btBayar))
-                                .addGap(515, 515, 515))
-                            .addComponent(jScrollPane2)))
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                        .addGap(0, 0, Short.MAX_VALUE)
-                        .addComponent(textIdKaryawan)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(textIdHp)))
+                                    .addComponent(btBayar)
+                                    .addComponent(tfNamaPelanggan, javax.swing.GroupLayout.PREFERRED_SIZE, 214, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                .addGap(486, 486, 486))))
+                    .addComponent(jLabel8, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addContainerGap())
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(textIdHp)
-                    .addComponent(textIdKaryawan))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(textIdKaryawan)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(jLabel8)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 29, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 15, Short.MAX_VALUE)
                 .addComponent(jLabel5)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(jLabel4)
+                            .addComponent(textIdHp))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addComponent(jLabel2)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(tfNamaHp, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(tfNamaHp, javax.swing.GroupLayout.PREFERRED_SIZE, 28, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(jLabel6)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(tfHargaItem, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(12, 12, 12)
+                        .addComponent(tfHargaItem, javax.swing.GroupLayout.PREFERRED_SIZE, 28, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(jLabel1)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(spJumlah, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(spJumlah, javax.swing.GroupLayout.PREFERRED_SIZE, 28, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(18, 18, 18)
                         .addComponent(btTambah)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
@@ -420,7 +427,7 @@ public class TransaksiBaru extends javax.swing.JInternalFrame {
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(btHapus)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(btTambah3))
+                        .addComponent(btClearText))
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 248, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
@@ -430,15 +437,14 @@ public class TransaksiBaru extends javax.swing.JInternalFrame {
                         .addGap(13, 13, 13)
                         .addComponent(jLabel7)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(tfNamaPelanggan, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(btBayar)))
+                        .addComponent(tfNamaPelanggan, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(btBayar)
                 .addGap(12, 12, 12)
                 .addComponent(jSeparator1, javax.swing.GroupLayout.PREFERRED_SIZE, 10, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(tfPencarian, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabel4)
                     .addComponent(jLabel3))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 195, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -457,9 +463,13 @@ public class TransaksiBaru extends javax.swing.JInternalFrame {
     }//GEN-LAST:event_tbListHpMouseClicked
 
     private void btTambahActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btTambahActionPerformed
-        tambahData();
-        setTableCheckout();
-        KalkulasiTotal();
+        if (Integer.parseInt(spJumlah.getValue().toString()) != 0) {
+            tambahData();
+            setTableCheckout();
+            KalkulasiTotal();
+        } else {
+            Variable.popUpErrorMessage("Error", "Stok tidak tersedia");
+        }
     }//GEN-LAST:event_btTambahActionPerformed
 
     private void btUpdateActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btUpdateActionPerformed
@@ -474,9 +484,9 @@ public class TransaksiBaru extends javax.swing.JInternalFrame {
         KalkulasiTotal();
     }//GEN-LAST:event_btHapusActionPerformed
 
-    private void btTambah3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btTambah3ActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_btTambah3ActionPerformed
+    private void btClearTextActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btClearTextActionPerformed
+        clearText();
+    }//GEN-LAST:event_btClearTextActionPerformed
 
     private void btBayarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btBayarActionPerformed
         bayarTransaksi();
@@ -485,12 +495,16 @@ public class TransaksiBaru extends javax.swing.JInternalFrame {
         KalkulasiTotal();
     }//GEN-LAST:event_btBayarActionPerformed
 
+    private void tfNamaPelangganKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_tfNamaPelangganKeyReleased
+        Variable.capitalizeFirstLetter(tfNamaPelanggan);
+    }//GEN-LAST:event_tfNamaPelangganKeyReleased
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btBayar;
+    private javax.swing.JButton btClearText;
     private javax.swing.JButton btHapus;
     private javax.swing.JButton btTambah;
-    private javax.swing.JButton btTambah3;
     private javax.swing.JButton btUpdate;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;

@@ -1,4 +1,4 @@
-package TokoHp.Function;
+package TokoHp.Objects;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -19,18 +19,6 @@ public class ShoppingCart {
         items.add(product);
     }
 
-    public void removeItem(Product product) {
-        // Hapus produk dari keranjang
-        for (Product item : items) {
-            if (product.getIdProduk() == item.getIdProduk()) {
-                items.remove(item);
-                return;
-            }
-        }
-        
-        Variable.popUpErrorMessage("Error", "Tidak ada produk yang dihapus");
-    }
-
     public void updateItemQuantity(Product product, int stokBaru) {
         // Perbarui jumlah produk dalam keranjang
         for (Product item : items) {
@@ -39,8 +27,18 @@ public class ShoppingCart {
                 return;
             }
         }
-        
         Variable.popUpErrorMessage("Produk tidak ada", "Silahkan tambah produk terlebih dahulu");
+    }
+
+    public void removeItem(Product product) {
+        // Hapus produk dari keranjang
+        for (Product item : items) {
+            if (product.getIdProduk() == item.getIdProduk()) {
+                items.remove(item);
+                return;
+            }
+        }
+        Variable.popUpErrorMessage("Error", "Tidak ada produk yang dihapus");
     }
 
     public List<Product> getItems() {
@@ -54,7 +52,6 @@ public class ShoppingCart {
         for (Product item : items) {
             total += item.getHarga() * item.getStok();
         }
-
         return total;
     }
 }

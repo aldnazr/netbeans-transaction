@@ -1,12 +1,13 @@
 package TokoHp.Views.MainFrame;
 
-import TokoHp.Function.Variable;
-import TokoHp.Views.DaftarBrand;
-import TokoHp.Views.DaftarHandphone;
-import TokoHp.Views.DaftarKaryawan;
-import TokoHp.Views.RiwayatTransaksi;
-import TokoHp.Views.TransaksiBaru;
+import TokoHp.Sidebar.DrawerNavigationAdmin;
+import com.formdev.flatlaf.FlatClientProperties;
+import com.formdev.flatlaf.extras.FlatSVGIcon;
+import java.awt.Insets;
+import javax.swing.JButton;
 import javax.swing.JInternalFrame;
+import raven.drawer.Drawer;
+import raven.popup.GlassPanePopup;
 
 public class AdminFrame extends javax.swing.JFrame {
 
@@ -18,15 +19,33 @@ public class AdminFrame extends javax.swing.JFrame {
         setSize(1400, 750);
         setContentPane(desktopPane);
         setDefaultCloseOperation(EXIT_ON_CLOSE);
-        setTitle("Kasir");
         setLocationRelativeTo(null);
+//        GlassPanePopup.install(AdminFrame.this);
+//        Drawer.getInstance().setDrawerBuilder(new DrawerNavigationAdmin(AdminFrame.this));
+        menuBar.add(drawerOpenButton());
     }
 
-    void switchFrame(JInternalFrame iFrame) {
+    private JButton drawerOpenButton() {
+        JButton button = new JButton(new FlatSVGIcon("TokoHp/Icons/bars-solid.svg", 0.04f));
+        button.addActionListener((l) -> {
+            Drawer.getInstance().closeDrawer();
+            Drawer.getInstance().showDrawer();
+        });
+        button.putClientProperty(FlatClientProperties.STYLE, ""
+                + "borderWidth:0;"
+                + "focusWidth:0;"
+                + "innerFocusWidth:0;"
+                + "background:null;");
+        Insets marginInsets = new Insets(6, 6, 6, 6);
+        button.setMargin(marginInsets);
+        return button;
+    }
+
+    public void switchFrame(JInternalFrame iFrame) {
         internalFrame.dispose();
         internalFrame = iFrame;
         desktopPane.add(internalFrame);
-        internalFrame.setLocation(180, 20);
+        internalFrame.setLocation(180, 10);
         internalFrame.setVisible(true);
     }
 
@@ -44,15 +63,9 @@ public class AdminFrame extends javax.swing.JFrame {
         jMenuBar4 = new javax.swing.JMenuBar();
         jMenu8 = new javax.swing.JMenu();
         jMenu9 = new javax.swing.JMenu();
+        shoppingCart1 = new TokoHp.Objects.ShoppingCart();
         desktopPane = new javax.swing.JDesktopPane();
-        jMenuBar1 = new javax.swing.JMenuBar();
-        menuBarTransaksi = new javax.swing.JMenu();
-        jMenuItem2 = new javax.swing.JMenuItem();
-        jMenuItem3 = new javax.swing.JMenuItem();
-        menuBarManage = new javax.swing.JMenu();
-        jMenuItem4 = new javax.swing.JMenuItem();
-        menuKategori = new javax.swing.JMenuItem();
-        menuBarang = new javax.swing.JMenuItem();
+        menuBar = new javax.swing.JMenuBar();
 
         jMenu1.setText("File");
         jMenuBar2.add(jMenu1);
@@ -84,58 +97,10 @@ public class AdminFrame extends javax.swing.JFrame {
         );
         desktopPaneLayout.setVerticalGroup(
             desktopPaneLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 366, Short.MAX_VALUE)
+            .addGap(0, 389, Short.MAX_VALUE)
         );
 
-        menuBarTransaksi.setText("Transaksi");
-
-        jMenuItem2.setText("Transaksi baru");
-        jMenuItem2.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jMenuItem2ActionPerformed(evt);
-            }
-        });
-        menuBarTransaksi.add(jMenuItem2);
-
-        jMenuItem3.setText("Riwayat transaksi");
-        jMenuItem3.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jMenuItem3ActionPerformed(evt);
-            }
-        });
-        menuBarTransaksi.add(jMenuItem3);
-
-        jMenuBar1.add(menuBarTransaksi);
-
-        menuBarManage.setText("Manage");
-
-        jMenuItem4.setText("Karyawan");
-        jMenuItem4.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jMenuItem4ActionPerformed(evt);
-            }
-        });
-        menuBarManage.add(jMenuItem4);
-
-        menuKategori.setText("Brand");
-        menuKategori.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                menuKategoriActionPerformed(evt);
-            }
-        });
-        menuBarManage.add(menuKategori);
-
-        menuBarang.setText("Handphone");
-        menuBarang.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                menuBarangActionPerformed(evt);
-            }
-        });
-        menuBarManage.add(menuBarang);
-
-        jMenuBar1.add(menuBarManage);
-
-        setJMenuBar(jMenuBar1);
+        setJMenuBar(menuBar);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -151,26 +116,6 @@ public class AdminFrame extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void menuKategoriActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_menuKategoriActionPerformed
-        switchFrame(new DaftarBrand());
-    }//GEN-LAST:event_menuKategoriActionPerformed
-
-    private void menuBarangActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_menuBarangActionPerformed
-        switchFrame(new DaftarHandphone());
-    }//GEN-LAST:event_menuBarangActionPerformed
-
-    private void jMenuItem4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem4ActionPerformed
-        switchFrame(new DaftarKaryawan());
-    }//GEN-LAST:event_jMenuItem4ActionPerformed
-
-    private void jMenuItem2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem2ActionPerformed
-        switchFrame(new TransaksiBaru());
-    }//GEN-LAST:event_jMenuItem2ActionPerformed
-
-    private void jMenuItem3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem3ActionPerformed
-        switchFrame(new RiwayatTransaksi());
-    }//GEN-LAST:event_jMenuItem3ActionPerformed
-
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JDesktopPane desktopPane;
@@ -181,16 +126,10 @@ public class AdminFrame extends javax.swing.JFrame {
     private javax.swing.JMenu jMenu7;
     private javax.swing.JMenu jMenu8;
     private javax.swing.JMenu jMenu9;
-    private javax.swing.JMenuBar jMenuBar1;
     private javax.swing.JMenuBar jMenuBar2;
     private javax.swing.JMenuBar jMenuBar3;
     private javax.swing.JMenuBar jMenuBar4;
-    private javax.swing.JMenuItem jMenuItem2;
-    private javax.swing.JMenuItem jMenuItem3;
-    private javax.swing.JMenuItem jMenuItem4;
-    private javax.swing.JMenu menuBarManage;
-    private javax.swing.JMenu menuBarTransaksi;
-    private javax.swing.JMenuItem menuBarang;
-    private javax.swing.JMenuItem menuKategori;
+    private javax.swing.JMenuBar menuBar;
+    private TokoHp.Objects.ShoppingCart shoppingCart1;
     // End of variables declaration//GEN-END:variables
 }
