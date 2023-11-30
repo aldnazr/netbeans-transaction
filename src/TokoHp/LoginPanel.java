@@ -1,16 +1,15 @@
 package TokoHp;
 
-import TokoHp.Views.MainFrame.AdminFrame;
-import TokoHp.Views.MainFrame.KaryawanFrame;
+import TokoHp.Views.Main.AdminFrame;
+import TokoHp.Views.Main.KaryawanFrame;
 import TokoHp.Objects.Variable;
 import com.formdev.flatlaf.FlatClientProperties;
 import java.sql.*;
 import javax.swing.JOptionPane;
-import raven.popup.GlassPanePopup;
 
 public class LoginPanel extends javax.swing.JFrame {
 
-    private final Connection connection;
+    Connection connection;
     PreparedStatement pstat;
     Statement statement;
     ResultSet rset;
@@ -20,6 +19,10 @@ public class LoginPanel extends javax.swing.JFrame {
 
     public LoginPanel() {
         initComponents();
+        init();
+    }
+
+    private void init() {
         connection = Variable.koneksi();
         setLocationRelativeTo(null);
         Variable.setPasswordFieldRevealButton(passwordField);
@@ -121,7 +124,7 @@ public class LoginPanel extends javax.swing.JFrame {
         tfUser.setToolTipText("");
 
         jLabel1.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
-        jLabel1.setText("Username");
+        jLabel1.setText("Username or Email");
 
         jLabel2.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
         jLabel2.setText("Password");
@@ -149,11 +152,8 @@ public class LoginPanel extends javax.swing.JFrame {
                 .addGap(168, 168, 168)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
                     .addComponent(passwordField, javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addComponent(jLabel2, javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jLabel1, javax.swing.GroupLayout.Alignment.LEADING))
-                        .addGap(157, 157, 157))
+                    .addComponent(jLabel2, javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jLabel1, javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(tfUser, javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(btLogin, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.PREFERRED_SIZE, 240, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
@@ -171,9 +171,9 @@ public class LoginPanel extends javax.swing.JFrame {
                 .addComponent(jLabel2)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(passwordField, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(48, 48, 48)
+                .addGap(18, 18, 18)
                 .addComponent(btLogin, javax.swing.GroupLayout.PREFERRED_SIZE, 34, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(69, Short.MAX_VALUE))
+                .addContainerGap(83, Short.MAX_VALUE))
         );
 
         pack();

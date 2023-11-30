@@ -22,7 +22,7 @@ public class DaftarBrand extends javax.swing.JInternalFrame {
         connection = Variable.koneksi();
         table.setModel(tableModel);
         read();
-        Variable.setSearchbarPlaceholder(tfPencarian);
+        Variable.setPlaceholderTextfield(tfPencarian, "Cari");
         textIdBrand.putClientProperty(FlatClientProperties.TEXT_FIELD_SHOW_CLEAR_BUTTON, true);
     }
     
@@ -156,7 +156,7 @@ public class DaftarBrand extends javax.swing.JInternalFrame {
                 {null, null}
             },
             new String [] {
-                "Id Brand", "Nama Brand"
+                "ID Brand", "Nama Brand"
             }
         ));
         table.addMouseListener(new java.awt.event.MouseAdapter() {

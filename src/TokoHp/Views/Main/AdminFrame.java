@@ -1,33 +1,41 @@
-package TokoHp.Views.MainFrame;
+package TokoHp.Views.Main;
 
-import TokoHp.Sidebar.DrawerNavigationKaryawan;
+import TokoHp.Objects.Variable;
+import TokoHp.Sidebar.DrawerNavigationAdmin;
+import TokoHp.Views.TransaksiBaru;
 import com.formdev.flatlaf.FlatClientProperties;
 import com.formdev.flatlaf.extras.FlatSVGIcon;
 import java.awt.Insets;
 import javax.swing.JButton;
 import javax.swing.JInternalFrame;
 import raven.drawer.Drawer;
-import raven.popup.GlassPanePopup;
+import raven.popup.WindowSnapshots;
 
-public class KaryawanFrame extends javax.swing.JFrame {
+public class AdminFrame extends javax.swing.JFrame {
 
     JInternalFrame internalFrame = new JInternalFrame();
 
-    public KaryawanFrame() {
+    public AdminFrame() {
         initComponents();
+        init();
+    }
+
+    private void init() {
         setTitle("Toko HP");
         setSize(1400, 750);
         setContentPane(desktopPane);
         setDefaultCloseOperation(EXIT_ON_CLOSE);
         setLocationRelativeTo(null);
-        GlassPanePopup.install(KaryawanFrame.this);
-        Drawer.getInstance().setDrawerBuilder(new DrawerNavigationKaryawan(KaryawanFrame.this));
         menuBar.add(drawerOpenButton());
+        switchFrame(new TransaksiBaru());
+        new WindowSnapshots(AdminFrame.this).createSnapshot();
+        Variable.setSideBar(AdminFrame.this, new DrawerNavigationAdmin(AdminFrame.this));
     }
 
     private JButton drawerOpenButton() {
-        JButton button = new JButton(new FlatSVGIcon("TokoHp/Icons/bars-solid.svg", 0.04f));
+        JButton button = new JButton(new FlatSVGIcon("TokoHp/Icons/list.svg", 1.0f));
         button.addActionListener((l) -> {
+            Drawer.getInstance().closeDrawer();
             Drawer.getInstance().showDrawer();
         });
         button.putClientProperty(FlatClientProperties.STYLE, ""
@@ -62,6 +70,7 @@ public class KaryawanFrame extends javax.swing.JFrame {
         jMenuBar4 = new javax.swing.JMenuBar();
         jMenu8 = new javax.swing.JMenu();
         jMenu9 = new javax.swing.JMenu();
+        shoppingCart1 = new TokoHp.Objects.ShoppingCart();
         desktopPane = new javax.swing.JDesktopPane();
         menuBar = new javax.swing.JMenuBar();
 
@@ -128,5 +137,6 @@ public class KaryawanFrame extends javax.swing.JFrame {
     private javax.swing.JMenuBar jMenuBar3;
     private javax.swing.JMenuBar jMenuBar4;
     private javax.swing.JMenuBar menuBar;
+    private TokoHp.Objects.ShoppingCart shoppingCart1;
     // End of variables declaration//GEN-END:variables
 }

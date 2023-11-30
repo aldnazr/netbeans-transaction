@@ -14,7 +14,7 @@ public class DaftarHandphone extends javax.swing.JInternalFrame {
     Statement stat;
     ResultSet rset;
     int rsetInt;
-    public static Object[] columnName = {"ID HP", "Nama Brand", "Model", "Deskripsi", "Harga", "Stok"};
+    public static Object[] columnName = {"ID HP", "Brand", "Nama Handphone", "Deskripsi", "Harga", "Stok"};
     DefaultTableModel tableModel = new DefaultTableModel(columnName, 0);
     DefaultComboBoxModel<String> comboBoxBrand = new DefaultComboBoxModel();
     SpinnerNumberModel spHargaModel = new SpinnerNumberModel(0, 0, Integer.MAX_VALUE, 1);
@@ -22,19 +22,24 @@ public class DaftarHandphone extends javax.swing.JInternalFrame {
 
     public DaftarHandphone() {
         initComponents();
+        init();
+    }
+
+    private void init() {
         setClosable(true);
         connection = Variable.koneksi();
         setComboBoxBrand();
         setComboBoxFilter();
         spHarga.setModel(spHargaModel);
         spStok.setModel(spStokModel);
-        Variable.setSearchbarPlaceholder(tfPencarian);
+        Variable.setPlaceholderTextfield(tfPencarian, "Cari");
+        textIdBrand.setVisible(false);
     }
 
     private void setComboBoxFilter() {
-        cbFilter.addItem("Semua");
-        cbFilter.addItem("Tersedia");
-        cbFilter.addItem("Tidak tersedia");
+        cbFilter.addItem("Stok");
+        cbFilter.addItem("Stok: Tersedia");
+        cbFilter.addItem("Stok: Tidak Tersedia");
     }
 
     private void setComboBoxBrand() {
@@ -68,7 +73,7 @@ public class DaftarHandphone extends javax.swing.JInternalFrame {
                 query = Variable.sqlFilterPhone;
                 break;
         }
-        
+
         try {
             pstat = connection.prepareStatement(query);
             pstat.setString(1, "%" + tfPencarian.getText().toLowerCase() + "%");
@@ -107,7 +112,7 @@ public class DaftarHandphone extends javax.swing.JInternalFrame {
             if (rsetInt > 0) {
                 Variable.popUpSuccessMessage("Berhasil", "Berhasil ditambah");
             } else {
-                Variable.popUpErrorMessage("Error", "Data gagal ditambah");
+                Variable.popUpErrorMessage("Nama handphone sudah ada", "Pastikan membuat nama baru yang tidak sama dengan yang ada di tabel");
             }
 
             rset.close();

@@ -4,7 +4,7 @@ import TokoHp.LoginPanel;
 import TokoHp.Views.DaftarBrand;
 import TokoHp.Views.DaftarHandphone;
 import TokoHp.Views.DaftarKaryawan;
-import TokoHp.Views.MainFrame.AdminFrame;
+import TokoHp.Views.Main.AdminFrame;
 import TokoHp.Views.ProfileUser;
 import TokoHp.Views.RiwayatTransaksi;
 import TokoHp.Views.TransaksiBaru;
@@ -38,26 +38,25 @@ public class DrawerNavigationAdmin extends SimpleDrawerBuilder {
             {"~MANAGE~"},
             {"Karyawan"},
             {"Brand"},
-            {"Handphone"},
+            {"Produk"},
             {"~LAINNYA~"},
             {"Logout"}
         };
 
         String[] icons = {
-            "user-solid.svg",
-            "cart-plus-solid.svg",
-            "clock-rotate-left-solid.svg",
-            "id-badge-solid.svg",
-            "copyright-solid.svg",
-            "mobile-solid.svg",
-            "right-from-bracket-solid.svg"
+            "person.svg",
+            "bag-plus.svg",
+            "clock-history.svg",
+            "people.svg",
+            "tags.svg",
+            "phone.svg",
+            "box-arrow-left.svg"
         };
 
         return new SimpleMenuOption()
                 .setMenus(menuOPtions)
                 .setBaseIconPath("TokoHp/Icons")
                 .setIcons(icons)
-                .setIconScale(0.035f)
                 .addMenuEvent((MenuAction action, int i, int i1) -> {
                     switch (i) {
                         case 0 ->

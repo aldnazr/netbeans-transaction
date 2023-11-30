@@ -2,7 +2,6 @@ package TokoHp.Views;
 
 import TokoHp.Objects.Variable;
 import java.sql.*;
-import javax.swing.JLabel;
 
 public class ProfileUser extends javax.swing.JInternalFrame {
 
@@ -18,10 +17,11 @@ public class ProfileUser extends javax.swing.JInternalFrame {
         dateChooser.setDateFormatString("dd-MM-yyyy");
         connection = Variable.koneksi();
         Variable.setActiveIDUser(textIdUser);
-        textIdUser.setVisible(true);
+        textIdUser.setVisible(false);
         setButtongroup();
         read();
         Variable.setPasswordFieldRevealButton(pwField);
+        Variable.disableDateTextfield(dateChooser);
     }
 
     private void setButtongroup() {

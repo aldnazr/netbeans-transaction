@@ -18,7 +18,7 @@ public class RiwayatTransaksi extends javax.swing.JInternalFrame {
         setClosable(true);
         connection = Variable.koneksi();
         read();
-        Variable.setSearchbarPlaceholder(tfPencarian);
+        Variable.setPlaceholderTextfield(tfPencarian, "Cari");
     }
 
     private void read() {

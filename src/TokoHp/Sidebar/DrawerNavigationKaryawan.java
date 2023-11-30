@@ -1,10 +1,7 @@
 package TokoHp.Sidebar;
 
 import TokoHp.LoginPanel;
-import TokoHp.Views.DaftarBrand;
-import TokoHp.Views.DaftarHandphone;
-import TokoHp.Views.DaftarKaryawan;
-import TokoHp.Views.MainFrame.KaryawanFrame;
+import TokoHp.Views.Main.KaryawanFrame;
 import TokoHp.Views.ProfileUser;
 import TokoHp.Views.RiwayatTransaksi;
 import TokoHp.Views.TransaksiBaru;
@@ -40,17 +37,18 @@ public class DrawerNavigationKaryawan extends SimpleDrawerBuilder {
         };
 
         String[] icons = {
-            "user-solid.svg",
-            "cart-plus-solid.svg",
-            "clock-rotate-left-solid.svg",
-            "right-from-bracket-solid.svg"
+            "person.svg",
+            "bag-plus.svg",
+            "clock-history.svg",
+            "box-arrow-left.svg"
         };
 
         return new SimpleMenuOption()
                 .setMenus(menuOPtions)
                 .setBaseIconPath("TokoHp/Icons")
                 .setIcons(icons)
-                .setIconScale(0.035f)
+//                .setIconScale(0.035f)
+                .setIconScale(1.1f)
                 .addMenuEvent((MenuAction action, int i, int i1) -> {
                     switch (i) {
                         case 0 ->
