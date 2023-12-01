@@ -28,7 +28,7 @@
   <Layout>
     <DimensionLayout dim="0">
       <Group type="103" groupAlignment="0" attributes="0">
-          <Component id="jLabel10" alignment="0" pref="1188" max="32767" attributes="0"/>
+          <Component id="jLabel10" alignment="0" max="32767" attributes="0"/>
           <Group type="102" alignment="1" attributes="0">
               <EmptySpace min="0" pref="0" max="32767" attributes="0"/>
               <Component id="textIdUser" min="-2" max="-2" attributes="0"/>
@@ -58,19 +58,17 @@
                               <EmptySpace max="-2" attributes="0"/>
                               <Component id="radioButtonPR" min="-2" max="-2" attributes="0"/>
                           </Group>
-                          <Group type="103" alignment="0" groupAlignment="1" max="-2" attributes="0">
-                              <Component id="pwField" alignment="0" max="32767" attributes="0"/>
-                              <Component id="tfUsername" max="32767" attributes="0"/>
-                              <Component id="tfPhone" alignment="0" max="32767" attributes="0"/>
-                              <Component id="tfEmail" alignment="0" max="32767" attributes="0"/>
-                              <Component id="jScrollPane1" alignment="0" max="32767" attributes="0"/>
-                              <Component id="dateChooser" alignment="0" max="32767" attributes="0"/>
-                              <Component id="tfNama" alignment="0" min="-2" pref="345" max="-2" attributes="0"/>
-                          </Group>
+                          <Component id="pwField" alignment="0" max="32767" attributes="0"/>
+                          <Component id="tfUsername" alignment="1" max="32767" attributes="0"/>
+                          <Component id="tfPhone" alignment="0" max="32767" attributes="0"/>
+                          <Component id="tfEmail" alignment="0" max="32767" attributes="0"/>
+                          <Component id="tfNama" min="-2" pref="405" max="-2" attributes="0"/>
+                          <Component id="dateChooser" alignment="0" max="32767" attributes="0"/>
+                          <Component id="jScrollPane1" alignment="0" max="32767" attributes="0"/>
                       </Group>
                   </Group>
               </Group>
-              <EmptySpace max="32767" attributes="0"/>
+              <EmptySpace min="-2" pref="371" max="-2" attributes="0"/>
           </Group>
       </Group>
     </DimensionLayout>
