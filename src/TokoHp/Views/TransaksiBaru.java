@@ -42,46 +42,43 @@ public class TransaksiBaru extends javax.swing.JInternalFrame {
 
     private void bayarTransaksi() {
         Timestamp timestamp = new Timestamp(System.currentTimeMillis());
-        if (!tfNamaPelanggan.getText().isEmpty()) {
-            try {
-                query = "INSERT INTO transaksi (ID_USER, NAMA_PELANGGAN, TANGGAL, TOTAL_BAYAR) VALUES (?,?,?,?)";
-                pstat = connection.prepareStatement(query);
-                pstat.setInt(1, Integer.parseInt(textIdKaryawan.getText()));
-                pstat.setString(2, tfNamaPelanggan.getText());
-                pstat.setTimestamp(3, timestamp);
-                pstat.setInt(4, shoppingCart.calculateTotal());
-                rsetInt = pstat.executeUpdate();
+        try {
+            query = "INSERT INTO transaksi (ID_USER, NAMA_PELANGGAN, TANGGAL, TOTAL_BAYAR) VALUES (?,?,?,?)";
+            pstat = connection.prepareStatement(query);
+            pstat.setInt(1, Integer.parseInt(textIdKaryawan.getText()));
+            pstat.setString(2, tfNamaPelanggan.getText());
+            pstat.setTimestamp(3, timestamp);
+            pstat.setInt(4, shoppingCart.calculateTotal());
+            rsetInt = pstat.executeUpdate();
 
-                if (rsetInt > 0) {
-                    for (Product item : shoppingCart.getItems()) {
-                        String insertSql = "INSERT INTO DETAIL_TRANSAKSI (ID_PHONE, JUMLAH_PEMBELIAN) VALUES (?,?)";
-                        PreparedStatement insertPstat = connection.prepareStatement(insertSql);
-                        insertPstat.setInt(1, item.getIdProduk());
-                        insertPstat.setInt(2, item.getStok());
-                        insertPstat.executeUpdate();
+            if (rsetInt > 0) {
+                for (Product item : shoppingCart.getItems()) {
+                    String insertSql = "INSERT INTO DETAIL_TRANSAKSI (ID_PHONE, JUMLAH_PEMBELIAN) VALUES (?,?)";
+                    PreparedStatement insertPstat = connection.prepareStatement(insertSql);
+                    insertPstat.setInt(1, item.getIdProduk());
+                    insertPstat.setInt(2, item.getStok());
+                    insertPstat.executeUpdate();
 
-                        String updateSql = "UPDATE PHONES SET STOK = STOK - ? WHERE ID_PHONE = ?";
-                        PreparedStatement updatePstat = connection.prepareStatement(updateSql);
-                        updatePstat.setInt(1, item.getStok());
-                        updatePstat.setInt(2, item.getIdProduk());
-                        updatePstat.executeUpdate();
-                    }
-                    Variable.popUpSuccessMessage("Berhasil", "Transaksi berhasil");
-                } else {
-                    Variable.popUpErrorMessage("Error", "Transaksi gagal");
+                    String updateSql = "UPDATE PHONES SET STOK = STOK - ? WHERE ID_PHONE = ?";
+                    PreparedStatement updatePstat = connection.prepareStatement(updateSql);
+                    updatePstat.setInt(1, item.getStok());
+                    updatePstat.setInt(2, item.getIdProduk());
+                    updatePstat.executeUpdate();
                 }
-                shoppingCart.getItems().clear();
-                setTableCheckout();
-                setTableListHp();
-                kalkulasiTotal();
-                clearText();
-                pstat.close();
-            } catch (SQLException ex) {
-                System.err.println(ex.getMessage());
+                Variable.popUpSuccessMessage("Berhasil", "Transaksi berhasil");
+            } else {
+                Variable.popUpErrorMessage("Error", "Transaksi gagal");
             }
-        } else {
-            Variable.popUpErrorMessage("Error", "Masukkan nama pelanggan");
+            shoppingCart.getItems().clear();
+            setTableCheckout();
+            setTableListHp();
+            kalkulasiTotal();
+            clearText();
+            pstat.close();
+        } catch (SQLException ex) {
+            System.err.println(ex.getMessage());
         }
+
     }
 
     private void disableEditableAndVisible() {
@@ -518,8 +515,16 @@ public class TransaksiBaru extends javax.swing.JInternalFrame {
     }//GEN-LAST:event_btClearTextActionPerformed
 
     private void btBayarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btBayarActionPerformed
-        bayarTransaksi();
-        disableEditableAndVisible();
+        if (!shoppingCart.getItems().isEmpty()) {
+            if (!tfNamaPelanggan.getText().isEmpty()) {
+                bayarTransaksi();
+                disableEditableAndVisible();
+            } else {
+                Variable.popUpErrorMessage("Nama pelanggan diperlukan!", "Harap memasukkan nama pelanggan");
+            }
+        } else {
+            Variable.popUpErrorMessage("Tidak ada barang", "Harap masukkan barang di keranjang");
+        }
     }//GEN-LAST:event_btBayarActionPerformed
 
     private void tfNamaPelangganKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_tfNamaPelangganKeyReleased
@@ -529,6 +534,7 @@ public class TransaksiBaru extends javax.swing.JInternalFrame {
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
         if (!shoppingCart.getItems().isEmpty()) {
             shoppingCart.getItems().clear();
+            setTableCheckout();
             kalkulasiTotal();
         } else {
             MessageAlerts.getInstance().showMessage("Gagal kosongkan keranjang", "Keranjang kosong tidak ada produk di keranjang", MessageAlerts.MessageType.WARNING);

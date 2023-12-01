@@ -1,6 +1,7 @@
 package TokoHp.Views;
 
 import TokoHp.Objects.Variable;
+import java.awt.Color;
 import java.sql.*;
 import javax.swing.table.DefaultTableModel;
 
@@ -10,16 +11,50 @@ public class RiwayatTransaksi extends javax.swing.JInternalFrame {
     PreparedStatement preparedStatement;
     String sql;
     ResultSet resultSet;
+    Statement statement;
+    CallableStatement callableStatement;
     Object[] tableColumn = {"ID TRANSAKSI", "KASIR", "NAMA_PELANGGAN", "WAKTU", "BRAND", "MODEL", "HARGA PRODUK", "JUMLAH BELI", "SUBTOTAL", "TOTAL"};
     DefaultTableModel tableModel = new DefaultTableModel(tableColumn, 0);
 
     public RiwayatTransaksi() {
         initComponents();
+        init();
+    }
+
+    private void init() {
         setClosable(true);
         connection = Variable.koneksi();
         read();
         Variable.setPlaceholderTextfield(tfPencarian, "Cari");
         Variable.setLabelFont(jLabel8);
+        card1.setBackgroundColor(new Color(121, 120, 233));
+        card2.setBackgroundColor(new Color(125, 160, 250));
+        getTransaksi();
+        getTerjual();
+    }
+
+    private void getTransaksi() {
+        try {
+            sql = "{? = call transaksiHariIni}";
+            callableStatement = connection.prepareCall(sql);
+            callableStatement.registerOutParameter(1, Types.INTEGER);
+            callableStatement.execute();
+            labelTransaksi.setText(String.valueOf(callableStatement.getInt(1)));
+        } catch (SQLException ex) {
+            System.err.println(ex.getMessage());
+        }
+    }
+
+    private void getTerjual() {
+        try {
+            sql = "{? = call terjualHariIni}";
+            callableStatement = connection.prepareCall(sql);
+            callableStatement.registerOutParameter(1, Types.INTEGER);
+            callableStatement.execute();
+            labelProdukTerjual.setText(String.valueOf(callableStatement.getInt(1)));
+        } catch (SQLException ex) {
+            System.err.println(ex.getMessage());
+        }
     }
 
     private void read() {
@@ -63,6 +98,12 @@ public class RiwayatTransaksi extends javax.swing.JInternalFrame {
         jScrollPane1 = new javax.swing.JScrollPane();
         tableRiwayat = new javax.swing.JTable();
         tfPencarian = new javax.swing.JTextField();
+        card1 = new TokoHp.Component.Card();
+        labelTransaksi = new javax.swing.JLabel();
+        jLabel2 = new javax.swing.JLabel();
+        card2 = new TokoHp.Component.Card();
+        labelProdukTerjual = new javax.swing.JLabel();
+        jLabel4 = new javax.swing.JLabel();
 
         setPreferredSize(new java.awt.Dimension(1200, 740));
 
@@ -89,6 +130,66 @@ public class RiwayatTransaksi extends javax.swing.JInternalFrame {
             }
         });
 
+        card1.setPreferredSize(new java.awt.Dimension(220, 104));
+
+        labelTransaksi.setFont(new java.awt.Font("Rubik Medium", 1, 24)); // NOI18N
+        labelTransaksi.setForeground(new java.awt.Color(255, 255, 255));
+        labelTransaksi.setText("10");
+
+        jLabel2.setFont(new java.awt.Font("Rubik Medium", 0, 16)); // NOI18N
+        jLabel2.setForeground(new java.awt.Color(255, 255, 255));
+        jLabel2.setText("Transaksi hari ini");
+
+        javax.swing.GroupLayout card1Layout = new javax.swing.GroupLayout(card1);
+        card1.setLayout(card1Layout);
+        card1Layout.setHorizontalGroup(
+            card1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(card1Layout.createSequentialGroup()
+                .addGap(14, 14, 14)
+                .addGroup(card1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jLabel2)
+                    .addComponent(labelTransaksi))
+                .addContainerGap(77, Short.MAX_VALUE))
+        );
+        card1Layout.setVerticalGroup(
+            card1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, card1Layout.createSequentialGroup()
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(labelTransaksi)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jLabel2)
+                .addGap(23, 23, 23))
+        );
+
+        labelProdukTerjual.setFont(new java.awt.Font("Rubik Medium", 1, 24)); // NOI18N
+        labelProdukTerjual.setForeground(new java.awt.Color(255, 255, 255));
+        labelProdukTerjual.setText("10");
+
+        jLabel4.setFont(new java.awt.Font("Rubik Medium", 0, 16)); // NOI18N
+        jLabel4.setForeground(new java.awt.Color(255, 255, 255));
+        jLabel4.setText("Barang terjual hari ini");
+
+        javax.swing.GroupLayout card2Layout = new javax.swing.GroupLayout(card2);
+        card2.setLayout(card2Layout);
+        card2Layout.setHorizontalGroup(
+            card2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(card2Layout.createSequentialGroup()
+                .addGap(14, 14, 14)
+                .addGroup(card2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jLabel4)
+                    .addComponent(labelProdukTerjual))
+                .addContainerGap(42, Short.MAX_VALUE))
+        );
+        card2Layout.setVerticalGroup(
+            card2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, card2Layout.createSequentialGroup()
+                .addContainerGap(27, Short.MAX_VALUE)
+                .addComponent(labelProdukTerjual)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jLabel4)
+                .addGap(23, 23, 23))
+        );
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -98,9 +199,14 @@ public class RiwayatTransaksi extends javax.swing.JInternalFrame {
                 .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 1176, Short.MAX_VALUE)
-                    .addGroup(layout.createSequentialGroup()
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                         .addGap(0, 0, Short.MAX_VALUE)
-                        .addComponent(tfPencarian, javax.swing.GroupLayout.PREFERRED_SIZE, 170, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addComponent(tfPencarian, javax.swing.GroupLayout.PREFERRED_SIZE, 170, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(card1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(18, 18, 18)
+                        .addComponent(card2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(0, 0, Short.MAX_VALUE)))
                 .addContainerGap())
         );
         layout.setVerticalGroup(
@@ -108,10 +214,14 @@ public class RiwayatTransaksi extends javax.swing.JInternalFrame {
             .addGroup(layout.createSequentialGroup()
                 .addGap(36, 36, 36)
                 .addComponent(jLabel8)
-                .addGap(54, 54, 54)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 65, Short.MAX_VALUE)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(card2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(card1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addGap(5, 5, 5)
                 .addComponent(tfPencarian, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 545, Short.MAX_VALUE)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 435, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap())
         );
 
@@ -123,8 +233,14 @@ public class RiwayatTransaksi extends javax.swing.JInternalFrame {
     }//GEN-LAST:event_tfPencarianKeyReleased
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private TokoHp.Component.Card card1;
+    private TokoHp.Component.Card card2;
+    private javax.swing.JLabel jLabel2;
+    private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel8;
     private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JLabel labelProdukTerjual;
+    private javax.swing.JLabel labelTransaksi;
     private javax.swing.JTable tableRiwayat;
     private javax.swing.JTextField tfPencarian;
     // End of variables declaration//GEN-END:variables

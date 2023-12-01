@@ -190,39 +190,32 @@ END;
 --       FUNCTION        --
 ---------------------------
 
-CREATE OR REPLACE FUNCTION tambah_phone(
-    p_id_brand INT,
-    p_nama_handphone VARCHAR2,
-    p_deskripsi VARCHAR2,
-    p_harga INT,
-    p_stok INT
-)
-RETURN VARCHAR2
-IS
+CREATE OR REPLACE FUNCTION transaksiHariIni
+RETURN INT
+AS
+    hasil INT;
 BEGIN
-    INSERT INTO phones(id_brand, nama_handphone, deskripsi, harga, stok)
-    VALUES (p_id_brand, p_nama_handphone, p_deskripsi, p_harga, p_stok);
-
-    RETURN 'Phone berhasil ditambahkan';
-EXCEPTION
-    WHEN OTHERS THEN
-        RETURN 'Gagal menambahkan phone: ' || SQLERRM;
+    SELECT COALESCE(COUNT(ID_TRANSAKSI), 0)
+    INTO hasil
+    FROM TRANSAKSI 
+    WHERE TRUNC(TANGGAL) = TRUNC(SYSDATE);
+    
+    RETURN hasil;
 END;
 /
 
-CREATE OR REPLACE FUNCTION hapus_phone(p_id_phone INT) 
-RETURN VARCHAR2 
-IS
+CREATE OR REPLACE FUNCTION terjualHariIni
+RETURN INT
+AS
+    hasil INT;
 BEGIN
-    DELETE FROM phones
-    WHERE id_phone = p_id_phone;
-
-    RETURN 'Phone berhasil dihapus';
-EXCEPTION
-    WHEN NO_DATA_FOUND THEN
-        RETURN 'Phone tidak ditemukan';
-    WHEN OTHERS THEN
-        RETURN 'Gagal menghapus phone: ' || SQLERRM;
+    SELECT COALESCE(SUM(JUMLAH_PEMBELIAN), 0)
+    INTO hasil
+    FROM TRANSAKSI 
+    JOIN DETAIL_TRANSAKSI USING (ID_TRANSAKSI)
+    WHERE TRUNC(TANGGAL) = TRUNC(SYSDATE);
+    
+    RETURN hasil;
 END;
 /
 
@@ -275,18 +268,19 @@ SELECT getMaxTransaksiId FROM DUAL;
 SELECT getMaxBrandId FROM DUAL;
 
 DECLARE
-    pesan VARCHAR2(100);
+    HASIL INT;
 BEGIN
-    pesan := TAMBAH_PHONE(1,'A22','HP KENTANG',10,10);
-    DBMS_OUTPUT.PUT_LINE(pesan);
+    HASIL := terjualHariIni();
+    DBMS_OUTPUT.PUT_LINE(HASIL);
 END;
 
 DECLARE
-    pesan VARCHAR2(100);
+    HASIL INT;
 BEGIN
-    pesan := HAPUS_PHONE(9);
-    DBMS_OUTPUT.PUT_LINE(pesan);
+    HASIL := transaksiHariIni();
+    DBMS_OUTPUT.PUT_LINE(HASIL);
 END;
+
 
 -- PROCEDURE
 BEGIN
@@ -322,7 +316,7 @@ SELECT * FROM SESSIONS;
 SELECT * FROM TRANSAKSI;
 SELECT * FROM DETAIL_TRANSAKSI;
 
-
+SELECT SUM(JUMLAH_PEMBELIAN) FROM TRANSAKSI join DETAIL_TRANSAKSI USING (ID_TRANSAKSI);
 SELECT * FROM TRANSAKSI WHERE TRUNC(TANGGAL) = TO_DATE('16-11-2023', 'DD-MM-YYYY');
 
 DELETE FROM BRAND;
@@ -409,4 +403,3 @@ GROUP BY
     T.TOTAL_BAYAR
 ORDER BY T.ID_TRANSAKSI DESC;
 
-SELECT ID_SESSION, ID_USER, NAMA_LENGKAP, WAKTU_LOGIN FROM USERS JOIN SESSIONS USING(ID_USER) WHERE ID_USER LIKE ? OR LOWER(NAMA_LENGKAP) LIKE = ? ORDER BY ID_SESSION DESC

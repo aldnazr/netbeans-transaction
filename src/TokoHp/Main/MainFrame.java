@@ -21,7 +21,6 @@ public class MainFrame extends javax.swing.JFrame {
 
     private void init() {
         setResizable(false);
-        setTitle("Toko HP");
         setSize(1216, 780);
         setContentPane(desktopPane);
         setDefaultCloseOperation(EXIT_ON_CLOSE);

@@ -3,7 +3,6 @@ package TokoHp;
 import TokoHp.Main.MainFrame;
 import TokoHp.Objects.Variable;
 import com.formdev.flatlaf.FlatClientProperties;
-import com.formdev.flatlaf.extras.FlatAnimatedLafChange;
 import java.sql.*;
 import javax.swing.JOptionPane;
 

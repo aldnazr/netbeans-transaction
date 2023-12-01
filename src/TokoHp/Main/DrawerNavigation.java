@@ -152,11 +152,11 @@ public class DrawerNavigation extends SimpleDrawerBuilder {
         SimpleMenuOption simpleMenuOption = new SimpleMenuOption();
 
         String[][] menuOptions = {
-            {"Atur Profil"},
+            {"Pengaturan Akun"},
             {"~TRANSAKSI~"},
             {"Transaksi Baru"},
             {"Riwayat", "Riwayat Transaksi", "Riwayat Login"},
-            {"~MANAGE~"},
+            {"~MANAJEMEN~"},
             {"Karyawan"},
             {"Brand"},
             {"Produk"},
@@ -177,11 +177,11 @@ public class DrawerNavigation extends SimpleDrawerBuilder {
         };
 
         String[][] menuOptionsDark = {
-            {"Atur Profil"},
+            {"Pengaturan Akun"},
             {"~TRANSAKSI~"},
             {"Transaksi Baru"},
             {"Riwayat", "Riwayat Transaksi", "Riwayat Login"},
-            {"~MANAGE~"},
+            {"~MANAJEMEN~"},
             {"Karyawan"},
             {"Brand"},
             {"Produk"},
@@ -202,7 +202,7 @@ public class DrawerNavigation extends SimpleDrawerBuilder {
         };
 
         String[][] menuOptionsKaryawan = {
-            {"Atur Profil"},
+            {"Pengaturan Akun"},
             {"~TRANSAKSI~"},
             {"Transaksi Baru"},
             {"Riwayat Transaksi"},
@@ -220,7 +220,7 @@ public class DrawerNavigation extends SimpleDrawerBuilder {
         };
 
         String[][] menuOptionsKaryawanDark = {
-            {"Atur Profil"},
+            {"Pengaturan Akun"},
             {"~TRANSAKSI~"},
             {"Transaksi Baru"},
             {"Riwayat Transaksi"},

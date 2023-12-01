@@ -241,7 +241,7 @@
           <Font name="Segoe UI" size="18" style="1"/>
         </Property>
         <Property name="horizontalAlignment" type="int" value="0"/>
-        <Property name="text" type="java.lang.String" value="PENGATURAN PROFIL"/>
+        <Property name="text" type="java.lang.String" value="PENGATURAN AKUN"/>
       </Properties>
     </Component>
     <Component class="javax.swing.JLabel" name="textIdUser">

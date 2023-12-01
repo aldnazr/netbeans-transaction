@@ -157,7 +157,7 @@ public class ProfileUser extends javax.swing.JInternalFrame {
 
         jLabel10.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
         jLabel10.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        jLabel10.setText("PENGATURAN PROFIL");
+        jLabel10.setText("PENGATURAN AKUN");
 
         textIdUser.setText("textIdUser");
 

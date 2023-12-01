@@ -35,6 +35,11 @@ public class Variable {
         }
     }
 
+    public static void labelTitleCard(JLabel title, JLabel subtitle) {
+        title.putClientProperty(FlatClientProperties.STYLE, "font:$h2.font");
+        subtitle.putClientProperty(FlatClientProperties.STYLE, "font:$h3.font");
+    }
+
     public static void setDarkTheme() {
         try {
             UIManager.setLookAndFeel(new FlatMacDarkLaf());
