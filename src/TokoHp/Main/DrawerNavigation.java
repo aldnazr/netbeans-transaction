@@ -6,6 +6,7 @@ import TokoHp.Views.DaftarBrand;
 import TokoHp.Views.DaftarHandphone;
 import TokoHp.Views.DaftarKaryawan;
 import TokoHp.Views.ProfileUser;
+import TokoHp.Views.RiwayatLogin;
 import TokoHp.Views.RiwayatTransaksi;
 import TokoHp.Views.TransaksiBaru;
 import raven.drawer.component.SimpleDrawerBuilder;
@@ -71,16 +72,90 @@ public class DrawerNavigation extends SimpleDrawerBuilder {
         return headerData();
     }
 
+    private void menuAdmin(SimpleMenuOption simpleMenuOption, String[][] menuOptions, String[] icons, String[][] menuOptionsDark, String[] iconsDark) {
+        boolean isLightMode = Variable.isLightTheme();
+        simpleMenuOption
+                .setMenus(isLightMode ? menuOptions : menuOptionsDark)
+                .setBaseIconPath("TokoHp/Icons")
+                .setIcons(isLightMode ? icons : iconsDark)
+                .addMenuEvent((MenuAction action, int i, int i1) -> {
+                    switch (i) {
+                        case 0 ->
+                            mainFrame.switchFrame(new ProfileUser());
+                        case 1 ->
+                            mainFrame.switchFrame(new TransaksiBaru());
+                        case 2 -> {
+                            switch (i1) {
+                                case 1 ->
+                                    mainFrame.switchFrame(new RiwayatTransaksi());
+                                case 2 ->
+                                    mainFrame.switchFrame(new RiwayatLogin());
+                            }
+                        }
+                        case 3 ->
+                            mainFrame.switchFrame(new DaftarKaryawan());
+                        case 4 ->
+                            mainFrame.switchFrame(new DaftarBrand());
+                        case 5 ->
+                            mainFrame.switchFrame(new DaftarHandphone());
+                        case 6 -> {
+                            if (Variable.isLightTheme()) {
+                                Variable.setDarkTheme();
+                            } else {
+                                Variable.setLightTheme();
+                            }
+                            mainFrame.dispose();
+                            new MainFrame().setVisible(true);
+                        }
+                        case 7 -> {
+                            mainFrame.dispose();
+                            new LoginPanel().setVisible(true);
+                        }
+                    }
+                });
+    }
+
+    private void menuKaryawan(SimpleMenuOption simpleMenuOption, String[][] menuOptions, String[] icons, String[][] menuOptionsDark, String[] iconsDark) {
+        boolean isLightMode = Variable.isLightTheme();
+        simpleMenuOption
+                .setMenus(isLightMode ? menuOptions : menuOptionsDark)
+                .setBaseIconPath("TokoHp/Icons")
+                .setIcons(isLightMode ? icons : iconsDark)
+                .addMenuEvent((MenuAction action, int i, int i1) -> {
+                    switch (i) {
+                        case 0 ->
+                            mainFrame.switchFrame(new ProfileUser());
+                        case 1 ->
+                            mainFrame.switchFrame(new TransaksiBaru());
+                        case 2 ->
+                            mainFrame.switchFrame(new RiwayatTransaksi());
+                        case 3 -> {
+                            if (isLightMode) {
+                                Variable.setDarkTheme();
+                            } else {
+                                Variable.setLightTheme();
+                            }
+                            mainFrame.dispose();
+                            new MainFrame().setVisible(true);
+                        }
+                        case 4 -> {
+                            mainFrame.dispose();
+                            new LoginPanel().setVisible(true);
+                        }
+                    }
+                });
+    }
+
     @Override
     public SimpleMenuOption getSimpleMenuOption() {
         boolean isAdmin = checkAccount();
         SimpleMenuOption simpleMenuOption = new SimpleMenuOption();
 
-        String[][] menuOPtions = {
+        String[][] menuOptions = {
             {"Atur Profil"},
             {"~TRANSAKSI~"},
             {"Transaksi Baru"},
-            {"Riwayat Transaksi"},
+            {"Riwayat", "Riwayat Transaksi", "Riwayat Login"},
             {"~MANAGE~"},
             {"Karyawan"},
             {"Brand"},
@@ -101,11 +176,11 @@ public class DrawerNavigation extends SimpleDrawerBuilder {
             "logout.svg"
         };
 
-        String[][] menuOPtionsDark = {
+        String[][] menuOptionsDark = {
             {"Atur Profil"},
             {"~TRANSAKSI~"},
             {"Transaksi Baru"},
-            {"Riwayat Transaksi"},
+            {"Riwayat", "Riwayat Transaksi", "Riwayat Login"},
             {"~MANAGE~"},
             {"Karyawan"},
             {"Brand"},
@@ -126,7 +201,7 @@ public class DrawerNavigation extends SimpleDrawerBuilder {
             "logout_dark.svg"
         };
 
-        String[][] menuOPtionsKaryawan = {
+        String[][] menuOptionsKaryawan = {
             {"Atur Profil"},
             {"~TRANSAKSI~"},
             {"Transaksi Baru"},
@@ -144,7 +219,7 @@ public class DrawerNavigation extends SimpleDrawerBuilder {
             "logout.svg"
         };
 
-        String[][] menuOPtionsKaryawanDark = {
+        String[][] menuOptionsKaryawanDark = {
             {"Atur Profil"},
             {"~TRANSAKSI~"},
             {"Transaksi Baru"},
@@ -163,118 +238,9 @@ public class DrawerNavigation extends SimpleDrawerBuilder {
         };
 
         if (isAdmin) {
-            if (Variable.isLightTheme()) {
-                simpleMenuOption
-                        .setMenus(menuOPtions)
-                        .setBaseIconPath("TokoHp/Icons")
-                        .setIcons(icons)
-                        .addMenuEvent((MenuAction action, int i, int i1) -> {
-                            switch (i) {
-                                case 0 ->
-                                    mainFrame.switchFrame(new ProfileUser());
-                                case 1 ->
-                                    mainFrame.switchFrame(new TransaksiBaru());
-                                case 2 ->
-                                    mainFrame.switchFrame(new RiwayatTransaksi());
-                                case 3 ->
-                                    mainFrame.switchFrame(new DaftarKaryawan());
-                                case 4 ->
-                                    mainFrame.switchFrame(new DaftarBrand());
-                                case 5 ->
-                                    mainFrame.switchFrame(new DaftarHandphone());
-                                case 6 -> {
-                                    Variable.setDarkTheme();
-                                    mainFrame.dispose();
-                                    new MainFrame().setVisible(true);
-                                }
-                                case 7 -> {
-                                    mainFrame.dispose();
-                                    new LoginPanel().setVisible(true);
-                                }
-                            }
-                        });
-            } else {
-                simpleMenuOption
-                        .setMenus(menuOPtionsDark)
-                        .setBaseIconPath("TokoHp/Icons")
-                        .setIcons(iconsDark)
-                        .addMenuEvent((MenuAction action, int i, int i1) -> {
-                            switch (i) {
-                                case 0 ->
-                                    mainFrame.switchFrame(new ProfileUser());
-                                case 1 ->
-                                    mainFrame.switchFrame(new TransaksiBaru());
-                                case 2 ->
-                                    mainFrame.switchFrame(new RiwayatTransaksi());
-                                case 3 ->
-                                    mainFrame.switchFrame(new DaftarKaryawan());
-                                case 4 ->
-                                    mainFrame.switchFrame(new DaftarBrand());
-                                case 5 ->
-                                    mainFrame.switchFrame(new DaftarHandphone());
-                                case 6 -> {
-                                    Variable.setLightTheme();
-                                    mainFrame.dispose();
-                                    new MainFrame().setVisible(true);
-                                }
-                                case 7 -> {
-                                    mainFrame.dispose();
-                                    new LoginPanel().setVisible(true);
-                                }
-                            }
-                        });
-            }
+            menuAdmin(simpleMenuOption, menuOptions, icons, menuOptionsDark, iconsDark);
         } else {
-            if (Variable.isLightTheme()) {
-                simpleMenuOption
-                        .setMenus(menuOPtionsKaryawan)
-                        .setBaseIconPath("TokoHp/Icons")
-                        .setIcons(iconsKaryawan)
-                        .addMenuEvent((MenuAction action, int i, int i1) -> {
-                            switch (i) {
-                                case 0 ->
-                                    mainFrame.switchFrame(new ProfileUser());
-                                case 1 ->
-                                    mainFrame.switchFrame(new TransaksiBaru());
-                                case 2 ->
-                                    mainFrame.switchFrame(new RiwayatTransaksi());
-                                case 3 -> {
-                                    Variable.setDarkTheme();
-                                    mainFrame.dispose();
-                                    new MainFrame().setVisible(true);
-                                }
-                                case 4 -> {
-                                    mainFrame.dispose();
-                                    new LoginPanel().setVisible(true);
-                                }
-                            }
-                        });
-            } else {
-                simpleMenuOption
-                        .setMenus(menuOPtionsKaryawanDark)
-                        .setBaseIconPath("TokoHp/Icons")
-                        .setIcons(iconsKaryawanDark)
-                        .addMenuEvent((MenuAction action, int i, int i1) -> {
-                            switch (i) {
-                                case 0 ->
-                                    mainFrame.switchFrame(new ProfileUser());
-                                case 1 ->
-                                    mainFrame.switchFrame(new TransaksiBaru());
-                                case 2 ->
-                                    mainFrame.switchFrame(new RiwayatTransaksi());
-                                case 3 -> {
-                                    Variable.setLightTheme();
-                                    mainFrame.dispose();
-                                    new MainFrame().setVisible(true);
-                                }
-                                case 4 -> {
-                                    mainFrame.dispose();
-                                    new LoginPanel().setVisible(true);
-                                }
-                            }
-                        });
-            }
-
+            menuKaryawan(simpleMenuOption, menuOptionsKaryawan, iconsKaryawan, menuOptionsKaryawanDark, iconsKaryawanDark);
         }
         return simpleMenuOption;
     }

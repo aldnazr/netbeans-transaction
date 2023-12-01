@@ -33,7 +33,7 @@ public class MainFrame extends javax.swing.JFrame {
 
     private JButton drawerOpenButton() {
         String directory = Variable.isLightTheme() ? "TokoHp/Icons/list.svg" : "TokoHp/Icons/list_dark.svg";
-        JButton button = new JButton(new FlatSVGIcon(directory, 1.0f));
+        JButton button = new JButton(new FlatSVGIcon(directory, 1.1f));
         button.addActionListener((l) -> {
             Drawer.getInstance().closeDrawer();
             Drawer.getInstance().showDrawer();
@@ -52,7 +52,6 @@ public class MainFrame extends javax.swing.JFrame {
         internalFrame.dispose();
         internalFrame = iFrame;
         desktopPane.add(internalFrame);
-//        internalFrame.setLocation(180, 10);
         internalFrame.setVisible(true);
         BasicInternalFrameUI basicInternalFrameUI = (BasicInternalFrameUI) iFrame.getUI();
         basicInternalFrameUI.setNorthPane(null);
