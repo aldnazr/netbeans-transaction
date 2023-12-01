@@ -6,7 +6,7 @@ import java.sql.*;
 import javax.swing.table.DefaultTableModel;
 
 public class DaftarBrand extends javax.swing.JInternalFrame {
-    
+
     Connection connection;
     PreparedStatement pstat;
     CallableStatement cstat;
@@ -15,17 +15,22 @@ public class DaftarBrand extends javax.swing.JInternalFrame {
     int rsetInt;
     Object[] columnName = {"ID Brand", "Nama Brand"};
     DefaultTableModel tableModel = new DefaultTableModel(columnName, 0);
-    
+
     public DaftarBrand() {
         initComponents();
+        init();
+    }
+
+    private void init() {
         setClosable(true);
         connection = Variable.koneksi();
         table.setModel(tableModel);
         read();
         Variable.setPlaceholderTextfield(tfPencarian, "Cari");
         textIdBrand.putClientProperty(FlatClientProperties.TEXT_FIELD_SHOW_CLEAR_BUTTON, true);
+        Variable.setLabelFont(jLabel1);
     }
-    
+
     private void read() {
         try {
             query = "SELECT * FROM BRAND WHERE LOWER(NAMA_BRAND) LIKE ?";
@@ -33,7 +38,7 @@ public class DaftarBrand extends javax.swing.JInternalFrame {
             pstat.setString(1, "%" + tfPencarian.getText().toLowerCase() + "%");
             rset = pstat.executeQuery();
             tableModel.setRowCount(0);
-            
+
             while (rset.next()) {
                 Object[] rowData = {
                     rset.getInt(1),
@@ -47,21 +52,21 @@ public class DaftarBrand extends javax.swing.JInternalFrame {
             System.out.println(ex.getMessage());
         }
     }
-    
+
     private void tambahBrand() {
         try {
             query = "CALL insertBrand (?)";
             cstat = connection.prepareCall(query);
             cstat.setString(1, tfNamaBrand.getText());
             rsetInt = cstat.executeUpdate();
-            
+
             if (rsetInt >= 0) {
                 Variable.popUpSuccessMessage("Berhasil", "Berhasil ditambah");
                 read();
             } else {
                 Variable.popUpErrorMessage("Error", "Data gagal ditambah");
             }
-            
+
             pstat.close();
             rset.close();
         } catch (SQLException ex) {
@@ -69,7 +74,7 @@ public class DaftarBrand extends javax.swing.JInternalFrame {
             System.out.println(ex.getMessage());
         }
     }
-    
+
     private void updateBrand() {
         try {
             query = "CALL updateBrand (?, ?)";
@@ -77,58 +82,58 @@ public class DaftarBrand extends javax.swing.JInternalFrame {
             cstat.setString(1, textIdBrand.getText());
             cstat.setString(2, tfNamaBrand.getText());
             rsetInt = cstat.executeUpdate();
-            
+
             if (rsetInt >= 0) {
                 Variable.popUpSuccessMessage("Berhasil", "Data berhasil diupdate");
                 read();
             } else {
                 Variable.popUpErrorMessage("Error", "Data gagal diupdate");
             }
-            
+
             pstat.close();
         } catch (SQLException ex) {
             System.out.println(ex.getMessage());
         }
     }
-    
+
     private void deleteBrand() {
         try {
             query = "CALL deleteBrand (?)";
             cstat = connection.prepareCall(query);
             cstat.setString(1, textIdBrand.getText());
             rsetInt = cstat.executeUpdate();
-            
+
             if (rsetInt > 0) {
                 Variable.popUpSuccessMessage("Berhasil", "Data berhasil dihapus");
                 read();
             } else {
                 Variable.popUpErrorMessage("Error", "Tidak ada data yang dihapus");
             }
-            
+
             rset.close();
         } catch (SQLException ex) {
             System.out.println(ex.getMessage());
         }
     }
-    
+
     private void getTableData() {
         int row = table.getSelectedRow();
         String id_brand, nama_brand;
-        
+
         if (row >= 0) {
             id_brand = table.getValueAt(row, 0).toString();
             nama_brand = table.getValueAt(row, 1).toString();
-            
+
             textIdBrand.setText(id_brand);
             tfNamaBrand.setText(nama_brand);
         }
     }
-    
+
     private void clearText() {
         textIdBrand.setText("");
         tfPencarian.setText("");
     }
-    
+
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
@@ -146,7 +151,7 @@ public class DaftarBrand extends javax.swing.JInternalFrame {
         jLabel3 = new javax.swing.JLabel();
         btDelete1 = new javax.swing.JButton();
 
-        setPreferredSize(new java.awt.Dimension(1200, 730));
+        setPreferredSize(new java.awt.Dimension(1200, 740));
 
         table.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
@@ -174,7 +179,7 @@ public class DaftarBrand extends javax.swing.JInternalFrame {
 
         jLabel1.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
         jLabel1.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        jLabel1.setText("Daftar Brand");
+        jLabel1.setText("DAFTAR BRAND");
 
         btTambah.setBackground(new java.awt.Color(0, 122, 255));
         btTambah.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
@@ -334,7 +339,6 @@ public class DaftarBrand extends javax.swing.JInternalFrame {
         clearText();
         read();
     }//GEN-LAST:event_btDelete1ActionPerformed
-
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btDelete;

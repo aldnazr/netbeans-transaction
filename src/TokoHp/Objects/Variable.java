@@ -1,8 +1,12 @@
 package TokoHp.Objects;
 
 import com.formdev.flatlaf.FlatClientProperties;
+import com.formdev.flatlaf.extras.FlatAnimatedLafChange;
+import com.formdev.flatlaf.fonts.roboto.FlatRobotoFont;
+import com.formdev.flatlaf.themes.FlatMacDarkLaf;
 import com.formdev.flatlaf.themes.FlatMacLightLaf;
 import com.toedter.calendar.JDateChooser;
+import java.awt.Font;
 import java.sql.*;
 import java.text.NumberFormat;
 import java.text.ParseException;
@@ -20,12 +24,34 @@ import raven.popup.GlassPanePopup;
 public class Variable {
 
 //    Tema
-    public static void setUIManager() {
+    public static void setLightTheme() {
         try {
             UIManager.setLookAndFeel(new FlatMacLightLaf());
+            UIManager.put("defaultFont", new Font(FlatRobotoFont.FAMILY, Font.PLAIN, 13));
+            FlatAnimatedLafChange.showSnapshot();
+            FlatAnimatedLafChange.hideSnapshotWithAnimation();
         } catch (UnsupportedLookAndFeelException ex) {
             System.err.println(ex.getMessage());
         }
+    }
+
+    public static void setDarkTheme() {
+        try {
+            UIManager.setLookAndFeel(new FlatMacDarkLaf());
+            UIManager.put("defaultFont", new Font(FlatRobotoFont.FAMILY, Font.PLAIN, 13));
+            FlatAnimatedLafChange.showSnapshot();
+            FlatAnimatedLafChange.hideSnapshotWithAnimation();
+        } catch (UnsupportedLookAndFeelException ex) {
+            System.err.println(ex.getMessage());
+        }
+    }
+
+    public static boolean isLightTheme() {
+        return UIManager.getLookAndFeel() instanceof FlatMacLightLaf;
+    }
+
+    public static void setLabelFont(JLabel label) {
+        label.putClientProperty(FlatClientProperties.STYLE, "font:$h1.font");
     }
 
 //    Koneksi

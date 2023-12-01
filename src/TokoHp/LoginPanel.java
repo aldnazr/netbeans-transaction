@@ -1,9 +1,9 @@
 package TokoHp;
 
-import TokoHp.Views.Main.AdminFrame;
-import TokoHp.Views.Main.KaryawanFrame;
+import TokoHp.Main.MainFrame;
 import TokoHp.Objects.Variable;
 import com.formdev.flatlaf.FlatClientProperties;
+import com.formdev.flatlaf.extras.FlatAnimatedLafChange;
 import java.sql.*;
 import javax.swing.JOptionPane;
 
@@ -14,8 +14,7 @@ public class LoginPanel extends javax.swing.JFrame {
     Statement statement;
     ResultSet rset;
     String query;
-    AdminFrame adminFrame = new AdminFrame();
-    KaryawanFrame karyawanFrame = new KaryawanFrame();
+    MainFrame adminFrame;
 
     public LoginPanel() {
         initComponents();
@@ -23,16 +22,18 @@ public class LoginPanel extends javax.swing.JFrame {
     }
 
     private void init() {
+        setResizable(false);
         connection = Variable.koneksi();
         setLocationRelativeTo(null);
         Variable.setPasswordFieldRevealButton(passwordField);
         tfUser.putClientProperty(FlatClientProperties.PLACEHOLDER_TEXT, "Masukkan username/email");
         tfUser.putClientProperty(FlatClientProperties.TEXT_FIELD_SHOW_CLEAR_BUTTON, true);
         passwordField.putClientProperty(FlatClientProperties.PLACEHOLDER_TEXT, "Masukkan password");
+        Variable.setLabelFont(jLabel3);
     }
 
     public static void main(String args[]) {
-        Variable.setUIManager();
+        Variable.setLightTheme();
         new LoginPanel().setVisible(true);
     }
 
@@ -44,9 +45,11 @@ public class LoginPanel extends javax.swing.JFrame {
 
             if (rset.last()) {
                 if (rset.getString(1).equals("Admin")) {
+                    adminFrame = new MainFrame();
                     adminFrame.setVisible(true);
                 } else {
-                    karyawanFrame.setVisible(true);
+                    adminFrame = new MainFrame();
+                    adminFrame.setVisible(true);
                 }
             }
 
@@ -181,12 +184,13 @@ public class LoginPanel extends javax.swing.JFrame {
 
     private void btLoginActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btLoginActionPerformed
         if (!tfUser.getText().isEmpty() && passwordField.getPassword().length > 0) {
+//            FlatAnimatedLafChange.showSnapshot();
             checkLogin();
+//            FlatAnimatedLafChange.hideSnapshotWithAnimation();
         } else {
             popUpErrorMessage("Error", "Harap Masukkan Username dan Password");
         }
     }//GEN-LAST:event_btLoginActionPerformed
-
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btLogin;

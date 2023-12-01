@@ -1,38 +1,41 @@
-package TokoHp.Views.Main;
+package TokoHp.Main;
 
 import TokoHp.Objects.Variable;
-import TokoHp.Sidebar.DrawerNavigationKaryawan;
 import TokoHp.Views.TransaksiBaru;
 import com.formdev.flatlaf.FlatClientProperties;
 import com.formdev.flatlaf.extras.FlatSVGIcon;
 import java.awt.Insets;
 import javax.swing.JButton;
 import javax.swing.JInternalFrame;
+import javax.swing.plaf.basic.BasicInternalFrameUI;
 import raven.drawer.Drawer;
 
-public class KaryawanFrame extends javax.swing.JFrame {
+public class MainFrame extends javax.swing.JFrame {
 
     JInternalFrame internalFrame = new JInternalFrame();
 
-    public KaryawanFrame() {
+    public MainFrame() {
         initComponents();
         init();
     }
 
     private void init() {
+        setResizable(false);
         setTitle("Toko HP");
-        setSize(1400, 750);
+        setSize(1216, 780);
         setContentPane(desktopPane);
         setDefaultCloseOperation(EXIT_ON_CLOSE);
         setLocationRelativeTo(null);
         menuBar.add(drawerOpenButton());
         switchFrame(new TransaksiBaru());
-//        Variable.setSideBar(KaryawanFrame.this, new DrawerNavigationKaryawan(KaryawanFrame.this));
+        Variable.setSideBar(MainFrame.this, new DrawerNavigation(MainFrame.this));
     }
 
     private JButton drawerOpenButton() {
-        JButton button = new JButton(new FlatSVGIcon("TokoHp/Icons/list.svg", 1.0f));
+        String directory = Variable.isLightTheme() ? "TokoHp/Icons/list.svg" : "TokoHp/Icons/list_dark.svg";
+        JButton button = new JButton(new FlatSVGIcon(directory, 1.0f));
         button.addActionListener((l) -> {
+            Drawer.getInstance().closeDrawer();
             Drawer.getInstance().showDrawer();
         });
         button.putClientProperty(FlatClientProperties.STYLE, ""
@@ -40,7 +43,7 @@ public class KaryawanFrame extends javax.swing.JFrame {
                 + "focusWidth:0;"
                 + "innerFocusWidth:0;"
                 + "background:null;");
-        Insets marginInsets = new Insets(6, 6, 6, 6);
+        Insets marginInsets = new Insets(5, 5, 5, 5);
         button.setMargin(marginInsets);
         return button;
     }
@@ -49,8 +52,11 @@ public class KaryawanFrame extends javax.swing.JFrame {
         internalFrame.dispose();
         internalFrame = iFrame;
         desktopPane.add(internalFrame);
-        internalFrame.setLocation(180, 10);
+//        internalFrame.setLocation(180, 10);
         internalFrame.setVisible(true);
+        BasicInternalFrameUI basicInternalFrameUI = (BasicInternalFrameUI) iFrame.getUI();
+        basicInternalFrameUI.setNorthPane(null);
+        iFrame.setBorder(null);
     }
 
     @SuppressWarnings("unchecked")
@@ -67,6 +73,7 @@ public class KaryawanFrame extends javax.swing.JFrame {
         jMenuBar4 = new javax.swing.JMenuBar();
         jMenu8 = new javax.swing.JMenu();
         jMenu9 = new javax.swing.JMenu();
+        shoppingCart1 = new TokoHp.Objects.ShoppingCart();
         desktopPane = new javax.swing.JDesktopPane();
         menuBar = new javax.swing.JMenuBar();
 
@@ -109,16 +116,15 @@ public class KaryawanFrame extends javax.swing.JFrame {
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(desktopPane)
+            .addComponent(desktopPane, javax.swing.GroupLayout.Alignment.TRAILING)
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(desktopPane)
+            .addComponent(desktopPane, javax.swing.GroupLayout.Alignment.TRAILING)
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
-
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JDesktopPane desktopPane;
@@ -133,5 +139,6 @@ public class KaryawanFrame extends javax.swing.JFrame {
     private javax.swing.JMenuBar jMenuBar3;
     private javax.swing.JMenuBar jMenuBar4;
     private javax.swing.JMenuBar menuBar;
+    private TokoHp.Objects.ShoppingCart shoppingCart1;
     // End of variables declaration//GEN-END:variables
 }

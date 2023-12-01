@@ -19,6 +19,7 @@ public class RiwayatTransaksi extends javax.swing.JInternalFrame {
         connection = Variable.koneksi();
         read();
         Variable.setPlaceholderTextfield(tfPencarian, "Cari");
+        Variable.setLabelFont(jLabel8);
     }
 
     private void read() {
@@ -29,7 +30,7 @@ public class RiwayatTransaksi extends javax.swing.JInternalFrame {
             preparedStatement.setString(2, "%" + tfPencarian.getText().toLowerCase() + "%");
             preparedStatement.setString(3, "%" + tfPencarian.getText().toLowerCase() + "%");
             preparedStatement.setString(4, "%" + tfPencarian.getText() + "%");
-            
+
             resultSet = preparedStatement.executeQuery();
             tableModel.setRowCount(0);
 
@@ -63,7 +64,7 @@ public class RiwayatTransaksi extends javax.swing.JInternalFrame {
         tableRiwayat = new javax.swing.JTable();
         tfPencarian = new javax.swing.JTextField();
 
-        setPreferredSize(new java.awt.Dimension(1200, 730));
+        setPreferredSize(new java.awt.Dimension(1200, 740));
 
         jLabel8.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
         jLabel8.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
@@ -120,7 +121,6 @@ public class RiwayatTransaksi extends javax.swing.JInternalFrame {
     private void tfPencarianKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_tfPencarianKeyReleased
         read();
     }//GEN-LAST:event_tfPencarianKeyReleased
-
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JLabel jLabel8;
