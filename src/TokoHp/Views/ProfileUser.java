@@ -75,7 +75,7 @@ public class ProfileUser extends javax.swing.JInternalFrame {
             pStat.setString(5, tfEmail.getText());
             pStat.setString(6, tfPhone.getText());
             pStat.setString(7, tfUsername.getText());
-            pStat.setString(8, String.valueOf(pwField.getPassword()));
+            pStat.setString(8, String.valueOf(pwField.getPassword().length));
             int executeResult = pStat.executeUpdate();
 
             if (executeResult > 0) {
@@ -86,6 +86,15 @@ public class ProfileUser extends javax.swing.JInternalFrame {
         } catch (SQLException ex) {
             System.err.println(ex.getMessage());
         }
+    }
+
+    private boolean validation() {
+        return !tfNama.getText().isEmpty()
+                && !taAlamat.getText().isEmpty()
+                && !tfEmail.getText().isEmpty()
+                && !tfPhone.getText().isEmpty()
+                && !tfUsername.getText().isEmpty()
+                && pwField.getPassword().length != 0;
     }
 
     @SuppressWarnings("unchecked")
@@ -252,7 +261,11 @@ public class ProfileUser extends javax.swing.JInternalFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
-        update();
+        if (validation()) {
+            update();
+        } else {
+            Variable.popUpErrorMessage("Form tidak terpenuhi", "Harap isi semua form yang diperlukan");
+        }
     }//GEN-LAST:event_jButton1ActionPerformed
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
