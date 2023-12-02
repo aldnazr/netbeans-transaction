@@ -3,4 +3,5 @@
 1. Buat user baru di database
 2. Import db_tokohp.sql
 3. Buka project di Netbeans
-   <img src="">
+   <img src="https://github.com/anythinks/uas_pbd/blob/main/screenshots/screenshot1.png?raw=true" width="80%">
+   <img src="https://github.com/anythinks/uas_pbd/blob/main/screenshots/screenshot2.png?raw=true" width="80%">
