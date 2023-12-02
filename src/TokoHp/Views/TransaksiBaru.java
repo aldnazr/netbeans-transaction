@@ -520,7 +520,7 @@ public class TransaksiBaru extends javax.swing.JInternalFrame {
                 bayarTransaksi();
                 disableEditableAndVisible();
             } else {
-                Variable.popUpErrorMessage("Nama pelanggan diperlukan!", "Harap memasukkan nama pelanggan");
+                Variable.popUpErrorMessage("Nama pelanggan diperlukan", "Harap memasukkan nama pelanggan");
             }
         } else {
             Variable.popUpErrorMessage("Tidak ada barang", "Harap masukkan barang di keranjang");
@@ -537,7 +537,7 @@ public class TransaksiBaru extends javax.swing.JInternalFrame {
             setTableCheckout();
             kalkulasiTotal();
         } else {
-            MessageAlerts.getInstance().showMessage("Gagal kosongkan keranjang", "Keranjang kosong tidak ada produk di keranjang", MessageAlerts.MessageType.WARNING);
+            MessageAlerts.getInstance().showMessage("Gagal bersihkan keranjang", "Keranjang kosong tidak ada produk di keranjang", MessageAlerts.MessageType.WARNING);
         }
     }//GEN-LAST:event_jButton1ActionPerformed
 

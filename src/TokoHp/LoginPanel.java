@@ -183,11 +183,9 @@ public class LoginPanel extends javax.swing.JFrame {
 
     private void btLoginActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btLoginActionPerformed
         if (!tfUser.getText().isEmpty() && passwordField.getPassword().length > 0) {
-//            FlatAnimatedLafChange.showSnapshot();
             checkLogin();
-//            FlatAnimatedLafChange.hideSnapshotWithAnimation();
         } else {
-            popUpErrorMessage("Error", "Harap Masukkan Username dan Password");
+            popUpErrorMessage("Login gagal", "Harap masukkan username dan password");
         }
     }//GEN-LAST:event_btLoginActionPerformed
 

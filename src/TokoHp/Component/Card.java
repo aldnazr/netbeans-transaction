@@ -25,7 +25,7 @@ public class Card extends JPanel {
         Graphics2D g2d = (Graphics2D) g.create();
         g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
         g2d.setColor(getBackgroundColor());
-        g2d.fillRoundRect(0, 0, getWidth(), getHeight(), 25, 25);
+        g2d.fillRoundRect(0, 0, getWidth(), getHeight(), 27, 27);
         g2d.dispose();
     }
 }
