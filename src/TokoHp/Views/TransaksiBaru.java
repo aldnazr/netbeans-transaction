@@ -6,7 +6,6 @@ import TokoHp.Objects.Variable;
 import java.sql.*;
 import javax.swing.SpinnerModel;
 import javax.swing.SpinnerNumberModel;
-import javax.swing.plaf.basic.BasicInternalFrameUI;
 import javax.swing.table.DefaultTableModel;
 import raven.alerts.MessageAlerts;
 
@@ -240,9 +239,9 @@ public class TransaksiBaru extends javax.swing.JInternalFrame {
         });
         jScrollPane1.setViewportView(tbListHp);
 
-        btTambah.setBackground(new java.awt.Color(0, 122, 255));
+        btTambah.setBackground(new java.awt.Color(10, 132, 255));
         btTambah.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
-        btTambah.setForeground(new java.awt.Color(255, 255, 255));
+        btTambah.setForeground(new java.awt.Color(235, 235, 240));
         btTambah.setText("Tambah item");
         btTambah.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -252,7 +251,7 @@ public class TransaksiBaru extends javax.swing.JInternalFrame {
 
         btBayar.setBackground(new java.awt.Color(40, 205, 65));
         btBayar.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
-        btBayar.setForeground(new java.awt.Color(255, 255, 255));
+        btBayar.setForeground(new java.awt.Color(235, 235, 240));
         btBayar.setText("Bayar");
         btBayar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -296,9 +295,9 @@ public class TransaksiBaru extends javax.swing.JInternalFrame {
         jLabel6.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
         jLabel6.setText("Harga Per-item :");
 
-        btUpdate.setBackground(new java.awt.Color(0, 122, 255));
+        btUpdate.setBackground(new java.awt.Color(10, 132, 255));
         btUpdate.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
-        btUpdate.setForeground(new java.awt.Color(255, 255, 255));
+        btUpdate.setForeground(new java.awt.Color(235, 235, 240));
         btUpdate.setText("Update jumlah item");
         btUpdate.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -308,7 +307,7 @@ public class TransaksiBaru extends javax.swing.JInternalFrame {
 
         btHapus.setBackground(new java.awt.Color(255, 59, 48));
         btHapus.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
-        btHapus.setForeground(new java.awt.Color(255, 255, 255));
+        btHapus.setForeground(new java.awt.Color(235, 235, 240));
         btHapus.setText("Hapus item");
         btHapus.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -318,7 +317,7 @@ public class TransaksiBaru extends javax.swing.JInternalFrame {
 
         btClearText.setBackground(new java.awt.Color(142, 142, 147));
         btClearText.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
-        btClearText.setForeground(new java.awt.Color(255, 255, 255));
+        btClearText.setForeground(new java.awt.Color(235, 235, 240));
         btClearText.setText("Clear text");
         btClearText.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {

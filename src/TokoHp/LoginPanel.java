@@ -97,7 +97,7 @@ public class LoginPanel extends javax.swing.JFrame {
                     popUpErrorMessage("Login gagal", "Kata sandi salah");
                 }
             } else {
-                popUpErrorMessage("Login gagal", "User tidak ada");
+                popUpErrorMessage("Login gagal", "Pengguna tidak ada");
             }
             pstat.close();
             rset.close();

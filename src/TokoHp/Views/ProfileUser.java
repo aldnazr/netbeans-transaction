@@ -1,8 +1,14 @@
 package TokoHp.Views;
 
+import TokoHp.Main.MainFrame;
 import TokoHp.Objects.Variable;
 import java.awt.Color;
 import java.sql.*;
+import javax.swing.JFrame;
+import javax.swing.SwingUtilities;
+import raven.alerts.MessageAlerts;
+import raven.popup.component.PopupCallbackAction;
+import raven.popup.component.PopupController;
 
 public class ProfileUser extends javax.swing.JInternalFrame {
 
@@ -28,6 +34,7 @@ public class ProfileUser extends javax.swing.JInternalFrame {
         Variable.disableDateTextfield(dateChooser);
         Variable.setLabelFont(jLabel10);
         card1.setForeground(Variable.isLightTheme() ? Color.decode("#D8D8DC") : Color.decode("#363638"));
+        card1.setCorner(30);
     }
 
     private void setButtongroup() {
@@ -76,11 +83,18 @@ public class ProfileUser extends javax.swing.JInternalFrame {
             pStat.setString(5, tfEmail.getText());
             pStat.setString(6, tfPhone.getText());
             pStat.setString(7, tfUsername.getText());
-            pStat.setString(8, String.valueOf(pwField.getPassword().length));
+            pStat.setString(8, String.valueOf(pwField.getPassword()));
             int executeResult = pStat.executeUpdate();
 
             if (executeResult > 0) {
-                Variable.popUpSuccessMessage("Berhasil", "Profil berhasil diperbarui");
+//                Variable.popUpSuccessMessage("Sukses", "Profil berhasil diperbarui");
+                MessageAlerts.getInstance().showMessage("Sukses", "Profil berhasil diperbarui", MessageAlerts.MessageType.SUCCESS, MessageAlerts.DEFAULT_OPTION, (PopupController pc, int i) -> {
+                    JFrame jFrame = (JFrame) SwingUtilities.getWindowAncestor(this.getDesktopPane());
+                    MainFrame mainFrame = new MainFrame();
+                    jFrame.dispose();
+                    mainFrame.setVisible(true);
+                    mainFrame.switchFrame(new ProfileUser());
+                });
             } else {
                 Variable.popUpErrorMessage("Error", "Profil gagal diupdate");
             }
@@ -134,7 +148,7 @@ public class ProfileUser extends javax.swing.JInternalFrame {
 
         textIdUser.setText("textIdUser");
 
-        card1.setForeground(new java.awt.Color(54, 54, 56));
+        card1.setForeground(new java.awt.Color(216, 216, 220));
 
         jLabel6.setFont(new java.awt.Font("Segoe UI", 1, 13)); // NOI18N
         jLabel6.setText("Email");
@@ -152,7 +166,7 @@ public class ProfileUser extends javax.swing.JInternalFrame {
 
         jButton1.setBackground(new java.awt.Color(10, 132, 255));
         jButton1.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
-        jButton1.setForeground(new java.awt.Color(255, 255, 255));
+        jButton1.setForeground(new java.awt.Color(235, 235, 240));
         jButton1.setText("Simpan");
         jButton1.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -185,9 +199,7 @@ public class ProfileUser extends javax.swing.JInternalFrame {
             .addGroup(card1Layout.createSequentialGroup()
                 .addGap(71, 71, 71)
                 .addGroup(card1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, card1Layout.createSequentialGroup()
-                        .addComponent(jLabel2)
-                        .addContainerGap(507, Short.MAX_VALUE))
+                    .addComponent(jLabel2)
                     .addGroup(card1Layout.createSequentialGroup()
                         .addGroup(card1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(jLabel5)
@@ -211,8 +223,8 @@ public class ProfileUser extends javax.swing.JInternalFrame {
                                 .addComponent(tfPhone)
                                 .addComponent(tfEmail)
                                 .addComponent(jScrollPane1)
-                                .addComponent(pwField, javax.swing.GroupLayout.PREFERRED_SIZE, 405, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
+                                .addComponent(pwField, javax.swing.GroupLayout.PREFERRED_SIZE, 405, javax.swing.GroupLayout.PREFERRED_SIZE)))))
+                .addContainerGap(81, Short.MAX_VALUE))
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, card1Layout.createSequentialGroup()
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 108, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -221,7 +233,7 @@ public class ProfileUser extends javax.swing.JInternalFrame {
         card1Layout.setVerticalGroup(
             card1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(card1Layout.createSequentialGroup()
-                .addGap(45, 45, 45)
+                .addContainerGap(47, Short.MAX_VALUE)
                 .addGroup(card1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(tfNama, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel3))
@@ -254,7 +266,7 @@ public class ProfileUser extends javax.swing.JInternalFrame {
                 .addGroup(card1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(pwField, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel9))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 39, Short.MAX_VALUE)
+                .addGap(37, 37, 37)
                 .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 31, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(25, 25, 25))
         );
@@ -290,7 +302,7 @@ public class ProfileUser extends javax.swing.JInternalFrame {
         if (validation()) {
             update();
         } else {
-            Variable.popUpErrorMessage("Form tidak terpenuhi", "Harap isi semua form yang diperlukan");
+            Variable.popUpErrorMessage("Form tidak terpenuhi", "Harap isi semua bidang yang diperlukan");
         }
     }//GEN-LAST:event_jButton1ActionPerformed
 

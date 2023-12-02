@@ -13,7 +13,7 @@ public class DaftarKaryawan extends javax.swing.JInternalFrame {
     ResultSet rset;
     int rsetInt;
     String gender, tipeAkun;
-    String[] columntableModelValue = new String[]{"ID User", "Nama", "Tanggal lahir", "Jenis Kelamin", "Alamat", "Email", "Telepon", "Tipe akun", "Username", "Password"};
+    String[] columntableModelValue = {"ID User", "Nama", "Tanggal lahir", "Jenis Kelamin", "Alamat", "Email", "Telepon", "Tipe akun", "Username"};
     DefaultTableModel tableModel = new DefaultTableModel(columntableModelValue, 0);
     JTextField dateChooserTextField;
 
@@ -25,7 +25,7 @@ public class DaftarKaryawan extends javax.swing.JInternalFrame {
     private void init() {
         setClosable(true);
         connection = Variable.koneksi();
-        read();
+        setTable();
         table.setModel(tableModel);
         Variable.setPlaceholderTextfield(tfPencarian, "Cari");
         Variable.setPasswordFieldRevealButton(passwordField);
@@ -49,9 +49,18 @@ public class DaftarKaryawan extends javax.swing.JInternalFrame {
         rbKaryawan.setSelected(true);
     }
 
-    private void read() {
+    private void setTable() {
         try {
-            query = "SELECT * FROM USERS WHERE LOWER(NAMA_LENGKAP) LIKE ?";
+            query = """
+                    SELECT ID_USER ,
+                    NAMA_LENGKAP ,
+                    TANGGAL_LAHIR ,
+                    GENDER ,
+                    ALAMAT ,
+                    EMAIL ,
+                    NO_TELP ,
+                    TIPE_AKUN ,
+                    USERNAME FROM USERS WHERE LOWER(NAMA_LENGKAP) LIKE ?""";
             pstat = connection.prepareStatement(query);
             pstat.setString(1, "%" + tfPencarian.getText().toLowerCase() + "%");
             rset = pstat.executeQuery();
@@ -67,8 +76,7 @@ public class DaftarKaryawan extends javax.swing.JInternalFrame {
                     rset.getString(6),
                     rset.getString(7),
                     rset.getString(8),
-                    rset.getString(9),
-                    rset.getString(10)
+                    rset.getString(9)
                 };
                 tableModel.addRow(dataQuery);
             }
@@ -154,7 +162,7 @@ public class DaftarKaryawan extends javax.swing.JInternalFrame {
     private void getTableData() {
         int row = table.getSelectedRow();
         java.util.Date tgl_lahir;
-        String id, nama, genderFromTable, alamat, email, telepon, tipe_akun, username, password;
+        String id, nama, genderFromTable, alamat, email, telepon, tipe_akun, username;
 
         if (row >= 0) {
             id = table.getValueAt(row, 0).toString();
@@ -166,7 +174,6 @@ public class DaftarKaryawan extends javax.swing.JInternalFrame {
             telepon = table.getValueAt(row, 6).toString();
             tipe_akun = table.getValueAt(row, 7).toString();
             username = table.getValueAt(row, 8).toString();
-            password = table.getValueAt(row, 9).toString();
 
             textIdKaryawan.setText(id);
             tfNamaKaryawan.setText(nama);
@@ -175,7 +182,6 @@ public class DaftarKaryawan extends javax.swing.JInternalFrame {
             tfEmail.setText(email);
             tfPhone.setText(telepon);
             tfUsername.setText(username);
-            passwordField.setText(password);
 
             if (genderFromTable.equals("Laki-laki")) {
                 rbLaki.setSelected(true);
@@ -311,7 +317,7 @@ public class DaftarKaryawan extends javax.swing.JInternalFrame {
 
         btClear.setBackground(new java.awt.Color(142, 142, 147));
         btClear.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
-        btClear.setForeground(new java.awt.Color(255, 255, 255));
+        btClear.setForeground(new java.awt.Color(235, 235, 240));
         btClear.setText("Reset");
         btClear.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -319,9 +325,9 @@ public class DaftarKaryawan extends javax.swing.JInternalFrame {
             }
         });
 
-        btTambah.setBackground(new java.awt.Color(0, 122, 255));
+        btTambah.setBackground(new java.awt.Color(10, 132, 255));
         btTambah.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
-        btTambah.setForeground(new java.awt.Color(255, 255, 255));
+        btTambah.setForeground(new java.awt.Color(235, 235, 240));
         btTambah.setText("Tambah");
         btTambah.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -329,9 +335,9 @@ public class DaftarKaryawan extends javax.swing.JInternalFrame {
             }
         });
 
-        btUpdate.setBackground(new java.awt.Color(0, 122, 255));
+        btUpdate.setBackground(new java.awt.Color(10, 132, 255));
         btUpdate.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
-        btUpdate.setForeground(new java.awt.Color(255, 255, 255));
+        btUpdate.setForeground(new java.awt.Color(235, 235, 240));
         btUpdate.setText("Update");
         btUpdate.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -341,7 +347,7 @@ public class DaftarKaryawan extends javax.swing.JInternalFrame {
 
         btDelete.setBackground(new java.awt.Color(255, 59, 48));
         btDelete.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
-        btDelete.setForeground(new java.awt.Color(255, 255, 255));
+        btDelete.setForeground(new java.awt.Color(235, 235, 240));
         btDelete.setText("Hapus");
         btDelete.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -494,13 +500,13 @@ public class DaftarKaryawan extends javax.swing.JInternalFrame {
 
     private void btClearActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btClearActionPerformed
         clearText();
-        read();
+        setTable();
     }//GEN-LAST:event_btClearActionPerformed
 
     private void btTambahActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btTambahActionPerformed
         if (checkInput()) {
             tambahKaryawan();
-            read();
+            setTable();
         } else {
             Variable.popUpErrorMessage("Error", "Harap isi semua data");
         }
@@ -509,7 +515,7 @@ public class DaftarKaryawan extends javax.swing.JInternalFrame {
     private void btUpdateActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btUpdateActionPerformed
         if (checkInput()) {
             updateKaryawan();
-            read();
+            setTable();
         } else {
             Variable.popUpErrorMessage("Error", "Data gagal diupdate");
         }
@@ -518,7 +524,7 @@ public class DaftarKaryawan extends javax.swing.JInternalFrame {
     private void btDeleteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btDeleteActionPerformed
         if (!textIdKaryawan.getText().isEmpty()) {
             deleteKaryawan();
-            read();
+            setTable();
         } else {
             Variable.popUpErrorMessage("Error", "Tidak ada data dihapus");
         }
@@ -529,7 +535,7 @@ public class DaftarKaryawan extends javax.swing.JInternalFrame {
     }//GEN-LAST:event_tableMouseClicked
 
     private void tfPencarianKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_tfPencarianKeyReleased
-        read();
+        setTable();
     }//GEN-LAST:event_tfPencarianKeyReleased
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
