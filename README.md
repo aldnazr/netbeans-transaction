@@ -6,5 +6,5 @@
 
 ## Screenshots
 
-   <img src="https://github.com/anythinks/uas_pbd/blob/main/screenshots/screenshot1.png?raw=true" width="50%">
-   <img src="https://github.com/anythinks/uas_pbd/blob/main/screenshots/screenshot2.png?raw=true" width="50%">
+   <img src="https://github.com/anythinks/uas_pbd/blob/main/screenshots/screenshot1.png?raw=true" width="70%">
+   <img src="https://github.com/anythinks/uas_pbd/blob/main/screenshots/screenshot2.png?raw=true" width="70%">
