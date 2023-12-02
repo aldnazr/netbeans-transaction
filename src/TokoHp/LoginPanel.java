@@ -135,9 +135,9 @@ public class LoginPanel extends javax.swing.JFrame {
         jLabel3.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         jLabel3.setText("Login");
 
-        btLogin.setBackground(new java.awt.Color(0, 122, 255));
+        btLogin.setBackground(new java.awt.Color(10, 132, 255));
         btLogin.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
-        btLogin.setForeground(new java.awt.Color(255, 255, 255));
+        btLogin.setForeground(new java.awt.Color(235, 235, 240));
         btLogin.setText("LOGIN");
         btLogin.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {

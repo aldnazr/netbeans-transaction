@@ -129,7 +129,7 @@ public class RiwayatTransaksi extends javax.swing.JInternalFrame {
             }
         });
 
-        card1.setForeground(new java.awt.Color(121, 120, 233));
+        card1.setForeground(new java.awt.Color(10, 132, 255));
         card1.setPreferredSize(new java.awt.Dimension(170, 82));
 
         labelTransaksi.setFont(new java.awt.Font("Rubik Medium", 1, 20)); // NOI18N
@@ -161,7 +161,7 @@ public class RiwayatTransaksi extends javax.swing.JInternalFrame {
                 .addGap(17, 17, 17))
         );
 
-        card2.setForeground(new java.awt.Color(125, 160, 250));
+        card2.setForeground(new java.awt.Color(94, 92, 230));
 
         labelProdukTerjual.setFont(new java.awt.Font("Rubik Medium", 1, 20)); // NOI18N
         labelProdukTerjual.setForeground(new java.awt.Color(255, 255, 255));
