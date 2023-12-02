@@ -67,17 +67,12 @@ public class DrawerNavigation extends SimpleDrawerBuilder {
         return simpleHeaderData;
     }
 
-    @Override
-    public SimpleHeaderData getSimpleHeaderData() {
-        return headerData();
-    }
-
-    private void menuAdmin(SimpleMenuOption simpleMenuOption, String[][] menuOptions, String[] icons, String[][] menuOptionsDark, String[] iconsDark) {
+    private void menuAdmin(SimpleMenuOption simpleMenuOption, String[][] menuOptions, String[] icons) {
         boolean isLightMode = Variable.isLightTheme();
         simpleMenuOption
-                .setMenus(isLightMode ? menuOptions : menuOptionsDark)
+                .setMenus(menuOptions)
                 .setBaseIconPath("TokoHp/Icons")
-                .setIcons(isLightMode ? icons : iconsDark)
+                .setIcons(icons)
                 .addMenuEvent((MenuAction action, int i, int i1) -> {
                     switch (i) {
                         case 0 ->
@@ -99,7 +94,7 @@ public class DrawerNavigation extends SimpleDrawerBuilder {
                         case 5 ->
                             mainFrame.switchFrame(new DaftarHandphone());
                         case 6 -> {
-                            if (Variable.isLightTheme()) {
+                            if (isLightMode) {
                                 Variable.setDarkTheme();
                             } else {
                                 Variable.setLightTheme();
@@ -115,12 +110,12 @@ public class DrawerNavigation extends SimpleDrawerBuilder {
                 });
     }
 
-    private void menuKaryawan(SimpleMenuOption simpleMenuOption, String[][] menuOptions, String[] icons, String[][] menuOptionsDark, String[] iconsDark) {
+    private void menuKaryawan(SimpleMenuOption simpleMenuOption, String[][] menuOptions, String[] icons) {
         boolean isLightMode = Variable.isLightTheme();
         simpleMenuOption
-                .setMenus(isLightMode ? menuOptions : menuOptionsDark)
+                .setMenus(menuOptions)
                 .setBaseIconPath("TokoHp/Icons")
-                .setIcons(isLightMode ? icons : iconsDark)
+                .setIcons(icons)
                 .addMenuEvent((MenuAction action, int i, int i1) -> {
                     switch (i) {
                         case 0 ->
@@ -147,11 +142,18 @@ public class DrawerNavigation extends SimpleDrawerBuilder {
     }
 
     @Override
+    public SimpleHeaderData getSimpleHeaderData() {
+        return headerData();
+    }
+
+    @Override
     public SimpleMenuOption getSimpleMenuOption() {
         boolean isAdmin = checkAccount();
+        boolean isLightTheme = Variable.isLightTheme();
         SimpleMenuOption simpleMenuOption = new SimpleMenuOption();
 
         String[][] menuOptions = {
+            {"~AKUN~"},
             {"Pengaturan Akun"},
             {"~TRANSAKSI~"},
             {"Transaksi Baru"},
@@ -161,7 +163,7 @@ public class DrawerNavigation extends SimpleDrawerBuilder {
             {"Brand"},
             {"Produk"},
             {"~LAINNYA~"},
-            {"Dark Mode"},
+            {isLightTheme ? "Dark Mode" : "Light Mode"},
             {"Logout"}
         };
 
@@ -172,42 +174,18 @@ public class DrawerNavigation extends SimpleDrawerBuilder {
             "people.svg",
             "tags.svg",
             "phone.svg",
-            "moon.svg",
+            isLightTheme ? "moon.svg" : "sun.svg",
             "logout.svg"
         };
 
-        String[][] menuOptionsDark = {
-            {"Pengaturan Akun"},
-            {"~TRANSAKSI~"},
-            {"Transaksi Baru"},
-            {"Riwayat", "Riwayat Transaksi", "Riwayat Login"},
-            {"~MANAJEMEN~"},
-            {"Karyawan"},
-            {"Brand"},
-            {"Produk"},
-            {"~LAINNYA~"},
-            {"Light Mode"},
-            {"Logout"}
-        };
-
-        String[] iconsDark = {
-            "person_dark.svg",
-            "bag_plus_dark.svg",
-            "history_dark.svg",
-            "people_dark.svg",
-            "tags_dark.svg",
-            "phone_dark.svg",
-            "sun.svg",
-            "logout_dark.svg"
-        };
-
         String[][] menuOptionsKaryawan = {
+            {"~AKUN~"},
             {"Pengaturan Akun"},
             {"~TRANSAKSI~"},
             {"Transaksi Baru"},
             {"Riwayat Transaksi"},
             {"~LAINNYA~"},
-            {"Dark Mode"},
+            {isLightTheme ? "Dark Mode" : "Light Mode"},
             {"Logout"}
         };
 
@@ -215,32 +193,14 @@ public class DrawerNavigation extends SimpleDrawerBuilder {
             "person.svg",
             "bag_plus.svg",
             "history.svg",
-            "moon.svg",
+            isLightTheme ? "moon.svg" : "sun.svg",
             "logout.svg"
         };
 
-        String[][] menuOptionsKaryawanDark = {
-            {"Pengaturan Akun"},
-            {"~TRANSAKSI~"},
-            {"Transaksi Baru"},
-            {"Riwayat Transaksi"},
-            {"~LAINNYA~"},
-            {"Light Mode"},
-            {"Logout"}
-        };
-
-        String[] iconsKaryawanDark = {
-            "person_dark.svg",
-            "bag_plus_dark.svg",
-            "history_dark.svg",
-            "sun.svg",
-            "logout_dark.svg"
-        };
-
         if (isAdmin) {
-            menuAdmin(simpleMenuOption, menuOptions, icons, menuOptionsDark, iconsDark);
+            menuAdmin(simpleMenuOption, menuOptions, icons);
         } else {
-            menuKaryawan(simpleMenuOption, menuOptionsKaryawan, iconsKaryawan, menuOptionsKaryawanDark, iconsKaryawanDark);
+            menuKaryawan(simpleMenuOption, menuOptionsKaryawan, iconsKaryawan);
         }
         return simpleMenuOption;
     }

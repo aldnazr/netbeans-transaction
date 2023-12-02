@@ -42,8 +42,7 @@ public class MainFrame extends javax.swing.JFrame {
                 + "focusWidth:0;"
                 + "innerFocusWidth:0;"
                 + "background:null;");
-        Insets marginInsets = new Insets(5, 5, 5, 5);
-        button.setMargin(marginInsets);
+        button.setMargin(new Insets(5, 5, 5, 5));
         return button;
     }
 
