@@ -33,6 +33,7 @@ public class DaftarKaryawan extends javax.swing.JInternalFrame {
         setButtonGroup();
         dateChooserTextField = Variable.disableDateTextfield(dateChooser);
         Variable.setLabelFont(jLabel9);
+        Variable.setSearchFieldIcon(tfPencarian);
     }
 
     private void getSelectedRadio() {

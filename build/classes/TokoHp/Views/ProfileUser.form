@@ -48,7 +48,7 @@
               <Component id="jLabel10" min="-2" max="-2" attributes="0"/>
               <EmptySpace min="-2" pref="47" max="-2" attributes="0"/>
               <Component id="card1" min="-2" max="-2" attributes="0"/>
-              <EmptySpace pref="72" max="32767" attributes="0"/>
+              <EmptySpace pref="68" max="32767" attributes="0"/>
           </Group>
       </Group>
     </DimensionLayout>
@@ -94,10 +94,7 @@
                           </Group>
                           <EmptySpace min="-2" pref="39" max="-2" attributes="0"/>
                           <Group type="103" groupAlignment="0" attributes="0">
-                              <Group type="103" alignment="0" groupAlignment="0" max="-2" attributes="0">
-                                  <Component id="dateChooser" max="32767" attributes="0"/>
-                                  <Component id="tfNama" min="-2" pref="405" max="-2" attributes="0"/>
-                              </Group>
+                              <Component id="dateChooser" min="-2" pref="405" max="-2" attributes="0"/>
                               <Group type="103" alignment="0" groupAlignment="0" max="-2" attributes="0">
                                   <Group type="102" alignment="0" attributes="0">
                                       <Component id="radioButtonLK" min="-2" max="-2" attributes="0"/>
@@ -110,6 +107,7 @@
                                   <Component id="jScrollPane1" alignment="0" max="32767" attributes="0"/>
                                   <Component id="pwField" alignment="0" min="-2" pref="405" max="-2" attributes="0"/>
                               </Group>
+                              <Component id="tfNama" min="-2" pref="405" max="-2" attributes="0"/>
                           </Group>
                       </Group>
                   </Group>

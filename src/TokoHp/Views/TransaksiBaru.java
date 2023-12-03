@@ -37,6 +37,7 @@ public class TransaksiBaru extends javax.swing.JInternalFrame {
         Variable.setPlaceholderTextfield(tfPencarian, "Cari");
         Variable.setPlaceholderTextfield(tfNamaPelanggan, "Masukkan nama pembeli");
         Variable.setLabelFont(jLabel8);
+        Variable.setSearchFieldIcon(tfPencarian);
     }
 
     private void bayarTransaksi() {

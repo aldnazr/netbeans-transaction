@@ -1,7 +1,9 @@
 package TokoHp.Objects;
 
 import com.formdev.flatlaf.FlatClientProperties;
+import com.formdev.flatlaf.FlatLaf;
 import com.formdev.flatlaf.extras.FlatAnimatedLafChange;
+import com.formdev.flatlaf.extras.FlatSVGIcon;
 import com.formdev.flatlaf.fonts.roboto.FlatRobotoFont;
 import com.formdev.flatlaf.themes.FlatMacDarkLaf;
 import com.formdev.flatlaf.themes.FlatMacLightLaf;
@@ -15,7 +17,6 @@ import javax.swing.JLabel;
 import javax.swing.JPasswordField;
 import javax.swing.JTextField;
 import javax.swing.UIManager;
-import javax.swing.UnsupportedLookAndFeelException;
 import raven.alerts.MessageAlerts;
 import raven.drawer.Drawer;
 import raven.drawer.component.DrawerBuilder;
@@ -25,14 +26,12 @@ public class Variable {
 
 //    Tema
     public static void setLightTheme() {
-        try {
-            UIManager.setLookAndFeel(new FlatMacLightLaf());
-            UIManager.put("defaultFont", new Font(FlatRobotoFont.FAMILY, Font.PLAIN, 13));
-            FlatAnimatedLafChange.showSnapshot();
-            FlatAnimatedLafChange.hideSnapshotWithAnimation();
-        } catch (UnsupportedLookAndFeelException ex) {
-            System.err.println(ex.getMessage());
-        }
+        FlatAnimatedLafChange.showSnapshot();
+        FlatMacLightLaf.setup();
+        FlatRobotoFont.install();
+        UIManager.put("defaultFont", new Font(FlatRobotoFont.FAMILY, Font.PLAIN, 13));
+        FlatLaf.updateUI();
+        FlatAnimatedLafChange.hideSnapshotWithAnimation();
     }
 
     public static void labelTitleCard(JLabel title, JLabel subtitle) {
@@ -41,14 +40,12 @@ public class Variable {
     }
 
     public static void setDarkTheme() {
-        try {
-            UIManager.setLookAndFeel(new FlatMacDarkLaf());
-            UIManager.put("defaultFont", new Font(FlatRobotoFont.FAMILY, Font.PLAIN, 13));
-            FlatAnimatedLafChange.showSnapshot();
-            FlatAnimatedLafChange.hideSnapshotWithAnimation();
-        } catch (UnsupportedLookAndFeelException ex) {
-            System.err.println(ex.getMessage());
-        }
+        FlatAnimatedLafChange.showSnapshot();
+        FlatMacDarkLaf.setup();
+        FlatRobotoFont.install();
+        UIManager.put("defaultFont", new Font(FlatRobotoFont.FAMILY, Font.PLAIN, 13));
+        FlatLaf.updateUI();
+        FlatAnimatedLafChange.hideSnapshotWithAnimation();
     }
 
     public static boolean isLightTheme() {
@@ -146,8 +143,13 @@ public class Variable {
         passwordField.putClientProperty(FlatClientProperties.STYLE, "showRevealButton:true");
     }
 
-    public static void setPlaceholderTextfield(JTextField textField, String value) {
-        textField.putClientProperty(FlatClientProperties.PLACEHOLDER_TEXT, value);
+    public static void setPlaceholderTextfield(JTextField textField, String placeholder) {
+        textField.putClientProperty(FlatClientProperties.PLACEHOLDER_TEXT, placeholder);
+    }
+
+    public static void setSearchFieldIcon(JTextField jTextField) {
+        String icon = isLightTheme() ? "TokoHp/Icons/search.svg" : "TokoHp/Icons/search_dark.svg";
+        jTextField.putClientProperty(FlatClientProperties.TEXT_FIELD_TRAILING_ICON, new FlatSVGIcon(icon, 0.75f));
     }
 
     public static JTextField disableDateTextfield(JDateChooser dateChooser) {
