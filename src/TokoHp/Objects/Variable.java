@@ -149,7 +149,7 @@ public class Variable {
 
     public static void setSearchFieldIcon(JTextField jTextField) {
         String icon = !isDarkTheme() ? "TokoHp/Icons/search.svg" : "TokoHp/Icons/search_dark.svg";
-        jTextField.putClientProperty(FlatClientProperties.TEXT_FIELD_TRAILING_ICON, new FlatSVGIcon(icon, 0.75f));
+        jTextField.putClientProperty(FlatClientProperties.TEXT_FIELD_TRAILING_ICON, new FlatSVGIcon(icon, 0.8f));
     }
 
     public static JTextField disableDateTextfield(JDateChooser dateChooser) {
