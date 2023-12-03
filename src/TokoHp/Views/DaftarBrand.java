@@ -30,6 +30,7 @@ public class DaftarBrand extends javax.swing.JInternalFrame {
         textIdBrand.putClientProperty(FlatClientProperties.TEXT_FIELD_SHOW_CLEAR_BUTTON, true);
         Variable.setLabelFont(jLabel1);
         Variable.setSearchFieldIcon(tfPencarian);
+        tfNamaBrand.setColumns(10);
     }
 
     private void read() {
@@ -172,6 +173,7 @@ public class DaftarBrand extends javax.swing.JInternalFrame {
         });
         jScrollPane1.setViewportView(table);
 
+        tfNamaBrand.setColumns(10);
         tfNamaBrand.addKeyListener(new java.awt.event.KeyAdapter() {
             public void keyTyped(java.awt.event.KeyEvent evt) {
                 tfNamaBrandKeyTyped(evt);

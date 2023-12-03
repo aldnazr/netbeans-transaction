@@ -2,12 +2,14 @@ package TokoHp.Views;
 
 import TokoHp.Main.MainFrame;
 import TokoHp.Objects.Variable;
+import static TokoHp.Objects.Variable.koneksi;
 import java.awt.Color;
 import java.sql.*;
 import javax.swing.JFrame;
 import javax.swing.SwingUtilities;
+import javax.swing.event.DocumentEvent;
+import javax.swing.event.DocumentListener;
 import raven.alerts.MessageAlerts;
-import raven.popup.component.PopupCallbackAction;
 import raven.popup.component.PopupController;
 
 public class ProfileUser extends javax.swing.JInternalFrame {
@@ -25,7 +27,7 @@ public class ProfileUser extends javax.swing.JInternalFrame {
     private void init() {
         setClosable(true);
         dateChooser.setDateFormatString("dd-MM-yyyy");
-        connection = Variable.koneksi();
+        connection = koneksi();
         Variable.setActiveIDUser(textIdUser);
         textIdUser.setVisible(false);
         setButtongroup();
@@ -33,7 +35,7 @@ public class ProfileUser extends javax.swing.JInternalFrame {
         Variable.setPasswordFieldRevealButton(pwField);
         Variable.disableDateTextfield(dateChooser);
         Variable.setLabelFont(jLabel10);
-        card1.setForeground(Variable.isLightTheme() ? Color.decode("#D8D8DC") : Color.decode("#363638"));
+        card1.setForeground(!Variable.isDarkTheme() ? Color.decode("#D8D8DC") : Color.decode("#363638"));
         card1.setCorner(30);
     }
 
@@ -227,7 +229,7 @@ public class ProfileUser extends javax.swing.JInternalFrame {
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, card1Layout.createSequentialGroup()
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 108, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(261, 261, 261))
+                .addGap(275, 275, 275))
         );
         card1Layout.setVerticalGroup(
             card1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -265,9 +267,9 @@ public class ProfileUser extends javax.swing.JInternalFrame {
                 .addGroup(card1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(pwField, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel9))
-                .addGap(37, 37, 37)
+                .addGap(34, 34, 34)
                 .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 31, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(25, 25, 25))
+                .addGap(28, 28, 28))
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());

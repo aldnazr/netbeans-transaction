@@ -9,6 +9,7 @@ import TokoHp.Views.ProfileUser;
 import TokoHp.Views.RiwayatLogin;
 import TokoHp.Views.RiwayatTransaksi;
 import TokoHp.Views.TransaksiBaru;
+import java.awt.EventQueue;
 import raven.drawer.component.SimpleDrawerBuilder;
 import raven.drawer.component.footer.SimpleFooterData;
 import raven.drawer.component.header.SimpleHeaderData;
@@ -68,7 +69,7 @@ public class DrawerNavigation extends SimpleDrawerBuilder {
     }
 
     private void menuAdmin(SimpleMenuOption simpleMenuOption, String[][] menuOptions, String[] icons) {
-        boolean isLightMode = Variable.isLightTheme();
+        boolean isLightMode = !Variable.isDarkTheme();
         simpleMenuOption
                 .setMenus(menuOptions)
                 .setBaseIconPath("TokoHp/Icons")
@@ -94,13 +95,16 @@ public class DrawerNavigation extends SimpleDrawerBuilder {
                         case 5 ->
                             mainFrame.switchFrame(new DaftarHandphone());
                         case 6 -> {
-                            if (isLightMode) {
-                                Variable.setDarkTheme();
-                            } else {
-                                Variable.setLightTheme();
-                            }
-                            mainFrame.dispose();
-                            new MainFrame().setVisible(true);
+                            EventQueue.invokeLater(() -> {
+                                if (isLightMode) {
+                                    Variable.setDarkTheme();
+                                } else {
+                                    Variable.setLightTheme();
+                                }
+                                mainFrame.dispose();
+                                new MainFrame().setVisible(true);
+                            });
+
                         }
                         case 7 -> {
                             mainFrame.dispose();
@@ -111,7 +115,7 @@ public class DrawerNavigation extends SimpleDrawerBuilder {
     }
 
     private void menuKaryawan(SimpleMenuOption simpleMenuOption, String[][] menuOptions, String[] icons) {
-        boolean isLightMode = Variable.isLightTheme();
+        boolean isLightMode = !Variable.isDarkTheme();
         simpleMenuOption
                 .setMenus(menuOptions)
                 .setBaseIconPath("TokoHp/Icons")
@@ -125,13 +129,18 @@ public class DrawerNavigation extends SimpleDrawerBuilder {
                         case 2 ->
                             mainFrame.switchFrame(new RiwayatTransaksi());
                         case 3 -> {
-                            if (isLightMode) {
-                                Variable.setDarkTheme();
-                            } else {
-                                Variable.setLightTheme();
-                            }
-                            mainFrame.dispose();
-                            new MainFrame().setVisible(true);
+                            EventQueue.invokeLater(() -> {
+                                if (isLightMode) {
+                                    Variable.setDarkTheme();
+                                } else {
+                                    Variable.setLightTheme();
+                                }
+                                mainFrame.dispose();
+                                new MainFrame().setVisible(true);
+                            });
+
+//                            mainFrame.dispose();
+//                            new MainFrame().setVisible(true);
                         }
                         case 4 -> {
                             mainFrame.dispose();
@@ -149,7 +158,7 @@ public class DrawerNavigation extends SimpleDrawerBuilder {
     @Override
     public SimpleMenuOption getSimpleMenuOption() {
         boolean isAdmin = checkAccount();
-        boolean isLightTheme = Variable.isLightTheme();
+        boolean isLightTheme = !Variable.isDarkTheme();
         SimpleMenuOption simpleMenuOption = new SimpleMenuOption();
 
         String[][] menuOptions = {

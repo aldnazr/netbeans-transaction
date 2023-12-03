@@ -31,7 +31,7 @@ public class MainFrame extends javax.swing.JFrame {
     }
 
     private JButton drawerOpenButton() {
-        String directory = Variable.isLightTheme() ? "TokoHp/Icons/list.svg" : "TokoHp/Icons/list_dark.svg";
+        String directory = !Variable.isDarkTheme() ? "TokoHp/Icons/list.svg" : "TokoHp/Icons/list_dark.svg";
         JButton button = new JButton(new FlatSVGIcon(directory, 1.1f));
         button.addActionListener((l) -> {
             Drawer.getInstance().closeDrawer();

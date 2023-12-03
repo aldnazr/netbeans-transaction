@@ -48,8 +48,8 @@ public class Variable {
         FlatAnimatedLafChange.hideSnapshotWithAnimation();
     }
 
-    public static boolean isLightTheme() {
-        return UIManager.getLookAndFeel() instanceof FlatMacLightLaf;
+    public static boolean isDarkTheme() {
+        return FlatLaf.isLafDark();
     }
 
     public static void setLabelFont(JLabel label) {
@@ -148,13 +148,15 @@ public class Variable {
     }
 
     public static void setSearchFieldIcon(JTextField jTextField) {
-        String icon = isLightTheme() ? "TokoHp/Icons/search.svg" : "TokoHp/Icons/search_dark.svg";
+        String icon = !isDarkTheme() ? "TokoHp/Icons/search.svg" : "TokoHp/Icons/search_dark.svg";
         jTextField.putClientProperty(FlatClientProperties.TEXT_FIELD_TRAILING_ICON, new FlatSVGIcon(icon, 0.75f));
     }
 
     public static JTextField disableDateTextfield(JDateChooser dateChooser) {
-        JTextField dateChooserTextField = ((JTextField) dateChooser.getDateEditor().getUiComponent());
+        JTextField dateChooserTextField = (JTextField) dateChooser.getDateEditor().getUiComponent();
         dateChooserTextField.setEditable(false);
+        dateChooserTextField.setForeground(UIManager.getColor("RootPane.foreground"));
+
         return dateChooserTextField;
     }
     public static String sqlRiwayatTransaksi = "SELECT T.ID_TRANSAKSI, USR.NAMA_LENGKAP AS PELAYAN, T.NAMA_PELANGGAN, T.TANGGAL, BR.NAMA_BRAND, PH.NAMA_HANDPHONE, PH.HARGA, DT.JUMLAH_PEMBELIAN, SUM(PH.HARGA * DT.JUMLAH_PEMBELIAN) AS SUBTOTAL, T.TOTAL_BAYAR FROM TRANSAKSI T JOIN DETAIL_TRANSAKSI DT ON T.ID_TRANSAKSI = DT.ID_TRANSAKSI JOIN USERS USR ON T.ID_USER = USR.ID_USER JOIN PHONES PH ON DT.ID_PHONE = PH.ID_PHONE JOIN BRAND BR ON PH.ID_BRAND = BR.ID_BRAND WHERE T.ID_TRANSAKSI LIKE ? OR LOWER(USR.NAMA_LENGKAP) LIKE ? OR LOWER(T.NAMA_PELANGGAN) LIKE ? OR TO_CHAR(T.TANGGAL, 'YYYY-MM-DD HH24:MI:SS') LIKE ? GROUP BY T.ID_TRANSAKSI, USR.NAMA_LENGKAP, T.NAMA_PELANGGAN, T.TANGGAL, BR.NAMA_BRAND, PH.NAMA_HANDPHONE, PH.HARGA, DT.JUMLAH_PEMBELIAN, T.TOTAL_BAYAR ORDER BY T.ID_TRANSAKSI DESC";

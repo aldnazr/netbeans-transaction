@@ -3,6 +3,7 @@ package TokoHp.Views;
 import TokoHp.Objects.Variable;
 import java.sql.*;
 import javax.swing.JTextField;
+import javax.swing.UIManager;
 import javax.swing.table.DefaultTableModel;
 
 public class DaftarKaryawan extends javax.swing.JInternalFrame {
@@ -34,6 +35,7 @@ public class DaftarKaryawan extends javax.swing.JInternalFrame {
         dateChooserTextField = Variable.disableDateTextfield(dateChooser);
         Variable.setLabelFont(jLabel9);
         Variable.setSearchFieldIcon(tfPencarian);
+        tfNamaKaryawan.setColumns(10);
     }
 
     private void getSelectedRadio() {
@@ -266,6 +268,8 @@ public class DaftarKaryawan extends javax.swing.JInternalFrame {
 
         setPreferredSize(new java.awt.Dimension(1200, 740));
 
+        tfNamaKaryawan.setColumns(10);
+
         jLabel1.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
         jLabel1.setText("Nama lengkap");
 
@@ -363,6 +367,8 @@ public class DaftarKaryawan extends javax.swing.JInternalFrame {
 
         jLabel8.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
         jLabel8.setText("Tanggal lahir");
+
+        dateChooser.setDateFormatString("dd MM yyyy");
 
         jLabel11.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
         jLabel11.setText("Telepon");
