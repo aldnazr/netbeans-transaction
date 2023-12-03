@@ -7,8 +7,6 @@ import java.awt.Color;
 import java.sql.*;
 import javax.swing.JFrame;
 import javax.swing.SwingUtilities;
-import javax.swing.event.DocumentEvent;
-import javax.swing.event.DocumentListener;
 import raven.alerts.MessageAlerts;
 import raven.popup.component.PopupController;
 
@@ -26,7 +24,6 @@ public class ProfileUser extends javax.swing.JInternalFrame {
 
     private void init() {
         setClosable(true);
-        dateChooser.setDateFormatString("dd-MM-yyyy");
         connection = koneksi();
         Variable.setActiveIDUser(textIdUser);
         textIdUser.setVisible(false);
@@ -175,6 +172,8 @@ public class ProfileUser extends javax.swing.JInternalFrame {
                 jButton1ActionPerformed(evt);
             }
         });
+
+        dateChooser.setDateFormatString("dd/MM/yyyy");
 
         jLabel2.setFont(new java.awt.Font("Segoe UI", 1, 13)); // NOI18N
         jLabel2.setText("Tanggal lahir");

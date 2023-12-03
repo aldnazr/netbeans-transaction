@@ -3,6 +3,7 @@ package TokoHp.Views;
 import TokoHp.Objects.Product;
 import TokoHp.Objects.ShoppingCart;
 import TokoHp.Objects.Variable;
+import com.formdev.flatlaf.extras.FlatSVGIcon;
 import java.sql.*;
 import javax.swing.SpinnerModel;
 import javax.swing.SpinnerNumberModel;
@@ -28,6 +29,7 @@ public class TransaksiBaru extends javax.swing.JInternalFrame {
     }
 
     private void init() {
+        String icon = !Variable.isDarkTheme() ? "TokoHp/Icons/trash_fill.svg" : "TokoHp/Icons/trash_fill_dark.svg";
         setClosable(true);
         connection = Variable.koneksi();
         disableEditableAndVisible();
@@ -38,6 +40,7 @@ public class TransaksiBaru extends javax.swing.JInternalFrame {
         Variable.setPlaceholderTextfield(tfNamaPelanggan, "Masukkan nama pembeli");
         Variable.setLabelFont(jLabel8);
         Variable.setSearchFieldIcon(tfPencarian);
+        btKosongkan.setIcon(new FlatSVGIcon(icon));
     }
 
     private void bayarTransaksi() {
@@ -85,7 +88,7 @@ public class TransaksiBaru extends javax.swing.JInternalFrame {
         textIdKaryawan.setVisible(false);
         tfNamaHp.setEditable(false);
         tfHargaItem.setEditable(false);
-        textStokTersedia.setVisible(false);
+        textStokTersedia.setText(" ");
     }
 
     void setSpinnerValue(int maximumValue) {
@@ -160,6 +163,26 @@ public class TransaksiBaru extends javax.swing.JInternalFrame {
         }
     }
 
+    private void getTableCheckout() {
+        int selectedRow = tbCheckout.getSelectedRow();
+        String id, phoneName, harga;
+        int stok;
+
+        if (selectedRow >= 0) {
+            id = tbCheckout.getValueAt(selectedRow, 0).toString();
+            phoneName = tbCheckout.getValueAt(selectedRow, 1).toString();
+            stok = Integer.parseInt(tbCheckout.getValueAt(selectedRow, 2).toString());
+            harga = tbCheckout.getValueAt(selectedRow, 3).toString();
+
+            textIdHp.setText(id);
+            tfNamaHp.setText(phoneName);
+            tfHargaItem.setText(Variable.stringToNumber(harga));
+            setSpinnerValue(stok);
+            textStokTersedia.setVisible(true);
+            textStokTersedia.setText("Stok tersedia: " + stok);
+        }
+    }
+
     private void tambahData() {
         int id = Integer.parseInt(textIdHp.getText());
         String namaHp = tfNamaHp.getText();
@@ -217,7 +240,7 @@ public class TransaksiBaru extends javax.swing.JInternalFrame {
         textSubtotal = new javax.swing.JLabel();
         tfHargaItem = new javax.swing.JTextField();
         jLabel4 = new javax.swing.JLabel();
-        jButton1 = new javax.swing.JButton();
+        btKosongkan = new javax.swing.JButton();
         textStokTersedia = new javax.swing.JLabel();
 
         setPreferredSize(new java.awt.Dimension(1200, 740));
@@ -281,6 +304,11 @@ public class TransaksiBaru extends javax.swing.JInternalFrame {
                 "Title 1", "Title 2", "Title 3", "Title 4"
             }
         ));
+        tbCheckout.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                tbCheckoutMouseClicked(evt);
+            }
+        });
         jScrollPane2.setViewportView(tbCheckout);
 
         jLabel3.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
@@ -293,7 +321,7 @@ public class TransaksiBaru extends javax.swing.JInternalFrame {
         });
 
         jLabel5.setFont(new java.awt.Font("Segoe UI", 1, 13)); // NOI18N
-        jLabel5.setText("Checkout");
+        jLabel5.setText("Keranjang");
 
         jLabel6.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
         jLabel6.setText("Harga Per-item :");
@@ -347,11 +375,11 @@ public class TransaksiBaru extends javax.swing.JInternalFrame {
         jLabel4.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
         jLabel4.setText("ID Phone :");
 
-        jButton1.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
-        jButton1.setText("Kosongkan keranjang");
-        jButton1.addActionListener(new java.awt.event.ActionListener() {
+        btKosongkan.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
+        btKosongkan.setText("Kosongkan");
+        btKosongkan.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton1ActionPerformed(evt);
+                btKosongkanActionPerformed(evt);
             }
         });
 
@@ -375,8 +403,8 @@ public class TransaksiBaru extends javax.swing.JInternalFrame {
                                 .addComponent(jLabel6)
                                 .addComponent(jLabel2)
                                 .addComponent(spJumlah)
-                                .addComponent(tfNamaHp)
-                                .addComponent(tfHargaItem, javax.swing.GroupLayout.PREFERRED_SIZE, 232, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                .addComponent(tfHargaItem, javax.swing.GroupLayout.DEFAULT_SIZE, 232, Short.MAX_VALUE)
+                                .addComponent(tfNamaHp))
                             .addComponent(textStokTersedia, javax.swing.GroupLayout.Alignment.TRAILING)
                             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                                 .addComponent(btUpdate, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
@@ -389,16 +417,16 @@ public class TransaksiBaru extends javax.swing.JInternalFrame {
                                 .addComponent(jLabel5)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                                 .addComponent(textIdKaryawan))
-                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                                .addComponent(textSubtotal)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                .addComponent(jButton1))
                             .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 738, Short.MAX_VALUE)
                             .addGroup(layout.createSequentialGroup()
                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                                     .addComponent(tfNamaPelanggan)
                                     .addComponent(btBayar, javax.swing.GroupLayout.DEFAULT_SIZE, 210, Short.MAX_VALUE))
-                                .addGap(0, 0, Short.MAX_VALUE))))
+                                .addGap(0, 0, Short.MAX_VALUE))
+                            .addGroup(layout.createSequentialGroup()
+                                .addComponent(textSubtotal)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addComponent(btKosongkan, javax.swing.GroupLayout.PREFERRED_SIZE, 120, javax.swing.GroupLayout.PREFERRED_SIZE))))
                     .addGroup(layout.createSequentialGroup()
                         .addContainerGap()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -414,14 +442,14 @@ public class TransaksiBaru extends javax.swing.JInternalFrame {
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addGap(14, 14, 14)
+                .addContainerGap()
                 .addComponent(jLabel8)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 9, Short.MAX_VALUE)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(textIdKaryawan, javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addComponent(jLabel5, javax.swing.GroupLayout.Alignment.TRAILING))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 14, Short.MAX_VALUE)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(textIdKaryawan)
+                    .addComponent(jLabel5))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                     .addGroup(layout.createSequentialGroup()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(jLabel4)
@@ -440,7 +468,7 @@ public class TransaksiBaru extends javax.swing.JInternalFrame {
                         .addComponent(spJumlah, javax.swing.GroupLayout.PREFERRED_SIZE, 28, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(textStokTersedia)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addGap(29, 29, 29)
                         .addComponent(btTambah)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addComponent(btUpdate)
@@ -449,11 +477,11 @@ public class TransaksiBaru extends javax.swing.JInternalFrame {
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(btClearText))
                     .addGroup(layout.createSequentialGroup()
-                        .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 256, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(textSubtotal)
-                            .addComponent(jButton1))
+                        .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 262, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.CENTER)
+                            .addComponent(btKosongkan, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(textSubtotal, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addGap(11, 11, 11)
                         .addComponent(tfNamaPelanggan, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
@@ -481,18 +509,18 @@ public class TransaksiBaru extends javax.swing.JInternalFrame {
     }//GEN-LAST:event_tbListHpMouseClicked
 
     private void btTambahActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btTambahActionPerformed
-        if (Integer.parseInt(textIdHp.getText()) != 0) {
-            if (Integer.parseInt(spJumlah.getValue().toString()) != 0) {
-                tambahData();
-                setTableCheckout();
-                kalkulasiTotal();
-            } else {
-                Variable.popUpErrorMessage("Error", "Stok barang tidak tersedia");
-            }
-        } else {
+        if (Integer.parseInt(textIdHp.getText()) == 0) {
             Variable.popUpErrorMessage("Error", "Mohon memilih barang dahulu dari tabel");
+            return;
+        }
+        if (Integer.parseInt(spJumlah.getValue().toString()) == 0) {
+            Variable.popUpErrorMessage("Error", "Stok barang tidak tersedia");
+            return;
         }
 
+        tambahData();
+        setTableCheckout();
+        kalkulasiTotal();
     }//GEN-LAST:event_btTambahActionPerformed
 
     private void btUpdateActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btUpdateActionPerformed
@@ -513,39 +541,43 @@ public class TransaksiBaru extends javax.swing.JInternalFrame {
     }//GEN-LAST:event_btClearTextActionPerformed
 
     private void btBayarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btBayarActionPerformed
-        if (!shoppingCart.getItems().isEmpty()) {
-            if (!tfNamaPelanggan.getText().isEmpty()) {
-                bayarTransaksi();
-                disableEditableAndVisible();
-            } else {
-                Variable.popUpErrorMessage("Nama pelanggan diperlukan", "Harap memasukkan nama pelanggan");
-            }
-        } else {
-            Variable.popUpErrorMessage("Tidak ada barang", "Harap masukkan barang di keranjang");
+        if (shoppingCart.getItems().isEmpty()) {
+            Variable.popUpErrorMessage("Tidak ada barang", "Harap masukkan barang terlebih dahulu di keranjang");
+            return;
         }
+        if (tfNamaPelanggan.getText().isEmpty()) {
+            Variable.popUpErrorMessage("Nama pelanggan diperlukan", "Harap memasukkan nama pelanggan");
+            return;
+        }
+        bayarTransaksi();
+        disableEditableAndVisible();
     }//GEN-LAST:event_btBayarActionPerformed
 
     private void tfNamaPelangganKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_tfNamaPelangganKeyReleased
         Variable.capitalizeFirstLetter(tfNamaPelanggan);
     }//GEN-LAST:event_tfNamaPelangganKeyReleased
 
-    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
-        if (!shoppingCart.getItems().isEmpty()) {
-            shoppingCart.getItems().clear();
-            setTableCheckout();
-            kalkulasiTotal();
-        } else {
-            MessageAlerts.getInstance().showMessage("Gagal bersihkan keranjang", "Keranjang kosong tidak ada produk di keranjang", MessageAlerts.MessageType.WARNING);
+    private void btKosongkanActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btKosongkanActionPerformed
+        if (shoppingCart.getItems().isEmpty()) {
+            MessageAlerts.getInstance().showMessage("Keranjang kosong", "Tidak ada produk di keranjang yang akan dibersihkan", MessageAlerts.MessageType.WARNING);
+            return;
         }
-    }//GEN-LAST:event_jButton1ActionPerformed
+        shoppingCart.getItems().clear();
+        setTableCheckout();
+        kalkulasiTotal();
+    }//GEN-LAST:event_btKosongkanActionPerformed
+
+    private void tbCheckoutMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tbCheckoutMouseClicked
+        getTableCheckout();
+    }//GEN-LAST:event_tbCheckoutMouseClicked
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btBayar;
     private javax.swing.JButton btClearText;
     private javax.swing.JButton btHapus;
+    private javax.swing.JButton btKosongkan;
     private javax.swing.JButton btTambah;
     private javax.swing.JButton btUpdate;
-    private javax.swing.JButton jButton1;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;

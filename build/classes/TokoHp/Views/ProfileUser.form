@@ -235,6 +235,9 @@
         <Component class="javax.swing.JTextField" name="tfNama">
         </Component>
         <Component class="com.toedter.calendar.JDateChooser" name="dateChooser">
+          <Properties>
+            <Property name="dateFormatString" type="java.lang.String" value="dd/MM/yyyy"/>
+          </Properties>
         </Component>
         <Component class="javax.swing.JLabel" name="jLabel2">
           <Properties>

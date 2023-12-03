@@ -12,7 +12,7 @@ public class ShoppingCart {
         for (Product item : items) {
             if (item.getIdProduk() == product.getIdProduk()) {
                 // Jika sudah ada, tambahkan jumlahnya
-                Variable.popUpErrorMessage("Error", "Barang sudah ada di keranjang");
+                Variable.popUpErrorMessage("Barang sudah ada", "Anda hanya dapat menambah stok di keranjang jika barang sudah ada");
                 return;
             }
         }
@@ -38,7 +38,7 @@ public class ShoppingCart {
                 return;
             }
         }
-        Variable.popUpErrorMessage("Error", "Tidak ada produk yang dihapus");
+        Variable.popUpErrorMessage("Hapus item gagal", "Tidak ada produk yang dipilih, harap memilih produk dari tabel");
     }
 
     public List<Product> getItems() {

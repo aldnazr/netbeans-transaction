@@ -30,7 +30,6 @@ public class DaftarKaryawan extends javax.swing.JInternalFrame {
         table.setModel(tableModel);
         Variable.setPlaceholderTextfield(tfPencarian, "Cari");
         Variable.setPasswordFieldRevealButton(passwordField);
-        dateChooser.setDateFormatString("dd-MM-yyyy");
         setButtonGroup();
         dateChooserTextField = Variable.disableDateTextfield(dateChooser);
         Variable.setLabelFont(jLabel9);
@@ -91,7 +90,16 @@ public class DaftarKaryawan extends javax.swing.JInternalFrame {
     private void tambahKaryawan() {
         getSelectedRadio();
         try {
-            query = "INSERT INTO USERS (NAMA_LENGKAP, TANGGAL_LAHIR, GENDER, ALAMAT, EMAIL, NO_TELP, TIPE_AKUN, USERNAME, PASSWORD) VALUES (?,?,?,?,?,?,?,?,?)";
+            query = """
+                    INSERT INTO USERS (
+                    NAMA_LENGKAP,
+                    TANGGAL_LAHIR,
+                    GENDER, ALAMAT,
+                    EMAIL,
+                    NO_TELP,
+                    TIPE_AKUN,
+                    USERNAME,
+                    PASSWORD) VALUES (?,?,?,?,?,?,?,?,?)""";
             pstat = connection.prepareStatement(query);
             pstat.setString(1, tfNamaKaryawan.getText());
             pstat.setDate(2, new java.sql.Date(dateChooser.getDate().getTime()));
@@ -120,7 +128,16 @@ public class DaftarKaryawan extends javax.swing.JInternalFrame {
     private void updateKaryawan() {
         getSelectedRadio();
         try {
-            query = "UPDATE USERS SET NAMA_LENGKAP=?, TANGGAL_LAHIR=?, GENDER=?, ALAMAT=?, EMAIL=?, NO_TELP=?, TIPE_AKUN=?, USERNAME=?, PASSWORD=? WHERE ID_USER=?";
+            query = """
+                    UPDATE USERS SET NAMA_LENGKAP=?,
+                    TANGGAL_LAHIR=?,
+                    GENDER=?,
+                    ALAMAT=?,
+                    EMAIL=?,
+                    NO_TELP=?,
+                    TIPE_AKUN=?,
+                    USERNAME=?,
+                    PASSWORD=? WHERE ID_USER=?""";
             pstat = connection.prepareStatement(query);
             pstat.setString(10, textIdKaryawan.getText());
             pstat.setString(1, tfNamaKaryawan.getText());
@@ -197,6 +214,7 @@ public class DaftarKaryawan extends javax.swing.JInternalFrame {
             } else {
                 rbKaryawan.setSelected(true);
             }
+            dateChooserTextField = Variable.disableDateTextfield(dateChooser);
         }
     }
 
@@ -368,7 +386,7 @@ public class DaftarKaryawan extends javax.swing.JInternalFrame {
         jLabel8.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
         jLabel8.setText("Tanggal lahir");
 
-        dateChooser.setDateFormatString("dd MM yyyy");
+        dateChooser.setDateFormatString("dd/MM/yyyy");
 
         jLabel11.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
         jLabel11.setText("Telepon");

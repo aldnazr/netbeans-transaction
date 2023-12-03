@@ -75,30 +75,37 @@ public class LoginPanel extends javax.swing.JFrame {
     }
 
     private void checkLogin() {
+        if (tfUser.getText().isEmpty() && passwordField.getPassword().length == 0) {
+            popUpErrorMessage("Login gagal", "Harap masukkan username dan password");
+            return;
+        }
         try {
             String username = tfUser.getText();
             String password = String.valueOf(passwordField.getPassword());
 
             query = "SELECT ID_USER, PASSWORD FROM USERS WHERE USERNAME = ? OR EMAIL = ?";
-            pstat = connection.prepareStatement(query);
+            pstat = connection.prepareStatement(query, ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_READ_ONLY);
             pstat.setString(1, username);
             pstat.setString(2, username);
             rset = pstat.executeQuery();
 
-            if (rset.next()) {
-                String idFromDB = rset.getString(1);
-                String passFromDB = rset.getString(2);
-
-                if (passFromDB.equals(password)) {
-                    insertSession(idFromDB);
-                    checkAdmin();
-                    dispose();
-                } else {
-                    popUpErrorMessage("Login gagal", "Kata sandi salah");
-                }
-            } else {
-                popUpErrorMessage("Login gagal", "Pengguna tidak ada");
+            if (!rset.first()) {
+                popUpErrorMessage("Login gagal", "Pengguna tidak ditemukan");
+                return;
             }
+
+            String idFromDB = rset.getString(1);
+            String passFromDB = rset.getString(2);
+
+            if (!passFromDB.equals(password)) {
+                popUpErrorMessage("Login gagal", "Kata sandi salah");
+                return;
+            }
+
+            insertSession(idFromDB);
+            checkAdmin();
+            dispose();
+
             pstat.close();
             rset.close();
         } catch (SQLException ex) {
@@ -182,11 +189,7 @@ public class LoginPanel extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void btLoginActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btLoginActionPerformed
-        if (!tfUser.getText().isEmpty() && passwordField.getPassword().length > 0) {
-            checkLogin();
-        } else {
-            popUpErrorMessage("Login gagal", "Harap masukkan username dan password");
-        }
+        checkLogin();
     }//GEN-LAST:event_btLoginActionPerformed
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
