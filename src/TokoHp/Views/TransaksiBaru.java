@@ -9,6 +9,8 @@ import javax.swing.SpinnerModel;
 import javax.swing.SpinnerNumberModel;
 import javax.swing.table.DefaultTableModel;
 import raven.alerts.MessageAlerts;
+import raven.popup.component.PopupCallbackAction;
+import raven.popup.component.PopupController;
 
 public class TransaksiBaru extends javax.swing.JInternalFrame {
 
@@ -562,12 +564,22 @@ public class TransaksiBaru extends javax.swing.JInternalFrame {
 
     private void btKosongkanActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btKosongkanActionPerformed
         if (shoppingCart.getItems().isEmpty()) {
-            MessageAlerts.getInstance().showMessage("Keranjang kosong", "Tidak ada produk di keranjang yang akan dibersihkan", MessageAlerts.MessageType.WARNING);
+            MessageAlerts.getInstance().showMessage("Keranjang kosong", "Tidak ada produk di keranjang yang akan dibersihkan", MessageAlerts.MessageType.ERROR);
             return;
         }
-        shoppingCart.getItems().clear();
-        setTableCheckout();
-        kalkulasiTotal();
+
+        MessageAlerts.getInstance().showMessage("Bersihkan Keranjang Checkout", "Tindakan ini akan menghapus semua produk yang telah Anda tambahkan. Pilih \"Yes\" untuk membersihkan keranjang atau \"No\" untuk membatalkan.", MessageAlerts.MessageType.WARNING, MessageAlerts.YES_OPTION,
+                (PopupController pc, int i) -> {
+                    switch (i) {
+                        case 0 -> {
+                            shoppingCart.getItems().clear();
+                            setTableCheckout();
+                            kalkulasiTotal();
+                        }
+                        case 1 ->
+                            pc.closePopup();
+                    }
+                });
     }//GEN-LAST:event_btKosongkanActionPerformed
 
     private void tbCheckoutMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tbCheckoutMouseClicked

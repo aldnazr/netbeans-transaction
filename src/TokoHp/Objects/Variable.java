@@ -119,13 +119,11 @@ public class Variable {
 
 //    PopUp Error
     public static void popUpErrorMessage(String title, String message) {
-//        JOptionPane.showMessageDialog(null, message, title, JOptionPane.ERROR_MESSAGE);
         MessageAlerts.getInstance().showMessage(title, message, MessageAlerts.MessageType.ERROR);
     }
 
 //    PopUp Sukses
     public static void popUpSuccessMessage(String title, String message) {
-//        JOptionPane.showMessageDialog(null, message, title, JOptionPane.INFORMATION_MESSAGE);
         MessageAlerts.getInstance().showMessage(title, message, MessageAlerts.MessageType.SUCCESS);
     }
 

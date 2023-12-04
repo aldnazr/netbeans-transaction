@@ -3,7 +3,6 @@ package TokoHp.Views;
 import TokoHp.Objects.Variable;
 import java.sql.*;
 import javax.swing.JTextField;
-import javax.swing.UIManager;
 import javax.swing.table.DefaultTableModel;
 
 public class DaftarKaryawan extends javax.swing.JInternalFrame {
@@ -120,8 +119,11 @@ public class DaftarKaryawan extends javax.swing.JInternalFrame {
 
             pstat.close();
         } catch (SQLException ex) {
-            Variable.popUpErrorMessage("Error", "Data gagal ditambah");
             System.err.println(ex.getMessage());
+
+            if (ex.getMessage().contains("ORA-00001")) {
+                Variable.popUpErrorMessage("Data Sudah Ada", "Data dengan nama yang sama sudah ada dalam sistem. Mohon pilih nama unik atau perbarui data yang sudah ada.");
+            }
         }
     }
 
@@ -233,13 +235,13 @@ public class DaftarKaryawan extends javax.swing.JInternalFrame {
     }
 
     private boolean checkInput() {
-        return !tfNamaKaryawan.getText().isEmpty()
-                && !dateChooserTextField.getText().isEmpty()
-                && !taAlamat.getText().isEmpty()
-                && !tfEmail.getText().isEmpty()
-                && !tfPhone.getText().isEmpty()
-                && !tfUsername.getText().isEmpty()
-                && passwordField.getPassword().length > 0;
+        return tfNamaKaryawan.getText().isEmpty()
+                || dateChooserTextField.getText().isEmpty()
+                || taAlamat.getText().isEmpty()
+                || tfEmail.getText().isEmpty()
+                || tfPhone.getText().isEmpty()
+                || tfUsername.getText().isEmpty()
+                || passwordField.getPassword().length == 0;
     }
 
     @SuppressWarnings("unchecked")
@@ -387,6 +389,11 @@ public class DaftarKaryawan extends javax.swing.JInternalFrame {
         jLabel8.setText("Tanggal lahir");
 
         dateChooser.setDateFormatString("dd/MM/yyyy");
+        dateChooser.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                dateChooserMouseClicked(evt);
+            }
+        });
 
         jLabel11.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
         jLabel11.setText("Telepon");
@@ -530,29 +537,30 @@ public class DaftarKaryawan extends javax.swing.JInternalFrame {
 
     private void btTambahActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btTambahActionPerformed
         if (checkInput()) {
-            tambahKaryawan();
-            setTable();
-        } else {
-            Variable.popUpErrorMessage("Error", "Harap isi semua data");
+            Variable.popUpErrorMessage("Kesalahan Pengisian Formulir", "Mohon lengkapi semua bagian formulir sebelum melanjutkan. Pastikan setiap kolom terisi dengan informasi yang diperlukan.");
+            return;
         }
+        tambahKaryawan();
+        setTable();
     }//GEN-LAST:event_btTambahActionPerformed
 
     private void btUpdateActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btUpdateActionPerformed
         if (checkInput()) {
-            updateKaryawan();
-            setTable();
-        } else {
-            Variable.popUpErrorMessage("Error", "Data gagal diupdate");
+            Variable.popUpErrorMessage("Kesalahan Pengisian Formulir", "Mohon lengkapi semua bagian formulir sebelum melanjutkan. Pastikan setiap kolom terisi dengan informasi yang diperlukan.");
+            return;
         }
+        updateKaryawan();
+        setTable();
     }//GEN-LAST:event_btUpdateActionPerformed
 
     private void btDeleteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btDeleteActionPerformed
-        if (!textIdKaryawan.getText().isEmpty()) {
-            deleteKaryawan();
-            setTable();
-        } else {
-            Variable.popUpErrorMessage("Error", "Tidak ada data dihapus");
+        if (textIdKaryawan.getText().isEmpty()) {
+            Variable.popUpErrorMessage("Produk Belum Dipilih", "Maaf, pilih produk yang ingin Anda hapus sebelum melanjutkan. Pastikan Anda memilih produk yang benar untuk dihapus.");
+            return;
         }
+
+        deleteKaryawan();
+        setTable();
     }//GEN-LAST:event_btDeleteActionPerformed
 
     private void tableMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tableMouseClicked
@@ -562,6 +570,10 @@ public class DaftarKaryawan extends javax.swing.JInternalFrame {
     private void tfPencarianKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_tfPencarianKeyReleased
         setTable();
     }//GEN-LAST:event_tfPencarianKeyReleased
+
+    private void dateChooserMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_dateChooserMouseClicked
+        dateChooserTextField = Variable.disableDateTextfield(dateChooser);
+    }//GEN-LAST:event_dateChooserMouseClicked
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btClear;

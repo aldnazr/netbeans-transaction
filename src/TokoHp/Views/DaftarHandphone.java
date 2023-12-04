@@ -215,9 +215,9 @@ public class DaftarHandphone extends javax.swing.JInternalFrame {
     }
 
     private boolean cekInput() {
-        return !tfNamaHP.getText().isEmpty()
-                && !taDeskripsi.getText().isEmpty()
-                && cbBrand.getSelectedIndex() != 0;
+        return tfNamaHP.getText().isEmpty()
+                || taDeskripsi.getText().isEmpty()
+                || cbBrand.getSelectedIndex() == 0;
     }
 
     @SuppressWarnings("unchecked")
@@ -276,11 +276,6 @@ public class DaftarHandphone extends javax.swing.JInternalFrame {
 
         tfNamaHP.setColumns(1);
 
-        tfPencarian.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                tfPencarianActionPerformed(evt);
-            }
-        });
         tfPencarian.addKeyListener(new java.awt.event.KeyAdapter() {
             public void keyReleased(java.awt.event.KeyEvent evt) {
                 tfPencarianKeyReleased(evt);
@@ -466,20 +461,19 @@ public class DaftarHandphone extends javax.swing.JInternalFrame {
 
     private void btUpdateActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btUpdateActionPerformed
         if (cekInput()) {
-            updateHp();
-            setTableRow();
-        } else {
             Variable.popUpErrorMessage("Error", "Data gagal diupdate");
         }
+        updateHp();
+        setTableRow();
     }//GEN-LAST:event_btUpdateActionPerformed
 
     private void btDeleteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btDeleteActionPerformed
-        if (!textIdHp.getText().isEmpty()) {
-            deleteHp();
-            setTableRow();
-        } else {
+        if (textIdHp.getText().isEmpty()) {
             Variable.popUpErrorMessage("Error", "Tidak ada data dihapus");
+            return;
         }
+        deleteHp();
+        setTableRow();
     }//GEN-LAST:event_btDeleteActionPerformed
 
     private void btClearActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btClearActionPerformed
@@ -489,11 +483,11 @@ public class DaftarHandphone extends javax.swing.JInternalFrame {
 
     private void btTambahActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btTambahActionPerformed
         if (cekInput()) {
-            tambahHp();
-            setTableRow();
-        } else {
             Variable.popUpErrorMessage("Error", "Tidak ada data ditambah");
+            return;
         }
+        tambahHp();
+        setTableRow();
     }//GEN-LAST:event_btTambahActionPerformed
 
     private void cbBrandActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cbBrandActionPerformed
@@ -511,10 +505,6 @@ public class DaftarHandphone extends javax.swing.JInternalFrame {
     private void cbFilterActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cbFilterActionPerformed
         setTableRow();
     }//GEN-LAST:event_cbFilterActionPerformed
-
-    private void tfPencarianActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_tfPencarianActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_tfPencarianActionPerformed
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btClear;
