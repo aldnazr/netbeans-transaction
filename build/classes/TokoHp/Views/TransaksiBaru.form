@@ -58,17 +58,17 @@
                               <Component id="textIdKaryawan" min="-2" max="-2" attributes="0"/>
                           </Group>
                           <Component id="jScrollPane2" alignment="0" pref="738" max="32767" attributes="0"/>
-                          <Group type="102" alignment="0" attributes="0">
-                              <Component id="textSubtotal" min="-2" max="-2" attributes="0"/>
-                              <EmptySpace max="32767" attributes="0"/>
-                              <Component id="btKosongkan" min="-2" pref="120" max="-2" attributes="0"/>
-                          </Group>
                           <Group type="102" attributes="0">
                               <Group type="103" groupAlignment="0" attributes="0">
                                   <Component id="btBayar" min="-2" pref="210" max="-2" attributes="0"/>
                                   <Component id="tfNamaPelanggan" min="-2" pref="210" max="-2" attributes="0"/>
                               </Group>
                               <EmptySpace min="0" pref="0" max="32767" attributes="0"/>
+                          </Group>
+                          <Group type="102" alignment="0" attributes="0">
+                              <Component id="textSubtotal" min="-2" max="-2" attributes="0"/>
+                              <EmptySpace max="32767" attributes="0"/>
+                              <Component id="btKosongkan" min="-2" max="-2" attributes="0"/>
                           </Group>
                       </Group>
                   </Group>
@@ -95,7 +95,7 @@
           <Group type="102" alignment="1" attributes="0">
               <EmptySpace max="-2" attributes="0"/>
               <Component id="jLabel8" min="-2" max="-2" attributes="0"/>
-              <EmptySpace pref="9" max="32767" attributes="0"/>
+              <EmptySpace pref="8" max="32767" attributes="0"/>
               <Group type="103" groupAlignment="3" attributes="0">
                   <Component id="textIdKaryawan" alignment="3" min="-2" max="-2" attributes="0"/>
                   <Component id="jLabel5" alignment="3" min="-2" max="-2" attributes="0"/>
@@ -137,7 +137,7 @@
                           <Component id="btKosongkan" alignment="2" min="-2" pref="35" max="-2" attributes="0"/>
                           <Component id="textSubtotal" alignment="2" min="-2" pref="35" max="-2" attributes="0"/>
                       </Group>
-                      <EmptySpace min="-2" pref="5" max="-2" attributes="0"/>
+                      <EmptySpace max="-2" attributes="0"/>
                       <Component id="tfNamaPelanggan" min="-2" max="-2" attributes="0"/>
                       <EmptySpace type="unrelated" max="-2" attributes="0"/>
                       <Component id="btBayar" min="-2" max="-2" attributes="0"/>
@@ -211,6 +211,7 @@
           <Color blue="f0" green="eb" red="eb" type="rgb"/>
         </Property>
         <Property name="text" type="java.lang.String" value="Bayar"/>
+        <Property name="toolTipText" type="java.lang.String" value="Bayar transaksi"/>
       </Properties>
       <Events>
         <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btBayarActionPerformed"/>
@@ -402,7 +403,7 @@
     <Component class="javax.swing.JLabel" name="textSubtotal">
       <Properties>
         <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
-          <Font name="Segoe UI" size="15" style="1"/>
+          <Font name="Segoe UI" size="16" style="1"/>
         </Property>
         <Property name="text" type="java.lang.String" value="Rp0"/>
       </Properties>
@@ -423,6 +424,7 @@
           <Font name="Segoe UI" size="12" style="1"/>
         </Property>
         <Property name="text" type="java.lang.String" value="Kosongkan"/>
+        <Property name="toolTipText" type="java.lang.String" value="Bersihkan semua keranjang checkout"/>
       </Properties>
       <Events>
         <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btKosongkanActionPerformed"/>

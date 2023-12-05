@@ -3,6 +3,7 @@ package TokoHp.Views;
 import TokoHp.Main.MainFrame;
 import TokoHp.Objects.Variable;
 import static TokoHp.Objects.Variable.koneksi;
+import com.formdev.flatlaf.extras.FlatSVGIcon;
 import java.awt.Color;
 import java.sql.*;
 import javax.swing.JFrame;
@@ -32,8 +33,8 @@ public class ProfileUser extends javax.swing.JInternalFrame {
         Variable.setPasswordFieldRevealButton(pwField);
         Variable.disableDateTextfield(dateChooser);
         Variable.setLabelFont(jLabel10);
-        card1.setForeground(!Variable.isDarkTheme() ? Color.decode("#D8D8DC") : Color.decode("#363638"));
         card1.setCorner(30);
+        card1.setForeground(!Variable.isDarkTheme() ? Color.decode("#D8D8DC") : Color.decode("#363638"));
     }
 
     private void setButtongroup() {
@@ -164,7 +165,7 @@ public class ProfileUser extends javax.swing.JInternalFrame {
         jLabel9.setText("Kata sandi");
 
         jButton1.setBackground(new java.awt.Color(10, 132, 255));
-        jButton1.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
+        jButton1.setFont(new java.awt.Font("Segoe UI", 1, 13)); // NOI18N
         jButton1.setForeground(new java.awt.Color(235, 235, 240));
         jButton1.setText("Simpan");
         jButton1.addActionListener(new java.awt.event.ActionListener() {
@@ -227,7 +228,7 @@ public class ProfileUser extends javax.swing.JInternalFrame {
                 .addContainerGap(81, Short.MAX_VALUE))
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, card1Layout.createSequentialGroup()
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 108, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(jButton1)
                 .addGap(275, 275, 275))
         );
         card1Layout.setVerticalGroup(
@@ -267,7 +268,7 @@ public class ProfileUser extends javax.swing.JInternalFrame {
                     .addComponent(pwField, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel9))
                 .addGap(34, 34, 34)
-                .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 31, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(28, 28, 28))
         );
 
@@ -292,7 +293,7 @@ public class ProfileUser extends javax.swing.JInternalFrame {
                 .addComponent(jLabel10)
                 .addGap(47, 47, 47)
                 .addComponent(card1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(68, Short.MAX_VALUE))
+                .addContainerGap(64, Short.MAX_VALUE))
         );
 
         pack();

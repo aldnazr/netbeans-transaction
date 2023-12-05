@@ -9,7 +9,6 @@ import javax.swing.SpinnerModel;
 import javax.swing.SpinnerNumberModel;
 import javax.swing.table.DefaultTableModel;
 import raven.alerts.MessageAlerts;
-import raven.popup.component.PopupCallbackAction;
 import raven.popup.component.PopupController;
 
 public class TransaksiBaru extends javax.swing.JInternalFrame {
@@ -83,7 +82,6 @@ public class TransaksiBaru extends javax.swing.JInternalFrame {
         } catch (SQLException ex) {
             System.err.println(ex.getMessage());
         }
-
     }
 
     private void disableEditableAndVisible() {
@@ -95,7 +93,7 @@ public class TransaksiBaru extends javax.swing.JInternalFrame {
 
     void setSpinnerValue(int maximumValue) {
         int minValue = maximumValue > 0 ? 1 : 0;
-        SpinnerModel spinnerModel = new SpinnerNumberModel(minValue, minValue, maximumValue, 1);
+        SpinnerModel spinnerModel = new SpinnerNumberModel(minValue, minValue, maximumValue, minValue);
         spJumlah.setModel(spinnerModel);
     }
 
@@ -160,7 +158,6 @@ public class TransaksiBaru extends javax.swing.JInternalFrame {
             tfNamaHp.setText(brand + " " + model);
             tfHargaItem.setText(Variable.stringToNumber(harga));
             setSpinnerValue(stok);
-            textStokTersedia.setVisible(true);
             textStokTersedia.setText("Stok tersedia: " + stok);
         }
     }
@@ -180,7 +177,6 @@ public class TransaksiBaru extends javax.swing.JInternalFrame {
             tfNamaHp.setText(phoneName);
             tfHargaItem.setText(Variable.stringToNumber(harga));
             setSpinnerValue(stok);
-            textStokTersedia.setVisible(true);
             textStokTersedia.setText("Stok tersedia: " + stok);
         }
     }
@@ -279,6 +275,7 @@ public class TransaksiBaru extends javax.swing.JInternalFrame {
         btBayar.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
         btBayar.setForeground(new java.awt.Color(235, 235, 240));
         btBayar.setText("Bayar");
+        btBayar.setToolTipText("Bayar transaksi");
         btBayar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btBayarActionPerformed(evt);
@@ -371,7 +368,7 @@ public class TransaksiBaru extends javax.swing.JInternalFrame {
         jLabel8.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         jLabel8.setText("TRANSAKSI");
 
-        textSubtotal.setFont(new java.awt.Font("Segoe UI", 1, 15)); // NOI18N
+        textSubtotal.setFont(new java.awt.Font("Segoe UI", 1, 16)); // NOI18N
         textSubtotal.setText("Rp0");
 
         jLabel4.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
@@ -379,6 +376,7 @@ public class TransaksiBaru extends javax.swing.JInternalFrame {
 
         btKosongkan.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
         btKosongkan.setText("Kosongkan");
+        btKosongkan.setToolTipText("Bersihkan semua keranjang checkout");
         btKosongkan.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btKosongkanActionPerformed(evt);
@@ -421,14 +419,14 @@ public class TransaksiBaru extends javax.swing.JInternalFrame {
                                 .addComponent(textIdKaryawan))
                             .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 738, Short.MAX_VALUE)
                             .addGroup(layout.createSequentialGroup()
-                                .addComponent(textSubtotal)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                .addComponent(btKosongkan, javax.swing.GroupLayout.PREFERRED_SIZE, 120, javax.swing.GroupLayout.PREFERRED_SIZE))
-                            .addGroup(layout.createSequentialGroup()
                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                     .addComponent(btBayar, javax.swing.GroupLayout.PREFERRED_SIZE, 210, javax.swing.GroupLayout.PREFERRED_SIZE)
                                     .addComponent(tfNamaPelanggan, javax.swing.GroupLayout.PREFERRED_SIZE, 210, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                .addGap(0, 0, Short.MAX_VALUE))))
+                                .addGap(0, 0, Short.MAX_VALUE))
+                            .addGroup(layout.createSequentialGroup()
+                                .addComponent(textSubtotal)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addComponent(btKosongkan))))
                     .addGroup(layout.createSequentialGroup()
                         .addContainerGap()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -446,7 +444,7 @@ public class TransaksiBaru extends javax.swing.JInternalFrame {
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                 .addContainerGap()
                 .addComponent(jLabel8)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 9, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 8, Short.MAX_VALUE)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(textIdKaryawan)
                     .addComponent(jLabel5))
@@ -484,7 +482,7 @@ public class TransaksiBaru extends javax.swing.JInternalFrame {
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.CENTER)
                             .addComponent(btKosongkan, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(textSubtotal, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addGap(5, 5, 5)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(tfNamaPelanggan, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addComponent(btBayar)))
@@ -545,7 +543,7 @@ public class TransaksiBaru extends javax.swing.JInternalFrame {
 
     private void btBayarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btBayarActionPerformed
         if (shoppingCart.getItems().isEmpty()) {
-            Variable.popUpErrorMessage("Tidak ada barang", "Harap masukkan barang terlebih dahulu di keranjang");
+            Variable.popUpErrorMessage("Keranjang kosong", "Harap masukkan barang terlebih dahulu di keranjang");
             return;
         }
 
