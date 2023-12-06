@@ -30,7 +30,7 @@ public class TransaksiBaru extends javax.swing.JInternalFrame {
     }
 
     private void init() {
-        String icon = !Variable.isDarkTheme() ? "TokoHp/Icons/trash_fill.svg" : "TokoHp/Icons/trash_fill_dark.svg";
+        String icon = !Variable.isDarkTheme() ? "TokoHp/Icons/trash.svg" : "TokoHp/Icons/trash_dark.svg";
         setClosable(true);
         connection = Variable.koneksi();
         disableEditableAndVisible();
@@ -566,7 +566,7 @@ public class TransaksiBaru extends javax.swing.JInternalFrame {
             return;
         }
 
-        MessageAlerts.getInstance().showMessage("Bersihkan Keranjang Checkout", "Tindakan ini akan menghapus semua produk yang telah Anda tambahkan. Pilih \"Yes\" untuk membersihkan keranjang atau \"No\" untuk membatalkan.", MessageAlerts.MessageType.WARNING, MessageAlerts.YES_OPTION,
+        MessageAlerts.getInstance().showMessage("Bersihkan Keranjang Checkout?", "Tindakan ini akan menghapus semua produk yang telah Anda tambahkan.", MessageAlerts.MessageType.WARNING, MessageAlerts.YES_OPTION,
                 (PopupController pc, int i) -> {
                     switch (i) {
                         case 0 -> {
