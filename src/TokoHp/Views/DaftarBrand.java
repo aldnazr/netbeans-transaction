@@ -13,8 +13,7 @@ public class DaftarBrand extends javax.swing.JInternalFrame {
     String query;
     ResultSet rset;
     int rsetInt;
-    Object[] columnName = {"ID Brand", "Nama Brand"};
-    DefaultTableModel tableModel = new DefaultTableModel(columnName, 0);
+    DefaultTableModel tableModel;
 
     public DaftarBrand() {
         initComponents();
@@ -24,7 +23,6 @@ public class DaftarBrand extends javax.swing.JInternalFrame {
     private void init() {
         setClosable(true);
         connection = Variable.koneksi();
-        table.setModel(tableModel);
         read();
         Variable.setPlaceholderTextfield(tfPencarian, "Cari");
         textIdBrand.putClientProperty(FlatClientProperties.TEXT_FIELD_SHOW_CLEAR_BUTTON, true);
@@ -34,6 +32,7 @@ public class DaftarBrand extends javax.swing.JInternalFrame {
     }
 
     private void read() {
+        tableModel = (DefaultTableModel) table.getModel();
         try {
             query = "SELECT * FROM BRAND WHERE LOWER(NAMA_BRAND) LIKE ?";
             pstat = connection.prepareStatement(query);
@@ -43,11 +42,14 @@ public class DaftarBrand extends javax.swing.JInternalFrame {
 
             while (rset.next()) {
                 Object[] rowData = {
+                    false,
                     rset.getInt(1),
                     rset.getString(2)
                 };
                 tableModel.addRow(rowData);
             }
+
+            table.setModel(tableModel);
             pstat.close();
             rset.close();
         } catch (SQLException ex) {
@@ -123,8 +125,8 @@ public class DaftarBrand extends javax.swing.JInternalFrame {
         String id_brand, nama_brand;
 
         if (row >= 0) {
-            id_brand = table.getValueAt(row, 0).toString();
-            nama_brand = table.getValueAt(row, 1).toString();
+            id_brand = table.getValueAt(row, 1).toString();
+            nama_brand = table.getValueAt(row, 2).toString();
 
             textIdBrand.setText(id_brand);
             tfNamaBrand.setText(nama_brand);
@@ -133,7 +135,9 @@ public class DaftarBrand extends javax.swing.JInternalFrame {
 
     private void clearText() {
         textIdBrand.setText("");
+        tfNamaBrand.setText("");
         tfPencarian.setText("");
+        read();
     }
 
     @SuppressWarnings("unchecked")
@@ -172,6 +176,10 @@ public class DaftarBrand extends javax.swing.JInternalFrame {
             }
         });
         jScrollPane1.setViewportView(table);
+        if (table.getColumnModel().getColumnCount() > 0) {
+            table.getColumnModel().getColumn(0).setPreferredWidth(120);
+            table.getColumnModel().getColumn(0).setMaxWidth(120);
+        }
 
         tfNamaBrand.setColumns(10);
         tfNamaBrand.addKeyListener(new java.awt.event.KeyAdapter() {
@@ -304,27 +312,26 @@ public class DaftarBrand extends javax.swing.JInternalFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void btTambahActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btTambahActionPerformed
-        if (!tfNamaBrand.getText().isEmpty()) {
-            tambahBrand();
-        } else {
+        if (tfNamaBrand.getText().isEmpty()) {
             Variable.popUpErrorMessage("Error", "Tidak ada data ditambah");
+            return;
         }
+        tambahBrand();
     }//GEN-LAST:event_btTambahActionPerformed
 
     private void btDeleteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btDeleteActionPerformed
-        if (!textIdBrand.getText().isEmpty()) {
-            deleteBrand();
-        } else {
+        if (textIdBrand.getText().isEmpty()) {
             Variable.popUpErrorMessage("Error", "Tidak ada data dihapus");
+            return;
         }
+        deleteBrand();
     }//GEN-LAST:event_btDeleteActionPerformed
 
     private void btUpdateActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btUpdateActionPerformed
-        if (!tfNamaBrand.getText().isEmpty()) {
-            updateBrand();
-        } else {
+        if (tfNamaBrand.getText().isEmpty()) {
             Variable.popUpErrorMessage("Error", "Data gagal diupdate");
         }
+        updateBrand();
     }//GEN-LAST:event_btUpdateActionPerformed
 
     private void tfPencarianKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_tfPencarianKeyReleased

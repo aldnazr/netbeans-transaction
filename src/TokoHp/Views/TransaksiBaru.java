@@ -18,10 +18,8 @@ public class TransaksiBaru extends javax.swing.JInternalFrame {
     private String query;
     ResultSet rset;
     private int rsetInt;
-    final Object[] columnCheckout = {"ID Phone", "Nama Handphone", "Jumlah", "Harga Per-item"};
-    final Object[] columnListHp = {"ID Phone", "Brand", "Model", "Stok", "Harga"};
-    DefaultTableModel modelTbCheckout = new DefaultTableModel(columnCheckout, 0);
-    DefaultTableModel modelTbListHp = new DefaultTableModel(columnListHp, 0);
+    DefaultTableModel modelTbCheckout;
+    DefaultTableModel modelTbListHp;
     final ShoppingCart shoppingCart = new ShoppingCart();
 
     public TransaksiBaru() {
@@ -102,6 +100,7 @@ public class TransaksiBaru extends javax.swing.JInternalFrame {
     }
 
     private void setTableCheckout() {
+        modelTbCheckout = (DefaultTableModel) tbCheckout.getModel();
         modelTbCheckout.setRowCount(0);
 
         for (Product item : shoppingCart.getItems()) {
@@ -109,13 +108,14 @@ public class TransaksiBaru extends javax.swing.JInternalFrame {
             String nama = item.getNamaProduk();
             int stok = item.getStok();
             int harga = item.getHarga();
-            Object[] data = {id, nama, stok, harga};
+            Object[] data = {false, id, nama, stok, harga};
             modelTbCheckout.addRow(data);
         }
         tbCheckout.setModel(modelTbCheckout);
     }
 
     private void setTableListHp() {
+        modelTbListHp = (DefaultTableModel) tbListHp.getModel();
         try {
             query = Variable.sqlTableDaftarHP;
             pstat = connection.prepareStatement(query);
@@ -166,13 +166,17 @@ public class TransaksiBaru extends javax.swing.JInternalFrame {
         int selectedRow = tbCheckout.getSelectedRow();
         String id, phoneName, harga;
         int stok;
+        boolean isRowSelected;
 
         if (selectedRow >= 0) {
-            id = tbCheckout.getValueAt(selectedRow, 0).toString();
-            phoneName = tbCheckout.getValueAt(selectedRow, 1).toString();
-            stok = Integer.parseInt(tbCheckout.getValueAt(selectedRow, 2).toString());
-            harga = tbCheckout.getValueAt(selectedRow, 3).toString();
+            isRowSelected = (boolean) tbCheckout.getValueAt(selectedRow, 0);
+            id = tbCheckout.getValueAt(selectedRow, 1).toString();
+            phoneName = tbCheckout.getValueAt(selectedRow, 2).toString();
+            stok = Integer.parseInt(tbCheckout.getValueAt(selectedRow, 3).toString());
+            harga = tbCheckout.getValueAt(selectedRow, 4).toString();
 
+//            Debug
+//            System.out.println(isSelected + " " + id + " " + "RowCount: " + (tbCheckout.getRowCount() - 1) + " SelectedRow: " + selectedRow);
             textIdHp.setText(id);
             tfNamaHp.setText(phoneName);
             tfHargaItem.setText(Variable.stringToNumber(harga));
@@ -196,8 +200,17 @@ public class TransaksiBaru extends javax.swing.JInternalFrame {
     }
 
     private void deleteItem() {
-        int id = Integer.parseInt(textIdHp.getText());
-        shoppingCart.removeItem(new Product(id));
+        int rowCount = tbCheckout.getRowCount() - 1;
+        int idProduk;
+        boolean isRowSelected;
+
+        for (int i = 0; i <= rowCount; i++) {
+            isRowSelected = (boolean) tbCheckout.getValueAt(i, 0);
+            if (isRowSelected) {
+                idProduk = (int) tbCheckout.getValueAt(i, 1);
+                shoppingCart.removeItem(new Product(idProduk));
+            }
+        }
     }
 
     private void clearText() {
@@ -245,26 +258,44 @@ public class TransaksiBaru extends javax.swing.JInternalFrame {
 
         tbListHp.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null}
+                {null, null, null, null, null},
+                {null, null, null, null, null},
+                {null, null, null, null, null},
+                {null, null, null, null, null}
             },
             new String [] {
-                "Title 1", "Title 2", "Title 3", "Title 4"
+                "ID Phone", "Brand", "Model", "Stok", "Harga"
             }
-        ));
+        ) {
+            boolean[] canEdit = new boolean [] {
+                false, false, false, false, false
+            };
+
+            public boolean isCellEditable(int rowIndex, int columnIndex) {
+                return canEdit [columnIndex];
+            }
+        });
         tbListHp.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 tbListHpMouseClicked(evt);
             }
         });
         jScrollPane1.setViewportView(tbListHp);
+        if (tbListHp.getColumnModel().getColumnCount() > 0) {
+            tbListHp.getColumnModel().getColumn(0).setPreferredWidth(80);
+            tbListHp.getColumnModel().getColumn(0).setMaxWidth(80);
+            tbListHp.getColumnModel().getColumn(1).setPreferredWidth(150);
+            tbListHp.getColumnModel().getColumn(1).setMaxWidth(150);
+            tbListHp.getColumnModel().getColumn(3).setPreferredWidth(120);
+            tbListHp.getColumnModel().getColumn(3).setMaxWidth(120);
+            tbListHp.getColumnModel().getColumn(4).setPreferredWidth(180);
+            tbListHp.getColumnModel().getColumn(4).setMaxWidth(180);
+        }
 
         btTambah.setBackground(new java.awt.Color(10, 132, 255));
         btTambah.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
         btTambah.setForeground(new java.awt.Color(235, 235, 240));
-        btTambah.setText("Tambah item");
+        btTambah.setText("Tambah Item");
         btTambah.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btTambahActionPerformed(evt);
@@ -294,21 +325,45 @@ public class TransaksiBaru extends javax.swing.JInternalFrame {
 
         tbCheckout.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null}
+                {null, null, null, null, null},
+                {null, null, null, null, null},
+                {null, null, null, null, null},
+                {null, null, null, null, null},
+                {null, null, null, null, null}
             },
             new String [] {
-                "Title 1", "Title 2", "Title 3", "Title 4"
+                "Pilih", "ID Phone", "Nama Handphone", "Jumlah", "Harga Per-Item"
             }
-        ));
+        ) {
+            Class[] types = new Class [] {
+                java.lang.Boolean.class, java.lang.Object.class, java.lang.Object.class, java.lang.Object.class, java.lang.Object.class
+            };
+            boolean[] canEdit = new boolean [] {
+                true, false, false, false, false
+            };
+
+            public Class getColumnClass(int columnIndex) {
+                return types [columnIndex];
+            }
+
+            public boolean isCellEditable(int rowIndex, int columnIndex) {
+                return canEdit [columnIndex];
+            }
+        });
         tbCheckout.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 tbCheckoutMouseClicked(evt);
             }
         });
         jScrollPane2.setViewportView(tbCheckout);
+        if (tbCheckout.getColumnModel().getColumnCount() > 0) {
+            tbCheckout.getColumnModel().getColumn(0).setPreferredWidth(60);
+            tbCheckout.getColumnModel().getColumn(0).setMaxWidth(60);
+            tbCheckout.getColumnModel().getColumn(1).setPreferredWidth(80);
+            tbCheckout.getColumnModel().getColumn(1).setMaxWidth(80);
+            tbCheckout.getColumnModel().getColumn(3).setPreferredWidth(80);
+            tbCheckout.getColumnModel().getColumn(3).setMaxWidth(80);
+        }
 
         jLabel3.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
         jLabel3.setText("Pilih barang");
@@ -328,7 +383,7 @@ public class TransaksiBaru extends javax.swing.JInternalFrame {
         btUpdate.setBackground(new java.awt.Color(10, 132, 255));
         btUpdate.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
         btUpdate.setForeground(new java.awt.Color(235, 235, 240));
-        btUpdate.setText("Update jumlah item");
+        btUpdate.setText("Update Jumlah Item");
         btUpdate.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btUpdateActionPerformed(evt);
@@ -338,7 +393,7 @@ public class TransaksiBaru extends javax.swing.JInternalFrame {
         btHapus.setBackground(new java.awt.Color(255, 59, 48));
         btHapus.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
         btHapus.setForeground(new java.awt.Color(235, 235, 240));
-        btHapus.setText("Hapus item");
+        btHapus.setText("Hapus Item Terpilih");
         btHapus.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btHapusActionPerformed(evt);
@@ -348,7 +403,7 @@ public class TransaksiBaru extends javax.swing.JInternalFrame {
         btClearText.setBackground(new java.awt.Color(142, 142, 147));
         btClearText.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
         btClearText.setForeground(new java.awt.Color(235, 235, 240));
-        btClearText.setText("Clear text");
+        btClearText.setText("Reset");
         btClearText.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btClearTextActionPerformed(evt);

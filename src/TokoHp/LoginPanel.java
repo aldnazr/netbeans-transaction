@@ -3,6 +3,7 @@ package TokoHp;
 import TokoHp.Main.MainFrame;
 import TokoHp.Objects.Variable;
 import com.formdev.flatlaf.FlatClientProperties;
+import java.awt.EventQueue;
 import java.sql.*;
 import javax.swing.JOptionPane;
 
@@ -32,8 +33,10 @@ public class LoginPanel extends javax.swing.JFrame {
     }
 
     public static void main(String args[]) {
-        Variable.setLightTheme();
-        new LoginPanel().setVisible(true);
+        EventQueue.invokeLater(() -> {
+            Variable.setLightTheme();
+            new LoginPanel().setVisible(true);
+        });
     }
 
     private void checkAdmin() {
