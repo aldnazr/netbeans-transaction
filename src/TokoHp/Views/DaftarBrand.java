@@ -42,7 +42,6 @@ public class DaftarBrand extends javax.swing.JInternalFrame {
 
             while (rset.next()) {
                 Object[] rowData = {
-                    false,
                     rset.getInt(1),
                     rset.getString(2)
                 };
