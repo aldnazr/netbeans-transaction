@@ -327,8 +327,6 @@ public class TransaksiBaru extends javax.swing.JInternalFrame {
             new Object [][] {
                 {null, null, null, null, null},
                 {null, null, null, null, null},
-                {null, null, null, null, null},
-                {null, null, null, null, null},
                 {null, null, null, null, null}
             },
             new String [] {

@@ -64,17 +64,14 @@ public class DaftarHandphone extends javax.swing.JInternalFrame {
     }
 
     private void setTableRow() {
-        switch (cbFilter.getSelectedIndex()) {
-            case 1:
-                query = Variable.sqlFilterPhoneAvailable;
-                break;
-            case 2:
-                query = Variable.sqlFilterPhoneNotAvailable;
-                break;
-            default:
-                query = Variable.sqlFilterPhone;
-                break;
-        }
+        query = switch (cbFilter.getSelectedIndex()) {
+            case 1 ->
+                Variable.sqlFilterPhoneAvailable;
+            case 2 ->
+                Variable.sqlFilterPhoneNotAvailable;
+            default ->
+                Variable.sqlFilterPhone;
+        };
 
         try {
             pstat = connection.prepareStatement(query);
@@ -397,8 +394,8 @@ public class DaftarHandphone extends javax.swing.JInternalFrame {
                         .addComponent(textIdHp)))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 172, Short.MAX_VALUE)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addGroup(layout.createSequentialGroup()
-                        .addComponent(cbFilter, javax.swing.GroupLayout.PREFERRED_SIZE, 140, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                        .addComponent(cbFilter, javax.swing.GroupLayout.PREFERRED_SIZE, 160, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addComponent(tfPencarian, javax.swing.GroupLayout.PREFERRED_SIZE, 170, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addComponent(jScrollPane1, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 730, javax.swing.GroupLayout.PREFERRED_SIZE))

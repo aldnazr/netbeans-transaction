@@ -523,7 +523,7 @@ public class DaftarKaryawan extends javax.swing.JInternalFrame {
                         .addComponent(btDelete)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(btClear)
-                        .addGap(0, 83, Short.MAX_VALUE)))
+                        .addGap(0, 39, Short.MAX_VALUE)))
                 .addContainerGap())
         );
 

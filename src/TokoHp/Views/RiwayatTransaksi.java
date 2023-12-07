@@ -11,7 +11,7 @@ public class RiwayatTransaksi extends javax.swing.JInternalFrame {
     String sql;
     ResultSet resultSet;
     CallableStatement callableStatement;
-    Object[] tableColumn = {"ID TRANSAKSI", "KASIR", "NAMA_PELANGGAN", "WAKTU", "BRAND", "MODEL", "HARGA PRODUK", "JUMLAH BELI", "SUBTOTAL", "TOTAL"};
+    Object[] tableColumn = {"ID TRANSAKSI", "KASIR", "NAMA PELANGGAN", "WAKTU", "BRAND", "MODEL", "HARGA PRODUK", "JUMLAH BELI", "SUBTOTAL", "TOTAL"};
     DefaultTableModel tableModel = new DefaultTableModel(tableColumn, 0);
 
     public RiwayatTransaksi() {

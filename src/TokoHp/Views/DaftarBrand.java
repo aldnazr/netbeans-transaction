@@ -124,8 +124,8 @@ public class DaftarBrand extends javax.swing.JInternalFrame {
         String id_brand, nama_brand;
 
         if (row >= 0) {
-            id_brand = table.getValueAt(row, 1).toString();
-            nama_brand = table.getValueAt(row, 2).toString();
+            id_brand = table.getValueAt(row, 0).toString();
+            nama_brand = table.getValueAt(row, 1).toString();
 
             textIdBrand.setText(id_brand);
             tfNamaBrand.setText(nama_brand);
