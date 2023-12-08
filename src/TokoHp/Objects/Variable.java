@@ -174,9 +174,7 @@ public class Variable {
     }
     public static String sqlTableDaftarHP = "select id_phone, nama_brand, nama_handphone, stok, harga from phones join brand using (id_brand) where stok > 0 AND LOWER(nama_brand) LIKE ? OR LOWER(nama_handphone) LIKE ?";
 
-    public static String sqlFilterPhone = "SELECT ID_PHONE, NAMA_BRAND, NAMA_HANDPHONE, DESKRIPSI, HARGA, STOK FROM PHONES JOIN BRAND USING (ID_BRAND) WHERE LOWER(NAMA_HANDPHONE) LIKE ? OR LOWER(NAMA_BRAND) LIKE ?";
-
-    public static String sqlFilterPhoneAvailable = "SELECT ID_PHONE, NAMA_BRAND, NAMA_HANDPHONE, DESKRIPSI, HARGA, STOK FROM PHONES JOIN BRAND USING (ID_BRAND) WHERE STOK > 0 AND (LOWER(NAMA_HANDPHONE) LIKE ? OR LOWER(NAMA_BRAND) LIKE ?)";
-
-    public static String sqlFilterPhoneNotAvailable = "SELECT ID_PHONE, NAMA_BRAND, NAMA_HANDPHONE, DESKRIPSI, HARGA, STOK FROM PHONES JOIN BRAND USING (ID_BRAND) WHERE STOK = 0 AND (LOWER(NAMA_HANDPHONE) LIKE ? OR LOWER(NAMA_BRAND) LIKE ?)";
+    public static String sqlFilterPhone(String filteredQuery) {
+        return "SELECT ID_PHONE, NAMA_BRAND, NAMA_HANDPHONE, DESKRIPSI, HARGA, STOK FROM PHONES JOIN BRAND USING (ID_BRAND) WHERE " + filteredQuery + " (LOWER(NAMA_HANDPHONE) LIKE ? OR LOWER(NAMA_BRAND) LIKE ?)";
+    }
 }

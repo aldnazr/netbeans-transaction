@@ -64,16 +64,15 @@ public class DaftarHandphone extends javax.swing.JInternalFrame {
     }
 
     private void setTableRow() {
-        query = switch (cbFilter.getSelectedIndex()) {
-            case 1 ->
-                Variable.sqlFilterPhoneAvailable;
-            case 2 ->
-                Variable.sqlFilterPhoneNotAvailable;
-            default ->
-                Variable.sqlFilterPhone;
-        };
-
         try {
+            query = switch (cbFilter.getSelectedIndex()) {
+                case 1 ->
+                    Variable.sqlFilterPhone("(STOK > 0) AND");
+                case 2 ->
+                    Variable.sqlFilterPhone("(STOK = 0) AND");
+                default ->
+                    Variable.sqlFilterPhone("");
+            };
             pstat = connection.prepareStatement(query);
             pstat.setString(1, "%" + tfPencarian.getText().toLowerCase() + "%");
             pstat.setString(2, "%" + tfPencarian.getText().toLowerCase() + "%");
