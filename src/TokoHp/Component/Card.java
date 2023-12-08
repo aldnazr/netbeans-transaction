@@ -7,7 +7,7 @@ import javax.swing.JPanel;
 
 public class Card extends JPanel {
 
-    private int corner = 18;
+    private int corner = 20;
 
     public int getCorner() {
         return corner;

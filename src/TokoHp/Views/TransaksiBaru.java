@@ -17,6 +17,7 @@ public class TransaksiBaru extends javax.swing.JInternalFrame {
     PreparedStatement pstat;
     private String query;
     ResultSet rset;
+    Statement statement;
     private int rsetInt;
     DefaultTableModel modelTbCheckout;
     DefaultTableModel modelTbListHp;
@@ -29,7 +30,6 @@ public class TransaksiBaru extends javax.swing.JInternalFrame {
 
     private void init() {
         String icon = !Variable.isDarkTheme() ? "TokoHp/Icons/trash.svg" : "TokoHp/Icons/trash_dark.svg";
-        setClosable(true);
         connection = Variable.koneksi();
         disableEditableAndVisible();
         setTableCheckout();
@@ -37,7 +37,7 @@ public class TransaksiBaru extends javax.swing.JInternalFrame {
         Variable.setActiveIDUser(textIdKaryawan);
         Variable.setPlaceholderTextfield(tfPencarian, "Cari");
         Variable.setPlaceholderTextfield(tfNamaPelanggan, "Masukkan nama pembeli");
-        Variable.setLabelFont(jLabel8);
+        Variable.setFontTitle(jLabel8);
         Variable.setSearchFieldIcon(tfPencarian);
         btKosongkan.setIcon(new FlatSVGIcon(icon));
     }
@@ -89,10 +89,30 @@ public class TransaksiBaru extends javax.swing.JInternalFrame {
         textStokTersedia.setText(" ");
     }
 
-    void setSpinnerValue(int maximumValue) {
+    private void setSpinnerValue(int maximumValue) {
         int minValue = maximumValue > 0 ? 1 : 0;
         SpinnerModel spinnerModel = new SpinnerNumberModel(minValue, minValue, maximumValue, minValue);
         spJumlah.setModel(spinnerModel);
+    }
+
+    private void setSpinnerValue(String id, int stok) {
+        int maximumValue = 0;
+        query = "SELECT STOK FROM phones WHERE ID_PHONE = " + id;
+
+        try {
+            statement = connection.createStatement();
+            rset = statement.executeQuery(query);
+            if (rset.next()) {
+                maximumValue = rset.getInt(1);
+            }
+        } catch (SQLException ex) {
+            System.err.println(ex.getMessage());
+        }
+
+        int minValue = maximumValue > 0 ? 1 : 0;
+        SpinnerModel spinnerModel = new SpinnerNumberModel(stok, minValue, maximumValue, minValue);
+        spJumlah.setModel(spinnerModel);
+        textStokTersedia.setText("Stok tersedia: " + maximumValue);
     }
 
     private void kalkulasiTotal() {
@@ -166,22 +186,17 @@ public class TransaksiBaru extends javax.swing.JInternalFrame {
         int selectedRow = tbCheckout.getSelectedRow();
         String id, phoneName, harga;
         int stok;
-        boolean isRowSelected;
 
         if (selectedRow >= 0) {
-            isRowSelected = (boolean) tbCheckout.getValueAt(selectedRow, 0);
             id = tbCheckout.getValueAt(selectedRow, 1).toString();
             phoneName = tbCheckout.getValueAt(selectedRow, 2).toString();
             stok = Integer.parseInt(tbCheckout.getValueAt(selectedRow, 3).toString());
             harga = tbCheckout.getValueAt(selectedRow, 4).toString();
 
-//            Debug
-//            System.out.println(isSelected + " " + id + " " + "RowCount: " + (tbCheckout.getRowCount() - 1) + " SelectedRow: " + selectedRow);
             textIdHp.setText(id);
             tfNamaHp.setText(phoneName);
             tfHargaItem.setText(Variable.stringToNumber(harga));
-            setSpinnerValue(stok);
-            textStokTersedia.setText("Stok tersedia: " + stok);
+            setSpinnerValue(id, stok);
         }
     }
 

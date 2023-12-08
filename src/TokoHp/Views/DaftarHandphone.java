@@ -35,7 +35,7 @@ public class DaftarHandphone extends javax.swing.JInternalFrame {
         Variable.setPlaceholderTextfield(tfPencarian, "Cari");
         Variable.setSearchFieldIcon(tfPencarian);
         textIdBrand.setVisible(false);
-        Variable.setLabelFont(jLabel9);
+        Variable.setFontTitle(jLabel9);
     }
 
     private void setComboBoxFilter() {

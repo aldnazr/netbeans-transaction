@@ -29,7 +29,7 @@ public class LoginPanel extends javax.swing.JFrame {
         tfUser.putClientProperty(FlatClientProperties.PLACEHOLDER_TEXT, "Masukkan username/email");
         tfUser.putClientProperty(FlatClientProperties.TEXT_FIELD_SHOW_CLEAR_BUTTON, true);
         passwordField.putClientProperty(FlatClientProperties.PLACEHOLDER_TEXT, "Masukkan password");
-        Variable.setLabelFont(jLabel3);
+        Variable.setFontTitle(jLabel3);
     }
 
     public static void main(String args[]) {

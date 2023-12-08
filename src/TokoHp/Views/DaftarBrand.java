@@ -26,7 +26,7 @@ public class DaftarBrand extends javax.swing.JInternalFrame {
         read();
         Variable.setPlaceholderTextfield(tfPencarian, "Cari");
         textIdBrand.putClientProperty(FlatClientProperties.TEXT_FIELD_SHOW_CLEAR_BUTTON, true);
-        Variable.setLabelFont(jLabel1);
+        Variable.setFontTitle(jLabel1);
         Variable.setSearchFieldIcon(tfPencarian);
         tfNamaBrand.setColumns(10);
     }

@@ -34,11 +34,6 @@ public class Variable {
         FlatAnimatedLafChange.hideSnapshotWithAnimation();
     }
 
-    public static void labelTitleCard(JLabel title, JLabel subtitle) {
-        title.putClientProperty(FlatClientProperties.STYLE, "font:$h2.font");
-        subtitle.putClientProperty(FlatClientProperties.STYLE, "font:$h3.font");
-    }
-
     public static void setDarkTheme() {
         FlatAnimatedLafChange.showSnapshot();
         FlatMacDarkLaf.setup();
@@ -52,7 +47,7 @@ public class Variable {
         return FlatLaf.isLafDark();
     }
 
-    public static void setLabelFont(JLabel label) {
+    public static void setFontTitle(JLabel label) {
         label.putClientProperty(FlatClientProperties.STYLE, "font:$h1.font");
     }
 
@@ -157,6 +152,7 @@ public class Variable {
 
         return dateChooserTextField;
     }
+
     public static String sqlRiwayatTransaksi = "SELECT T.ID_TRANSAKSI, USR.NAMA_LENGKAP AS PELAYAN, T.NAMA_PELANGGAN, T.TANGGAL, BR.NAMA_BRAND, PH.NAMA_HANDPHONE, PH.HARGA, DT.JUMLAH_PEMBELIAN, SUM(PH.HARGA * DT.JUMLAH_PEMBELIAN) AS SUBTOTAL, T.TOTAL_BAYAR FROM TRANSAKSI T JOIN DETAIL_TRANSAKSI DT ON T.ID_TRANSAKSI = DT.ID_TRANSAKSI JOIN USERS USR ON T.ID_USER = USR.ID_USER JOIN PHONES PH ON DT.ID_PHONE = PH.ID_PHONE JOIN BRAND BR ON PH.ID_BRAND = BR.ID_BRAND WHERE T.ID_TRANSAKSI LIKE ? OR LOWER(USR.NAMA_LENGKAP) LIKE ? OR LOWER(T.NAMA_PELANGGAN) LIKE ? OR TO_CHAR(T.TANGGAL, 'YYYY-MM-DD HH24:MI:SS') LIKE ? GROUP BY T.ID_TRANSAKSI, USR.NAMA_LENGKAP, T.NAMA_PELANGGAN, T.TANGGAL, BR.NAMA_BRAND, PH.NAMA_HANDPHONE, PH.HARGA, DT.JUMLAH_PEMBELIAN, T.TOTAL_BAYAR ORDER BY T.ID_TRANSAKSI DESC";
 
     public static String sqlTableDaftarHP = "select id_phone, nama_brand, nama_handphone, stok, harga from phones join brand using (id_brand) where stok > 0 AND LOWER(nama_brand) LIKE ? OR LOWER(nama_handphone) LIKE ?";

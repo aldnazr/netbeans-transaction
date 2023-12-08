@@ -3,9 +3,12 @@ package TokoHp.Views;
 import TokoHp.Main.MainFrame;
 import TokoHp.Objects.Variable;
 import static TokoHp.Objects.Variable.koneksi;
+import com.formdev.flatlaf.fonts.roboto.FlatRobotoFont;
 import java.awt.Color;
+import java.awt.Font;
 import java.sql.*;
 import javax.swing.JFrame;
+import javax.swing.JLabel;
 import javax.swing.SwingUtilities;
 import raven.alerts.MessageAlerts;
 import raven.popup.component.PopupController;
@@ -23,7 +26,6 @@ public class ProfileUser extends javax.swing.JInternalFrame {
     }
 
     private void init() {
-        setClosable(true);
         connection = koneksi();
         Variable.setActiveIDUser(textIdUser);
         textIdUser.setVisible(false);
@@ -31,9 +33,17 @@ public class ProfileUser extends javax.swing.JInternalFrame {
         read();
         Variable.setPasswordFieldRevealButton(pwField);
         Variable.disableDateTextfield(dateChooser);
-        Variable.setLabelFont(jLabel10);
-        card1.setCorner(32);
+        Variable.setFontTitle(jLabel10);
+        card1.setCorner(34);
         card1.setForeground(!Variable.isDarkTheme() ? Color.decode("#D8D8DC") : Color.decode("#363638"));
+        JLabel[] labels = {jLabel2, jLabel3, jLabel4, jLabel5, jLabel6, jLabel7, jLabel8, jLabel9};
+        setFontSubLabel(labels);
+    }
+
+    private void setFontSubLabel(JLabel[] labels) {
+        for (JLabel label : labels) {
+            label.setFont(new Font(FlatRobotoFont.FAMILY, Font.BOLD, 15));
+        }
     }
 
     private void setButtongroup() {

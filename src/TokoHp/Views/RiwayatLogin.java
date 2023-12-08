@@ -18,7 +18,7 @@ public class RiwayatLogin extends javax.swing.JInternalFrame {
     private void init() {
         connection = Variable.koneksi();
         read();
-        Variable.setLabelFont(jLabel1);
+        Variable.setFontTitle(jLabel1);
         Variable.setPlaceholderTextfield(tfPencarian, "Cari");
         Variable.setSearchFieldIcon(tfPencarian);
     }
