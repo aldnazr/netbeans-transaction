@@ -554,8 +554,8 @@ public class DaftarKaryawan extends javax.swing.JInternalFrame {
     }//GEN-LAST:event_btUpdateActionPerformed
 
     private void btDeleteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btDeleteActionPerformed
-        if (textIdKaryawan.getText().isEmpty()) {
-            Variable.popUpErrorMessage("Produk Belum Dipilih", "Maaf, pilih produk yang ingin Anda hapus sebelum melanjutkan. Pastikan Anda memilih produk yang benar untuk dihapus.");
+        if (textIdKaryawan.getText().equals("0")) {
+            Variable.popUpErrorMessage("Akun Belum Dipilih", "Maaf, pilih akun yang ingin Anda hapus sebelum melanjutkan. Pastikan Anda memilih akun yang benar untuk dihapus.");
             return;
         }
 

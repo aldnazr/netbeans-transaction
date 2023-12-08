@@ -1,11 +1,7 @@
 package TokoHp.Views;
 
 import TokoHp.Objects.Variable;
-import com.formdev.flatlaf.FlatClientProperties;
-import com.formdev.flatlaf.fonts.roboto.FlatRobotoFont;
-import java.awt.Font;
 import java.sql.*;
-import javax.swing.JLabel;
 import javax.swing.table.DefaultTableModel;
 
 public class RiwayatTransaksi extends javax.swing.JInternalFrame {
@@ -26,12 +22,12 @@ public class RiwayatTransaksi extends javax.swing.JInternalFrame {
     private void init() {
         setClosable(true);
         connection = Variable.koneksi();
-        read();
         Variable.setPlaceholderTextfield(tfPencarian, "Cari");
         Variable.setSearchFieldIcon(tfPencarian);
         Variable.setFontTitle(jLabel8);
         getTransaksi();
         getTerjual();
+        setTableData();
     }
 
     private void getTransaksi() {
@@ -58,9 +54,18 @@ public class RiwayatTransaksi extends javax.swing.JInternalFrame {
         }
     }
 
-    private void read() {
+    private void setTableData() {
         try {
-            sql = Variable.sqlRiwayatTransaksi;
+            sql = switch (cbFilterDate.getSelectedIndex()) {
+                case 1 ->
+                    Variable.riwayatTransaksi("(TRUNC(T.TANGGAL) >= SYSDATE - 7) AND");
+                case 2 ->
+                    Variable.riwayatTransaksi("(TRUNC(T.TANGGAL) >= SYSDATE - 14) AND");
+                case 3 ->
+                    Variable.riwayatTransaksi("(TRUNC(T.TANGGAL) >= SYSDATE - 30) AND");
+                default ->
+                    Variable.riwayatTransaksi("");
+            };
             preparedStatement = connection.prepareStatement(sql);
             preparedStatement.setString(1, "%" + tfPencarian.getText() + "%");
             preparedStatement.setString(2, "%" + tfPencarian.getText().toLowerCase() + "%");
@@ -105,6 +110,7 @@ public class RiwayatTransaksi extends javax.swing.JInternalFrame {
         card2 = new TokoHp.Component.Card();
         labelProdukTerjual = new javax.swing.JLabel();
         jLabel2 = new javax.swing.JLabel();
+        cbFilterDate = new javax.swing.JComboBox<>();
 
         setPreferredSize(new java.awt.Dimension(1200, 740));
 
@@ -194,6 +200,13 @@ public class RiwayatTransaksi extends javax.swing.JInternalFrame {
                 .addGap(17, 17, 17))
         );
 
+        cbFilterDate.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Tanggal", "7 Hari", "14 Hari", "30 Hari" }));
+        cbFilterDate.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                cbFilterDateActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -210,6 +223,8 @@ public class RiwayatTransaksi extends javax.swing.JInternalFrame {
                         .addGap(0, 0, Short.MAX_VALUE))
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                         .addGap(0, 0, Short.MAX_VALUE)
+                        .addComponent(cbFilterDate, javax.swing.GroupLayout.PREFERRED_SIZE, 138, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addComponent(tfPencarian, javax.swing.GroupLayout.PREFERRED_SIZE, 170, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addContainerGap())
         );
@@ -218,12 +233,14 @@ public class RiwayatTransaksi extends javax.swing.JInternalFrame {
             .addGroup(layout.createSequentialGroup()
                 .addGap(29, 29, 29)
                 .addComponent(jLabel8)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 86, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 84, Short.MAX_VALUE)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addComponent(card1, javax.swing.GroupLayout.DEFAULT_SIZE, 86, Short.MAX_VALUE)
-                    .addComponent(card2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(tfPencarian, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(card2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(7, 7, 7)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(tfPencarian, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(cbFilterDate, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 435, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap())
@@ -233,12 +250,17 @@ public class RiwayatTransaksi extends javax.swing.JInternalFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void tfPencarianKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_tfPencarianKeyReleased
-        read();
+        setTableData();
     }//GEN-LAST:event_tfPencarianKeyReleased
+
+    private void cbFilterDateActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cbFilterDateActionPerformed
+        setTableData();
+    }//GEN-LAST:event_cbFilterDateActionPerformed
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private TokoHp.Component.Card card1;
     private TokoHp.Component.Card card2;
+    private javax.swing.JComboBox<String> cbFilterDate;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel8;

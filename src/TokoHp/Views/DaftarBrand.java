@@ -23,7 +23,7 @@ public class DaftarBrand extends javax.swing.JInternalFrame {
     private void init() {
         setClosable(true);
         connection = Variable.koneksi();
-        read();
+        setTable();
         Variable.setPlaceholderTextfield(tfPencarian, "Cari");
         textIdBrand.putClientProperty(FlatClientProperties.TEXT_FIELD_SHOW_CLEAR_BUTTON, true);
         Variable.setFontTitle(jLabel1);
@@ -31,7 +31,7 @@ public class DaftarBrand extends javax.swing.JInternalFrame {
         tfNamaBrand.setColumns(10);
     }
 
-    private void read() {
+    private void setTable() {
         tableModel = (DefaultTableModel) table.getModel();
         try {
             query = "SELECT * FROM BRAND WHERE LOWER(NAMA_BRAND) LIKE ?";
@@ -65,7 +65,7 @@ public class DaftarBrand extends javax.swing.JInternalFrame {
 
             if (rsetInt >= 0) {
                 Variable.popUpSuccessMessage("Berhasil", "Berhasil ditambah");
-                read();
+                setTable();
             } else {
                 Variable.popUpErrorMessage("Error", "Data gagal ditambah");
             }
@@ -88,7 +88,7 @@ public class DaftarBrand extends javax.swing.JInternalFrame {
 
             if (rsetInt >= 0) {
                 Variable.popUpSuccessMessage("Berhasil", "Data berhasil diupdate");
-                read();
+                setTable();
             } else {
                 Variable.popUpErrorMessage("Error", "Data gagal diupdate");
             }
@@ -108,7 +108,7 @@ public class DaftarBrand extends javax.swing.JInternalFrame {
 
             if (rsetInt > 0) {
                 Variable.popUpSuccessMessage("Berhasil", "Data berhasil dihapus");
-                read();
+                setTable();
             } else {
                 Variable.popUpErrorMessage("Error", "Tidak ada data yang dihapus");
             }
@@ -136,7 +136,12 @@ public class DaftarBrand extends javax.swing.JInternalFrame {
         textIdBrand.setText("");
         tfNamaBrand.setText("");
         tfPencarian.setText("");
-        read();
+        setTable();
+    }
+
+    private boolean checkInput() {
+        return textIdBrand.getText().equals("0")
+                || tfNamaBrand.getText().isEmpty();
     }
 
     @SuppressWarnings("unchecked")
@@ -311,30 +316,31 @@ public class DaftarBrand extends javax.swing.JInternalFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void btTambahActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btTambahActionPerformed
-        if (tfNamaBrand.getText().isEmpty()) {
-            Variable.popUpErrorMessage("Error", "Tidak ada data ditambah");
+        if (checkInput()) {
+            Variable.popUpErrorMessage("Kesalahan Pengisian Formulir", "Mohon lengkapi semua bagian formulir sebelum melanjutkan. Pastikan setiap kolom terisi dengan informasi yang diperlukan.");
             return;
         }
         tambahBrand();
     }//GEN-LAST:event_btTambahActionPerformed
 
     private void btDeleteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btDeleteActionPerformed
-        if (textIdBrand.getText().isEmpty()) {
-            Variable.popUpErrorMessage("Error", "Tidak ada data dihapus");
+        if (textIdBrand.getText().equals("0")) {
+            Variable.popUpErrorMessage("Brand Belum Dipilih", "Maaf, pilih brand yang ingin Anda hapus sebelum melanjutkan. Pastikan Anda memilih brand yang benar untuk dihapus.");
             return;
         }
         deleteBrand();
     }//GEN-LAST:event_btDeleteActionPerformed
 
     private void btUpdateActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btUpdateActionPerformed
-        if (tfNamaBrand.getText().isEmpty()) {
-            Variable.popUpErrorMessage("Error", "Data gagal diupdate");
+        if (checkInput()) {
+            Variable.popUpErrorMessage("Kesalahan Pengisian Formulir", "Mohon lengkapi semua bagian formulir sebelum melanjutkan. Pastikan setiap kolom terisi dengan informasi yang diperlukan.");
+            return;
         }
         updateBrand();
     }//GEN-LAST:event_btUpdateActionPerformed
 
     private void tfPencarianKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_tfPencarianKeyReleased
-        read();
+        setTable();
     }//GEN-LAST:event_tfPencarianKeyReleased
 
     private void tableMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tableMouseClicked
@@ -347,7 +353,7 @@ public class DaftarBrand extends javax.swing.JInternalFrame {
 
     private void btDelete1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btDelete1ActionPerformed
         clearText();
-        read();
+        setTable();
     }//GEN-LAST:event_btDelete1ActionPerformed
 
     // Variables declaration - do not modify//GEN-BEGIN:variables

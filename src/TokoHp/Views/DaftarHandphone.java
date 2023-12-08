@@ -40,8 +40,8 @@ public class DaftarHandphone extends javax.swing.JInternalFrame {
 
     private void setComboBoxFilter() {
         cbFilter.addItem("Stok");
-        cbFilter.addItem("Stok: Tersedia");
-        cbFilter.addItem("Stok: Tidak Tersedia");
+        cbFilter.addItem("Tersedia");
+        cbFilter.addItem("Tidak Tersedia");
     }
 
     private void setComboBoxBrand() {
@@ -395,7 +395,7 @@ public class DaftarHandphone extends javax.swing.JInternalFrame {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 172, Short.MAX_VALUE)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                        .addComponent(cbFilter, javax.swing.GroupLayout.PREFERRED_SIZE, 160, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(cbFilter, javax.swing.GroupLayout.PREFERRED_SIZE, 130, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addComponent(tfPencarian, javax.swing.GroupLayout.PREFERRED_SIZE, 170, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addComponent(jScrollPane1, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 730, javax.swing.GroupLayout.PREFERRED_SIZE))
@@ -458,15 +458,16 @@ public class DaftarHandphone extends javax.swing.JInternalFrame {
 
     private void btUpdateActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btUpdateActionPerformed
         if (cekInput()) {
-            Variable.popUpErrorMessage("Error", "Data gagal diupdate");
+            Variable.popUpErrorMessage("Kesalahan Pengisian Formulir", "Mohon lengkapi semua bagian formulir sebelum melanjutkan. Pastikan setiap kolom terisi dengan informasi yang diperlukan.");
+            return;
         }
         updateHp();
         setTableRow();
     }//GEN-LAST:event_btUpdateActionPerformed
 
     private void btDeleteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btDeleteActionPerformed
-        if (textIdHp.getText().isEmpty()) {
-            Variable.popUpErrorMessage("Error", "Tidak ada data dihapus");
+        if (textIdHp.getText().equals("0")) {
+            Variable.popUpErrorMessage("Produk Belum Dipilih", "Maaf, pilih produk yang ingin Anda hapus sebelum melanjutkan. Pastikan Anda memilih produk yang benar untuk dihapus.");
             return;
         }
         deleteHp();
@@ -480,7 +481,7 @@ public class DaftarHandphone extends javax.swing.JInternalFrame {
 
     private void btTambahActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btTambahActionPerformed
         if (cekInput()) {
-            Variable.popUpErrorMessage("Error", "Tidak ada data ditambah");
+            Variable.popUpErrorMessage("Kesalahan Pengisian Formulir", "Mohon lengkapi semua bagian formulir sebelum melanjutkan. Pastikan setiap kolom terisi dengan informasi yang diperlukan.");
             return;
         }
         tambahHp();
