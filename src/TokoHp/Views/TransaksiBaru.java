@@ -9,8 +9,6 @@ import static TokoHp.Objects.Variable.toastFailed;
 import static TokoHp.Objects.Variable.toastSuccess;
 import com.formdev.flatlaf.extras.FlatSVGIcon;
 import java.sql.*;
-import java.util.ArrayList;
-import java.util.List;
 import javax.swing.SpinnerModel;
 import javax.swing.SpinnerNumberModel;
 import javax.swing.table.DefaultTableModel;
@@ -236,7 +234,7 @@ public class TransaksiBaru extends javax.swing.JInternalFrame {
         }
 
         if (count == 0) {
-            toastFailed(count + " Barang dihapus");
+            toastFailed("Tidak ada barang dihapus");
             return;
         }
         toastSuccess(count + " Barang dihapus");
