@@ -42,7 +42,7 @@ public class ProfileUser extends javax.swing.JInternalFrame {
 
     private void setFontSubLabel(JLabel[] labels) {
         for (JLabel label : labels) {
-            label.setFont(new Font(FlatRobotoFont.FAMILY, Font.BOLD, 15));
+            label.setFont(new Font(FlatRobotoFont.FAMILY, Font.BOLD, 14));
         }
     }
 
@@ -157,7 +157,7 @@ public class ProfileUser extends javax.swing.JInternalFrame {
 
         textIdUser.setText("textIdUser");
 
-        card1.setForeground(new java.awt.Color(216, 216, 220));
+        card1.setForeground(javax.swing.UIManager.getDefaults().getColor("Button.toolbar.hoverBackground"));
 
         jLabel6.setFont(new java.awt.Font("Segoe UI", 1, 13)); // NOI18N
         jLabel6.setText("Email");
@@ -173,9 +173,9 @@ public class ProfileUser extends javax.swing.JInternalFrame {
         jLabel9.setFont(new java.awt.Font("Segoe UI", 1, 13)); // NOI18N
         jLabel9.setText("Kata sandi");
 
-        jButton1.setBackground(new java.awt.Color(10, 132, 255));
-        jButton1.setFont(new java.awt.Font("Segoe UI", 1, 13)); // NOI18N
-        jButton1.setForeground(new java.awt.Color(235, 235, 240));
+        jButton1.setBackground(javax.swing.UIManager.getDefaults().getColor("Button.default.background"));
+        jButton1.setFont(jButton1.getFont().deriveFont(jButton1.getFont().getStyle() | java.awt.Font.BOLD, 13));
+        jButton1.setForeground(javax.swing.UIManager.getDefaults().getColor("Button.default.foreground"));
         jButton1.setText("Simpan Perubahan");
         jButton1.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {

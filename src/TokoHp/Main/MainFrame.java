@@ -1,6 +1,7 @@
 package TokoHp.Main;
 
 import TokoHp.Objects.Variable;
+import static TokoHp.Objects.Variable.installSideBarAndToast;
 import TokoHp.Views.TransaksiBaru;
 import com.formdev.flatlaf.FlatClientProperties;
 import com.formdev.flatlaf.extras.FlatSVGIcon;
@@ -27,7 +28,7 @@ public class MainFrame extends javax.swing.JFrame {
         setLocationRelativeTo(null);
         menuBar.add(drawerOpenButton());
         switchFrame(new TransaksiBaru());
-        Variable.setSideBar(MainFrame.this, new DrawerNavigation(MainFrame.this));
+        installSideBarAndToast(MainFrame.this, new DrawerNavigation(MainFrame.this));
     }
 
     private JButton drawerOpenButton() {

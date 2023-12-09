@@ -1,5 +1,6 @@
 package TokoHp.Objects;
 
+import static TokoHp.Objects.Variable.toastSuccess;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -17,6 +18,7 @@ public class ShoppingCart {
             }
         }
         items.add(product);
+        toastSuccess("Ditambah ke keranjang");
     }
 
     public void updateItemQuantity(Product product, int stokBaru) {
@@ -24,6 +26,7 @@ public class ShoppingCart {
         for (Product item : items) {
             if (item.getIdProduk() == product.getIdProduk()) {
                 item.setStok(stokBaru);
+                toastSuccess("Jumlah barang diperbarui");
                 return;
             }
         }
@@ -38,7 +41,6 @@ public class ShoppingCart {
                 return;
             }
         }
-        Variable.popUpErrorMessage("Hapus item gagal", "Tidak ada produk yang dipilih, harap memilih produk dari tabel");
     }
 
     public List<Product> getItems() {

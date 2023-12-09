@@ -21,6 +21,7 @@ import raven.alerts.MessageAlerts;
 import raven.drawer.Drawer;
 import raven.drawer.component.DrawerBuilder;
 import raven.popup.GlassPanePopup;
+import raven.toast.Notifications;
 
 public class Variable {
 
@@ -89,9 +90,18 @@ public class Variable {
         return number.intValue();
     }
 
-    public static void setSideBar(JFrame jFrame, DrawerBuilder drawerBuilder) {
+    public static void installSideBarAndToast(JFrame jFrame, DrawerBuilder drawerBuilder) {
         GlassPanePopup.install(jFrame);
         Drawer.getInstance().setDrawerBuilder(drawerBuilder);
+        Notifications.getInstance().setJFrame(jFrame);
+    }
+
+    public static void toastSuccess(String message) {
+        Notifications.getInstance().show(Notifications.Type.SUCCESS, Notifications.Location.TOP_RIGHT, message);
+    }
+
+    public static void toastFailed(String message) {
+        Notifications.getInstance().show(Notifications.Type.ERROR, Notifications.Location.TOP_RIGHT, message);
     }
 
     public static void setActiveIDUser(JLabel textIdUser) {

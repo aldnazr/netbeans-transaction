@@ -350,7 +350,7 @@ public class DaftarKaryawan extends javax.swing.JInternalFrame {
             }
         });
 
-        btTambah.setBackground(new java.awt.Color(10, 132, 255));
+        btTambah.setBackground(javax.swing.UIManager.getDefaults().getColor("Button.default.background"));
         btTambah.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
         btTambah.setForeground(new java.awt.Color(235, 235, 240));
         btTambah.setText("Tambah");
@@ -360,7 +360,7 @@ public class DaftarKaryawan extends javax.swing.JInternalFrame {
             }
         });
 
-        btUpdate.setBackground(new java.awt.Color(10, 132, 255));
+        btUpdate.setBackground(javax.swing.UIManager.getDefaults().getColor("Button.default.background"));
         btUpdate.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
         btUpdate.setForeground(new java.awt.Color(235, 235, 240));
         btUpdate.setText("Update");

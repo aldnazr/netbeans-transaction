@@ -309,7 +309,7 @@
     <Component class="javax.swing.JButton" name="btTambah">
       <Properties>
         <Property name="background" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
-          <Color blue="ff" green="84" red="a" type="rgb"/>
+          <Color blue="ff" green="7a" id="Button.default.background" palette="3" red="0" type="palette"/>
         </Property>
         <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
           <Font name="Segoe UI" size="12" style="1"/>
@@ -326,7 +326,7 @@
     <Component class="javax.swing.JButton" name="btUpdate">
       <Properties>
         <Property name="background" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
-          <Color blue="ff" green="84" red="a" type="rgb"/>
+          <Color blue="ff" green="7a" id="Button.default.background" palette="3" red="0" type="palette"/>
         </Property>
         <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
           <Font name="Segoe UI" size="12" style="1"/>
