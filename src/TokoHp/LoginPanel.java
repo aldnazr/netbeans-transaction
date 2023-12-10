@@ -3,7 +3,9 @@ package TokoHp;
 import TokoHp.Main.MainFrame;
 import TokoHp.Objects.Variable;
 import com.formdev.flatlaf.FlatClientProperties;
+import com.formdev.flatlaf.fonts.roboto.FlatRobotoFont;
 import java.awt.EventQueue;
+import java.awt.Font;
 import java.sql.*;
 import javax.swing.JOptionPane;
 
@@ -29,7 +31,9 @@ public class LoginPanel extends javax.swing.JFrame {
         tfUser.putClientProperty(FlatClientProperties.PLACEHOLDER_TEXT, "Masukkan username/email");
         tfUser.putClientProperty(FlatClientProperties.TEXT_FIELD_SHOW_CLEAR_BUTTON, true);
         passwordField.putClientProperty(FlatClientProperties.PLACEHOLDER_TEXT, "Masukkan password");
-        Variable.setFontTitle(jLabel3);
+//        Variable.setFontTitle(jLabel3);
+        jLabel3.setFont(new Font(FlatRobotoFont.STYLE_BOLD, Font.BOLD, 24) {
+        });
     }
 
     public static void main(String args[]) {
@@ -148,7 +152,7 @@ public class LoginPanel extends javax.swing.JFrame {
         btLogin.setBackground(javax.swing.UIManager.getDefaults().getColor("Button.default.background"));
         btLogin.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
         btLogin.setForeground(new java.awt.Color(235, 235, 240));
-        btLogin.setText("LOGIN");
+        btLogin.setText("SIGN IN");
         btLogin.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btLoginActionPerformed(evt);
@@ -167,14 +171,14 @@ public class LoginPanel extends javax.swing.JFrame {
                     .addComponent(jLabel1, javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(tfUser, javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(btLogin, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.PREFERRED_SIZE, 240, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(126, 126, 126))
+                .addGap(128, 128, 128))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addGap(17, 17, 17)
                 .addComponent(jLabel3)
-                .addGap(34, 34, 34)
+                .addGap(35, 35, 35)
                 .addComponent(jLabel1)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(tfUser, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -184,7 +188,7 @@ public class LoginPanel extends javax.swing.JFrame {
                 .addComponent(passwordField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(26, 26, 26)
                 .addComponent(btLogin, javax.swing.GroupLayout.PREFERRED_SIZE, 34, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(71, Short.MAX_VALUE))
+                .addContainerGap(70, Short.MAX_VALUE))
         );
 
         pack();

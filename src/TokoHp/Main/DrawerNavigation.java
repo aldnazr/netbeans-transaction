@@ -138,9 +138,6 @@ public class DrawerNavigation extends SimpleDrawerBuilder {
                                 mainFrame.dispose();
                                 new MainFrame().setVisible(true);
                             });
-
-//                            mainFrame.dispose();
-//                            new MainFrame().setVisible(true);
                         }
                         case 4 -> {
                             mainFrame.dispose();
