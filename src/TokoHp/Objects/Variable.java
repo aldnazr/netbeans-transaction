@@ -104,6 +104,10 @@ public class Variable {
         Notifications.getInstance().show(Notifications.Type.ERROR, Notifications.Location.TOP_RIGHT, message);
     }
 
+    public static void toastInfo(String message) {
+        Notifications.getInstance().show(Notifications.Type.INFO, Notifications.Location.TOP_RIGHT, message);
+    }
+
     public static void setActiveIDUser(JLabel textIdUser) {
         Connection connection = koneksi();
         String sql;

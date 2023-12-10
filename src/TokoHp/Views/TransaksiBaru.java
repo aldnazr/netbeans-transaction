@@ -6,6 +6,7 @@ import TokoHp.Objects.Variable;
 import static TokoHp.Objects.Variable.popUpErrorMessage;
 import static TokoHp.Objects.Variable.popUpSuccessMessage;
 import static TokoHp.Objects.Variable.toastFailed;
+import static TokoHp.Objects.Variable.toastInfo;
 import static TokoHp.Objects.Variable.toastSuccess;
 import com.formdev.flatlaf.extras.FlatSVGIcon;
 import java.sql.*;
@@ -619,6 +620,7 @@ public class TransaksiBaru extends javax.swing.JInternalFrame {
     private void btClearTextActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btClearTextActionPerformed
         clearText();
         disableEditableAndVisible();
+        toastInfo("Semua teks dibersihkan");
     }//GEN-LAST:event_btClearTextActionPerformed
 
     private void btBayarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btBayarActionPerformed
