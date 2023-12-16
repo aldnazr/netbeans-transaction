@@ -5,6 +5,7 @@ import TokoHp.Objects.ShoppingCart;
 import TokoHp.Objects.Variable;
 import static TokoHp.Objects.Variable.popUpErrorMessage;
 import static TokoHp.Objects.Variable.popUpSuccessMessage;
+import static TokoHp.Objects.Variable.stringToNumber;
 import static TokoHp.Objects.Variable.toastFailed;
 import static TokoHp.Objects.Variable.toastInfo;
 import static TokoHp.Objects.Variable.toastSuccess;
@@ -34,7 +35,7 @@ public class TransaksiBaru extends javax.swing.JInternalFrame {
     }
 
     private void init() {
-        String icon = !Variable.isDarkTheme() ? "TokoHp/Icons/trash.svg" : "TokoHp/Icons/trash_dark.svg";
+        String clearAllCheckoutIcon = !Variable.isDarkTheme() ? "TokoHp/Icons/trash.svg" : "TokoHp/Icons/trash_dark.svg";
         connection = Variable.koneksi();
         disableEditableAndVisible();
         setTableCheckout();
@@ -44,7 +45,7 @@ public class TransaksiBaru extends javax.swing.JInternalFrame {
         Variable.setPlaceholderTextfield(tfNamaPelanggan, "Masukkan nama pembeli");
         Variable.setFontTitle(jLabel8);
         Variable.setSearchFieldIcon(tfPencarian);
-        btKosongkan.setIcon(new FlatSVGIcon(icon));
+        btKosongkan.setIcon(new FlatSVGIcon(clearAllCheckoutIcon));
     }
 
     private void bayarTransaksi() {
@@ -124,21 +125,6 @@ public class TransaksiBaru extends javax.swing.JInternalFrame {
         textSubtotal.setText("Rp" + Variable.stringToNumber(String.valueOf(shoppingCart.calculateTotal())));
     }
 
-    private void setTableCheckout() {
-        modelTbCheckout = (DefaultTableModel) tbCheckout.getModel();
-        modelTbCheckout.setRowCount(0);
-
-        for (Product item : shoppingCart.getItems()) {
-            int id = item.getIdProduk();
-            String nama = item.getNamaProduk();
-            int stok = item.getStok();
-            int harga = item.getHarga();
-            Object[] data = {false, id, nama, stok, harga};
-            modelTbCheckout.addRow(data);
-        }
-        tbCheckout.setModel(modelTbCheckout);
-    }
-
     private void setTableListHp() {
         modelTbListHp = (DefaultTableModel) tbListHp.getModel();
         try {
@@ -155,7 +141,7 @@ public class TransaksiBaru extends javax.swing.JInternalFrame {
                     rset.getString(2),
                     rset.getString(3),
                     rset.getString(4),
-                    rset.getString(5)
+                    stringToNumber(rset.getString(5))
                 };
                 modelTbListHp.addRow(data);
             }
@@ -181,10 +167,27 @@ public class TransaksiBaru extends javax.swing.JInternalFrame {
 
             textIdHp.setText(id);
             tfNamaHp.setText(brand + " " + model);
-            tfHargaItem.setText(Variable.stringToNumber(harga));
+            tfHargaItem.setText(harga);
             setSpinnerValue(stok);
             textStokTersedia.setText("Stok tersedia: " + stok);
         }
+    }
+
+    private void setTableCheckout() {
+        modelTbCheckout = (DefaultTableModel) tbCheckout.getModel();
+        modelTbCheckout.setRowCount(0);
+
+        for (Product item : shoppingCart.getItems()) {
+            var id = item.getIdProduk();
+            var nama = item.getNamaProduk();
+            var stok = item.getStok();
+            var harga = item.getHarga();
+            var formatHarga = stringToNumber(String.valueOf(harga));
+
+            Object[] data = {false, id, nama, stok, formatHarga};
+            modelTbCheckout.addRow(data);
+        }
+        tbCheckout.setModel(modelTbCheckout);
     }
 
     private void getTableCheckout() {
@@ -207,7 +210,7 @@ public class TransaksiBaru extends javax.swing.JInternalFrame {
 
     private void tambahData() {
         int id = Integer.parseInt(textIdHp.getText());
-        String namaHp = tfNamaHp.getText();
+        var namaHp = tfNamaHp.getText();
         int stok = Integer.parseInt(spJumlah.getValue().toString());
         int harga = Variable.numberToInt(tfHargaItem);
         shoppingCart.addItem(new Product(id, namaHp, stok, harga));
@@ -236,9 +239,9 @@ public class TransaksiBaru extends javax.swing.JInternalFrame {
 
         if (count == 0) {
             toastFailed("Tidak ada barang dihapus");
-            return;
+        } else {
+            toastSuccess(count + " Barang dihapus");
         }
-        toastSuccess(count + " Barang dihapus");
     }
 
     private void clearText() {
@@ -316,8 +319,8 @@ public class TransaksiBaru extends javax.swing.JInternalFrame {
             tbListHp.getColumnModel().getColumn(1).setMaxWidth(150);
             tbListHp.getColumnModel().getColumn(3).setPreferredWidth(120);
             tbListHp.getColumnModel().getColumn(3).setMaxWidth(120);
-            tbListHp.getColumnModel().getColumn(4).setPreferredWidth(180);
-            tbListHp.getColumnModel().getColumn(4).setMaxWidth(180);
+            tbListHp.getColumnModel().getColumn(4).setPreferredWidth(220);
+            tbListHp.getColumnModel().getColumn(4).setMaxWidth(220);
         }
 
         btTambah.setBackground(javax.swing.UIManager.getDefaults().getColor("Button.default.background"));
@@ -620,7 +623,7 @@ public class TransaksiBaru extends javax.swing.JInternalFrame {
     private void btClearTextActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btClearTextActionPerformed
         clearText();
         disableEditableAndVisible();
-        toastInfo("Semua teks dibersihkan");
+        toastInfo("Teks dibersihkan");
     }//GEN-LAST:event_btClearTextActionPerformed
 
     private void btBayarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btBayarActionPerformed
@@ -695,4 +698,8 @@ public class TransaksiBaru extends javax.swing.JInternalFrame {
     private javax.swing.JTextField tfNamaPelanggan;
     private javax.swing.JTextField tfPencarian;
     // End of variables declaration//GEN-END:variables
+
+    private String numberToInt(Number harga) {
+        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+    }
 }

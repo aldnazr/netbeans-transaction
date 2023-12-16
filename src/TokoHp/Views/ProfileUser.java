@@ -3,9 +3,8 @@ package TokoHp.Views;
 import TokoHp.Main.MainFrame;
 import TokoHp.Objects.Variable;
 import static TokoHp.Objects.Variable.koneksi;
-import com.formdev.flatlaf.fonts.roboto.FlatRobotoFont;
+import com.formdev.flatlaf.FlatClientProperties;
 import java.awt.Color;
-import java.awt.Font;
 import java.sql.*;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
@@ -42,7 +41,7 @@ public class ProfileUser extends javax.swing.JInternalFrame {
 
     private void setFontSubLabel(JLabel[] labels) {
         for (JLabel label : labels) {
-            label.setFont(new Font(FlatRobotoFont.FAMILY, Font.BOLD, 14));
+            label.putClientProperty(FlatClientProperties.STYLE, "font:$h4.font");
         }
     }
 
@@ -96,7 +95,6 @@ public class ProfileUser extends javax.swing.JInternalFrame {
             int executeResult = pStat.executeUpdate();
 
             if (executeResult > 0) {
-//                Variable.popUpSuccessMessage("Sukses", "Profil berhasil diperbarui");
                 MessageAlerts.getInstance().showMessage("Sukses", "Profil berhasil diperbarui", MessageAlerts.MessageType.SUCCESS, MessageAlerts.DEFAULT_OPTION, (PopupController pc, int i) -> {
                     JFrame jFrame = (JFrame) SwingUtilities.getWindowAncestor(this.getDesktopPane());
                     MainFrame mainFrame = new MainFrame();

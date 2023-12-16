@@ -2,6 +2,7 @@ package TokoHp;
 
 import TokoHp.Main.MainFrame;
 import TokoHp.Objects.Variable;
+import static TokoHp.Objects.Variable.koneksi;
 import com.formdev.flatlaf.FlatClientProperties;
 import com.formdev.flatlaf.fonts.roboto.FlatRobotoFont;
 import java.awt.EventQueue;
@@ -25,7 +26,7 @@ public class LoginPanel extends javax.swing.JFrame {
 
     private void init() {
         setResizable(false);
-        connection = Variable.koneksi();
+        connection = koneksi();
         setLocationRelativeTo(null);
         Variable.setPasswordFieldRevealButton(passwordField);
         tfUser.putClientProperty(FlatClientProperties.PLACEHOLDER_TEXT, "Masukkan username/email");
@@ -40,7 +41,8 @@ public class LoginPanel extends javax.swing.JFrame {
         EventQueue.invokeLater(() -> {
             Variable.setLightTheme();
             new LoginPanel().setVisible(true);
-        });
+        }
+        );
     }
 
     private void checkAdmin() {

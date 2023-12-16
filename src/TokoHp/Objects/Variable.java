@@ -90,6 +90,17 @@ public class Variable {
         return number.intValue();
     }
 
+    public static int numberToInt(String numberString) {
+        NumberFormat numberFormat = NumberFormat.getInstance();
+        Number number = 0;
+        try {
+            number = numberFormat.parse(numberString);
+        } catch (ParseException ex) {
+            System.err.println(ex.getMessage());
+        }
+        return number.intValue();
+    }
+
     public static void installSideBarAndToast(JFrame jFrame, DrawerBuilder drawerBuilder) {
         GlassPanePopup.install(jFrame);
         Drawer.getInstance().setDrawerBuilder(drawerBuilder);

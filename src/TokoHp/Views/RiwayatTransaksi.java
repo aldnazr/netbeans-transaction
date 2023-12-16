@@ -10,9 +10,9 @@ public class RiwayatTransaksi extends javax.swing.JInternalFrame {
     PreparedStatement preparedStatement;
     String sql;
     ResultSet resultSet;
+    boolean executeResult;
     CallableStatement callableStatement;
-    Object[] tableColumn = {"ID TRANSAKSI", "KASIR", "NAMA PELANGGAN", "WAKTU", "BRAND", "MODEL", "HARGA PRODUK", "JUMLAH BELI", "SUBTOTAL", "TOTAL"};
-    DefaultTableModel tableModel = new DefaultTableModel(tableColumn, 0);
+    DefaultTableModel tableModel;
 
     public RiwayatTransaksi() {
         initComponents();
@@ -35,8 +35,11 @@ public class RiwayatTransaksi extends javax.swing.JInternalFrame {
             sql = "{? = call transaksiHariIni}";
             callableStatement = connection.prepareCall(sql);
             callableStatement.registerOutParameter(1, Types.INTEGER);
-            callableStatement.execute();
-            labelTransaksi.setText(String.valueOf(callableStatement.getInt(1)));
+            executeResult = callableStatement.execute();
+
+            if (executeResult) {
+                labelTransaksi.setText(String.valueOf(callableStatement.getInt(1)));
+            }
         } catch (SQLException ex) {
             System.err.println(ex.getMessage());
         }
@@ -47,14 +50,18 @@ public class RiwayatTransaksi extends javax.swing.JInternalFrame {
             sql = "{? = call terjualHariIni}";
             callableStatement = connection.prepareCall(sql);
             callableStatement.registerOutParameter(1, Types.INTEGER);
-            callableStatement.execute();
-            labelProdukTerjual.setText(String.valueOf(callableStatement.getInt(1)));
+            executeResult = callableStatement.execute();
+
+            if (executeResult) {
+                labelProdukTerjual.setText(String.valueOf(callableStatement.getInt(1)));
+            }
         } catch (SQLException ex) {
             System.err.println(ex.getMessage());
         }
     }
 
     private void setTableData() {
+        tableModel = (DefaultTableModel) tableRiwayat.getModel();
         try {
             sql = switch (cbFilterDate.getSelectedIndex()) {
                 case 1 ->
@@ -83,10 +90,10 @@ public class RiwayatTransaksi extends javax.swing.JInternalFrame {
                     resultSet.getTimestamp(4),
                     resultSet.getString(5),
                     resultSet.getString(6),
-                    resultSet.getInt(7),
+                    Variable.stringToNumber(String.valueOf(resultSet.getInt(7))),
                     resultSet.getInt(8),
-                    resultSet.getInt(9),
-                    resultSet.getInt(10)
+                    Variable.stringToNumber(String.valueOf(resultSet.getInt(9))),
+                    Variable.stringToNumber(String.valueOf(resultSet.getInt(10)))
                 };
                 tableModel.addRow(data);
             }
@@ -120,16 +127,32 @@ public class RiwayatTransaksi extends javax.swing.JInternalFrame {
 
         tableRiwayat.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null}
+                {null, null, null, null, null, null, null, null, null, null},
+                {null, null, null, null, null, null, null, null, null, null},
+                {null, null, null, null, null, null, null, null, null, null},
+                {null, null, null, null, null, null, null, null, null, null}
             },
             new String [] {
-                "Title 1", "Title 2", "Title 3", "Title 4"
+                "ID Transaksi", "Kasir", "Nama Pelanggan", "Waktu", "Brand", "Model", "Harga Per-Item", "Jumlah Pemelian", "Subtotal", "Total"
             }
-        ));
+        ) {
+            boolean[] canEdit = new boolean [] {
+                false, false, false, false, false, false, false, false, false, false
+            };
+
+            public boolean isCellEditable(int rowIndex, int columnIndex) {
+                return canEdit [columnIndex];
+            }
+        });
         jScrollPane1.setViewportView(tableRiwayat);
+        if (tableRiwayat.getColumnModel().getColumnCount() > 0) {
+            tableRiwayat.getColumnModel().getColumn(0).setPreferredWidth(80);
+            tableRiwayat.getColumnModel().getColumn(0).setMaxWidth(80);
+            tableRiwayat.getColumnModel().getColumn(1).setPreferredWidth(120);
+            tableRiwayat.getColumnModel().getColumn(1).setMaxWidth(120);
+            tableRiwayat.getColumnModel().getColumn(7).setPreferredWidth(110);
+            tableRiwayat.getColumnModel().getColumn(7).setMaxWidth(110);
+        }
 
         tfPencarian.addKeyListener(new java.awt.event.KeyAdapter() {
             public void keyReleased(java.awt.event.KeyEvent evt) {
