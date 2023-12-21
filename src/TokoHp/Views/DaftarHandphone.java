@@ -34,7 +34,6 @@ public class DaftarHandphone extends javax.swing.JInternalFrame {
         spStok.setModel(spStokModel);
         Variable.setPlaceholderTextfield(tfPencarian, "Cari");
         Variable.setSearchFieldIcon(tfPencarian);
-        textIdBrand.setVisible(false);
         Variable.setFontTitle(jLabel9);
     }
 
@@ -97,10 +96,11 @@ public class DaftarHandphone extends javax.swing.JInternalFrame {
     }
 
     private void tambahHp() {
+        int idBrand = getIDBrandFromComboBox();
         try {
             query = "INSERT INTO PHONES (ID_BRAND, NAMA_HANDPHONE, DESKRIPSI, HARGA, STOK) VALUES (?,?,?,?,?)";
             pstat = connection.prepareStatement(query);
-            pstat.setString(1, textIdBrand.getText());
+            pstat.setInt(1, idBrand);
             pstat.setString(2, tfNamaHP.getText());
             pstat.setString(3, taDeskripsi.getText());
             pstat.setInt(4, (Integer) spHarga.getValue());
@@ -121,10 +121,11 @@ public class DaftarHandphone extends javax.swing.JInternalFrame {
     }
 
     private void updateHp() {
+        int idBrand = getIDBrandFromComboBox();
         try {
             query = "UPDATE PHONES SET ID_BRAND = ?, NAMA_HANDPHONE=?, DESKRIPSI=?, HARGA=?, STOK=? WHERE ID_PHONE = ?";
             pstat = connection.prepareStatement(query);
-            pstat.setString(1, textIdBrand.getText());
+            pstat.setInt(1, idBrand);
             pstat.setString(2, tfNamaHP.getText());
             pstat.setString(3, taDeskripsi.getText());
             pstat.setInt(4, (Integer) spHarga.getValue());
@@ -183,7 +184,8 @@ public class DaftarHandphone extends javax.swing.JInternalFrame {
         }
     }
 
-    private void getIDBrandFromComboBox() {
+    private int getIDBrandFromComboBox() {
+        int resultQuery = 0;
         try {
             String cbSelectedItem = cbBrand.getSelectedItem().toString();
             query = "SELECT ID_BRAND FROM BRAND WHERE NAMA_BRAND = ?";
@@ -192,16 +194,16 @@ public class DaftarHandphone extends javax.swing.JInternalFrame {
             rset = pstat.executeQuery();
 
             if (rset.next()) {
-                textIdBrand.setText(rset.getString(1));
+                resultQuery = rset.getInt(1);
             }
         } catch (SQLException ex) {
             System.err.println(ex.getMessage());
         }
+        return resultQuery;
     }
 
     private void clearText() {
         textIdHp.setText("0");
-        textIdBrand.setText("0");
         cbBrand.setSelectedIndex(0);
         tfNamaHP.setText("");
         taDeskripsi.setText("");
@@ -234,7 +236,6 @@ public class DaftarHandphone extends javax.swing.JInternalFrame {
         spHarga = new javax.swing.JSpinner();
         jLabel5 = new javax.swing.JLabel();
         spStok = new javax.swing.JSpinner();
-        textIdBrand = new javax.swing.JLabel();
         textIdHp = new javax.swing.JLabel();
         btUpdate = new javax.swing.JButton();
         btDelete = new javax.swing.JButton();
@@ -294,8 +295,6 @@ public class DaftarHandphone extends javax.swing.JInternalFrame {
 
         jLabel5.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
         jLabel5.setText("Stok");
-
-        textIdBrand.setText("id_brand");
 
         textIdHp.setText("0");
 
@@ -365,9 +364,6 @@ public class DaftarHandphone extends javax.swing.JInternalFrame {
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addGap(0, 0, Short.MAX_VALUE)
-                .addComponent(textIdBrand))
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                 .addGap(42, 42, 42)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
@@ -404,8 +400,7 @@ public class DaftarHandphone extends javax.swing.JInternalFrame {
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
             .addGroup(layout.createSequentialGroup()
-                .addComponent(textIdBrand)
-                .addGap(40, 40, 40)
+                .addGap(56, 56, 56)
                 .addComponent(jLabel9)
                 .addGap(65, 65, 65)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
@@ -524,7 +519,6 @@ public class DaftarHandphone extends javax.swing.JInternalFrame {
     private javax.swing.JSpinner spStok;
     private javax.swing.JTextArea taDeskripsi;
     private javax.swing.JTable table;
-    private javax.swing.JLabel textIdBrand;
     private javax.swing.JLabel textIdHp;
     private javax.swing.JTextField tfNamaHP;
     private javax.swing.JTextField tfPencarian;

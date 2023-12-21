@@ -10,7 +10,7 @@ public class RiwayatTransaksi extends javax.swing.JInternalFrame {
     PreparedStatement preparedStatement;
     String sql;
     ResultSet resultSet;
-    boolean executeResult;
+    int executeResult;
     CallableStatement callableStatement;
     DefaultTableModel tableModel;
 
@@ -20,14 +20,13 @@ public class RiwayatTransaksi extends javax.swing.JInternalFrame {
     }
 
     private void init() {
-        setClosable(true);
         connection = Variable.koneksi();
         Variable.setPlaceholderTextfield(tfPencarian, "Cari");
         Variable.setSearchFieldIcon(tfPencarian);
         Variable.setFontTitle(jLabel8);
+        setTableData();
         getTransaksi();
         getTerjual();
-        setTableData();
     }
 
     private void getTransaksi() {
@@ -35,11 +34,10 @@ public class RiwayatTransaksi extends javax.swing.JInternalFrame {
             sql = "{? = call transaksiHariIni}";
             callableStatement = connection.prepareCall(sql);
             callableStatement.registerOutParameter(1, Types.INTEGER);
-            executeResult = callableStatement.execute();
+            callableStatement.execute();
+            executeResult = callableStatement.getInt(1);
 
-            if (executeResult) {
-                labelTransaksi.setText(String.valueOf(callableStatement.getInt(1)));
-            }
+            labelTransaksi.setText(String.valueOf(executeResult));
         } catch (SQLException ex) {
             System.err.println(ex.getMessage());
         }
@@ -50,11 +48,10 @@ public class RiwayatTransaksi extends javax.swing.JInternalFrame {
             sql = "{? = call terjualHariIni}";
             callableStatement = connection.prepareCall(sql);
             callableStatement.registerOutParameter(1, Types.INTEGER);
-            executeResult = callableStatement.execute();
+            callableStatement.execute();
+            executeResult = callableStatement.getInt(1);
 
-            if (executeResult) {
-                labelProdukTerjual.setText(String.valueOf(callableStatement.getInt(1)));
-            }
+            labelProdukTerjual.setText(String.valueOf(executeResult));
         } catch (SQLException ex) {
             System.err.println(ex.getMessage());
         }

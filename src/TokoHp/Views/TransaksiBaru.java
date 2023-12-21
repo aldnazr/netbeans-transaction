@@ -40,7 +40,6 @@ public class TransaksiBaru extends javax.swing.JInternalFrame {
         disableEditableAndVisible();
         setTableCheckout();
         setTableListHp();
-        Variable.setActiveIDUser(textIdKaryawan);
         Variable.setPlaceholderTextfield(tfPencarian, "Cari");
         Variable.setPlaceholderTextfield(tfNamaPelanggan, "Masukkan nama pembeli");
         Variable.setFontTitle(jLabel8);
@@ -50,10 +49,11 @@ public class TransaksiBaru extends javax.swing.JInternalFrame {
 
     private void bayarTransaksi() {
         Timestamp timestamp = new Timestamp(System.currentTimeMillis());
+        int activeUserId = Variable.getActiveUserId();
         try {
             query = "INSERT INTO transaksi (ID_USER, NAMA_PELANGGAN, TANGGAL, TOTAL_BAYAR) VALUES (?,?,?,?)";
             pstat = connection.prepareStatement(query);
-            pstat.setInt(1, Integer.parseInt(textIdKaryawan.getText()));
+            pstat.setInt(1, activeUserId);
             pstat.setString(2, tfNamaPelanggan.getText());
             pstat.setTimestamp(3, timestamp);
             pstat.setInt(4, shoppingCart.calculateTotal());
@@ -89,7 +89,6 @@ public class TransaksiBaru extends javax.swing.JInternalFrame {
     }
 
     private void disableEditableAndVisible() {
-        textIdKaryawan.setVisible(false);
         tfNamaHp.setEditable(false);
         tfHargaItem.setEditable(false);
         textStokTersedia.setText(" ");
@@ -277,7 +276,6 @@ public class TransaksiBaru extends javax.swing.JInternalFrame {
         btHapus = new javax.swing.JButton();
         btClearText = new javax.swing.JButton();
         tfNamaPelanggan = new javax.swing.JTextField();
-        textIdKaryawan = new javax.swing.JLabel();
         jLabel8 = new javax.swing.JLabel();
         textSubtotal = new javax.swing.JLabel();
         tfHargaItem = new javax.swing.JTextField();
@@ -446,8 +444,6 @@ public class TransaksiBaru extends javax.swing.JInternalFrame {
             }
         });
 
-        textIdKaryawan.setText("idKaryawan");
-
         jLabel8.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
         jLabel8.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         jLabel8.setText("TRANSAKSI");
@@ -497,20 +493,17 @@ public class TransaksiBaru extends javax.swing.JInternalFrame {
                                 .addComponent(btTambah, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
                         .addGap(187, 187, 187)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                                .addComponent(jLabel5)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                .addComponent(textIdKaryawan))
                             .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 738, Short.MAX_VALUE)
-                            .addGroup(layout.createSequentialGroup()
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(btBayar, javax.swing.GroupLayout.PREFERRED_SIZE, 210, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addComponent(tfNamaPelanggan, javax.swing.GroupLayout.PREFERRED_SIZE, 210, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                .addGap(0, 0, Short.MAX_VALUE))
                             .addGroup(layout.createSequentialGroup()
                                 .addComponent(textSubtotal)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                .addComponent(btKosongkan))))
+                                .addComponent(btKosongkan))
+                            .addGroup(layout.createSequentialGroup()
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(jLabel5)
+                                    .addComponent(btBayar, javax.swing.GroupLayout.PREFERRED_SIZE, 210, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(tfNamaPelanggan, javax.swing.GroupLayout.PREFERRED_SIZE, 210, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                .addGap(0, 0, Short.MAX_VALUE))))
                     .addGroup(layout.createSequentialGroup()
                         .addContainerGap()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -529,9 +522,7 @@ public class TransaksiBaru extends javax.swing.JInternalFrame {
                 .addContainerGap()
                 .addComponent(jLabel8)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 8, Short.MAX_VALUE)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(textIdKaryawan)
-                    .addComponent(jLabel5))
+                .addComponent(jLabel5)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                     .addGroup(layout.createSequentialGroup()
@@ -690,7 +681,6 @@ public class TransaksiBaru extends javax.swing.JInternalFrame {
     private javax.swing.JTable tbCheckout;
     private javax.swing.JTable tbListHp;
     private javax.swing.JLabel textIdHp;
-    private javax.swing.JLabel textIdKaryawan;
     private javax.swing.JLabel textStokTersedia;
     private javax.swing.JLabel textSubtotal;
     private javax.swing.JTextField tfHargaItem;

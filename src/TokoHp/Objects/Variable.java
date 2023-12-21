@@ -119,22 +119,24 @@ public class Variable {
         Notifications.getInstance().show(Notifications.Type.INFO, Notifications.Location.TOP_RIGHT, message);
     }
 
-    public static void setActiveIDUser(JLabel textIdUser) {
+    public static int getActiveUserId() {
         Connection connection = koneksi();
         String sql;
         Statement stat;
         ResultSet rSet;
+        int resultQuery = 0;
         try {
             sql = "SELECT ID_USER FROM SESSIONS";
             stat = connection.createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_READ_ONLY);
             rSet = stat.executeQuery(sql);
 
             if (rSet.last()) {
-                textIdUser.setText(rSet.getString(1));
+                resultQuery = rSet.getInt(1);
             }
         } catch (SQLException ex) {
             System.err.println(ex.getMessage());
         }
+        return resultQuery;
     }
 
 //    PopUp Error

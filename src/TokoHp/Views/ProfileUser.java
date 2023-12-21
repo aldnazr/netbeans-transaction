@@ -26,8 +26,6 @@ public class ProfileUser extends javax.swing.JInternalFrame {
 
     private void init() {
         connection = koneksi();
-        Variable.setActiveIDUser(textIdUser);
-        textIdUser.setVisible(false);
         setButtongroup();
         read();
         Variable.setPasswordFieldRevealButton(pwField);
@@ -51,10 +49,11 @@ public class ProfileUser extends javax.swing.JInternalFrame {
     }
 
     private void read() {
+        int activeUserId = Variable.getActiveUserId();
         try {
             sql = "SELECT NAMA_LENGKAP, TANGGAL_LAHIR, GENDER, ALAMAT, EMAIL, NO_TELP, USERNAME, PASSWORD FROM USERS WHERE ID_USER = ?";
             pStat = connection.prepareStatement(sql);
-            pStat.setString(1, textIdUser.getText());
+            pStat.setInt(1, activeUserId);
             rSet = pStat.executeQuery();
 
             if (rSet.next()) {
@@ -80,10 +79,11 @@ public class ProfileUser extends javax.swing.JInternalFrame {
         String gender = radioButtonLK.isSelected() ? radioButtonLK.getText() : radioButtonPR.getText();
         java.util.Date getDateChooser = dateChooser.getDate();
         java.sql.Date sqlDate = new java.sql.Date(getDateChooser.getTime());
+        int activeUserId = Variable.getActiveUserId();
         try {
             sql = "UPDATE USERS SET NAMA_LENGKAP = ?, TANGGAL_LAHIR = ?, GENDER = ?, ALAMAT = ?, EMAIL = ?, NO_TELP = ?, USERNAME = ?, PASSWORD = ? WHERE ID_USER = ?";
             pStat = connection.prepareStatement(sql);
-            pStat.setInt(9, Integer.parseInt(textIdUser.getText()));
+            pStat.setInt(9, activeUserId);
             pStat.setString(1, tfNama.getText());
             pStat.setDate(2, sqlDate);
             pStat.setString(3, gender);
@@ -125,7 +125,6 @@ public class ProfileUser extends javax.swing.JInternalFrame {
 
         buttonGroup = new javax.swing.ButtonGroup();
         jLabel10 = new javax.swing.JLabel();
-        textIdUser = new javax.swing.JLabel();
         card1 = new TokoHp.Component.Card();
         jLabel6 = new javax.swing.JLabel();
         radioButtonPR = new javax.swing.JRadioButton();
@@ -152,8 +151,6 @@ public class ProfileUser extends javax.swing.JInternalFrame {
         jLabel10.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
         jLabel10.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         jLabel10.setText("PENGATURAN AKUN");
-
-        textIdUser.setText("textIdUser");
 
         card1.setForeground(javax.swing.UIManager.getDefaults().getColor("Button.toolbar.hoverBackground"));
 
@@ -284,9 +281,6 @@ public class ProfileUser extends javax.swing.JInternalFrame {
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addGap(0, 0, Short.MAX_VALUE)
-                .addComponent(textIdUser))
             .addComponent(jLabel10, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
             .addGroup(layout.createSequentialGroup()
                 .addGap(262, 262, 262)
@@ -296,8 +290,7 @@ public class ProfileUser extends javax.swing.JInternalFrame {
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addComponent(textIdUser)
-                .addGap(27, 27, 27)
+                .addGap(43, 43, 43)
                 .addComponent(jLabel10)
                 .addGap(47, 47, 47)
                 .addComponent(card1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -334,7 +327,6 @@ public class ProfileUser extends javax.swing.JInternalFrame {
     private javax.swing.JRadioButton radioButtonLK;
     private javax.swing.JRadioButton radioButtonPR;
     private javax.swing.JTextArea taAlamat;
-    private javax.swing.JLabel textIdUser;
     private javax.swing.JTextField tfEmail;
     private javax.swing.JTextField tfNama;
     private javax.swing.JTextField tfPhone;
