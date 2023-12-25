@@ -42,7 +42,6 @@ public class TransaksiBaru extends javax.swing.JInternalFrame {
         setTableListHp();
         Variable.setPlaceholderTextfield(tfPencarian, "Cari");
         Variable.setPlaceholderTextfield(tfNamaPelanggan, "Masukkan nama pembeli");
-        Variable.setFontTitle(jLabel8);
         Variable.setSearchFieldIcon(tfPencarian);
         btKosongkan.setIcon(new FlatSVGIcon(clearAllCheckoutIcon));
     }
@@ -276,7 +275,6 @@ public class TransaksiBaru extends javax.swing.JInternalFrame {
         btHapus = new javax.swing.JButton();
         btClearText = new javax.swing.JButton();
         tfNamaPelanggan = new javax.swing.JTextField();
-        jLabel8 = new javax.swing.JLabel();
         textSubtotal = new javax.swing.JLabel();
         tfHargaItem = new javax.swing.JTextField();
         jLabel4 = new javax.swing.JLabel();
@@ -444,10 +442,6 @@ public class TransaksiBaru extends javax.swing.JInternalFrame {
             }
         });
 
-        jLabel8.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
-        jLabel8.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        jLabel8.setText("TRANSAKSI");
-
         textSubtotal.setFont(new java.awt.Font("Segoe UI", 1, 16)); // NOI18N
         textSubtotal.setText("Rp0");
 
@@ -514,14 +508,11 @@ public class TransaksiBaru extends javax.swing.JInternalFrame {
                                 .addComponent(tfPencarian, javax.swing.GroupLayout.PREFERRED_SIZE, 170, javax.swing.GroupLayout.PREFERRED_SIZE))
                             .addComponent(jSeparator1))))
                 .addContainerGap())
-            .addComponent(jLabel8, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(jLabel8)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 8, Short.MAX_VALUE)
+                .addContainerGap(39, Short.MAX_VALUE)
                 .addComponent(jLabel5)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
@@ -673,7 +664,6 @@ public class TransaksiBaru extends javax.swing.JInternalFrame {
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
     private javax.swing.JLabel jLabel6;
-    private javax.swing.JLabel jLabel8;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JSeparator jSeparator1;

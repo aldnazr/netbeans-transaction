@@ -23,7 +23,6 @@ public class RiwayatTransaksi extends javax.swing.JInternalFrame {
         connection = Variable.koneksi();
         Variable.setPlaceholderTextfield(tfPencarian, "Cari");
         Variable.setSearchFieldIcon(tfPencarian);
-        Variable.setFontTitle(jLabel8);
         setTableData();
         getTransaksi();
         getTerjual();
@@ -104,23 +103,18 @@ public class RiwayatTransaksi extends javax.swing.JInternalFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        jLabel8 = new javax.swing.JLabel();
         jScrollPane1 = new javax.swing.JScrollPane();
         tableRiwayat = new javax.swing.JTable();
         tfPencarian = new javax.swing.JTextField();
         card1 = new TokoHp.Component.Card();
         labelTransaksi = new javax.swing.JLabel();
         jLabel1 = new javax.swing.JLabel();
-        card2 = new TokoHp.Component.Card();
-        labelProdukTerjual = new javax.swing.JLabel();
-        jLabel2 = new javax.swing.JLabel();
         cbFilterDate = new javax.swing.JComboBox<>();
+        card3 = new TokoHp.Component.Card();
+        labelProdukTerjual = new javax.swing.JLabel();
+        jLabel3 = new javax.swing.JLabel();
 
         setPreferredSize(new java.awt.Dimension(1200, 740));
-
-        jLabel8.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
-        jLabel8.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        jLabel8.setText("RIWAYAT TRANSAKSI");
 
         tableRiwayat.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
@@ -160,11 +154,11 @@ public class RiwayatTransaksi extends javax.swing.JInternalFrame {
         card1.setForeground(new java.awt.Color(111, 131, 212));
         card1.setPreferredSize(new java.awt.Dimension(170, 82));
 
-        labelTransaksi.setFont(new java.awt.Font("Rubik Medium", 1, 22)); // NOI18N
+        labelTransaksi.setFont(new java.awt.Font("Rubik Medium", 0, 26)); // NOI18N
         labelTransaksi.setForeground(new java.awt.Color(255, 255, 255));
         labelTransaksi.setText("10");
 
-        jLabel1.setFont(new java.awt.Font("Rubik Medium", 0, 16)); // NOI18N
+        jLabel1.setFont(new java.awt.Font("Rubik Medium", 0, 18)); // NOI18N
         jLabel1.setForeground(new java.awt.Color(255, 255, 255));
         jLabel1.setText("Transaksi hari ini");
 
@@ -173,51 +167,20 @@ public class RiwayatTransaksi extends javax.swing.JInternalFrame {
         card1Layout.setHorizontalGroup(
             card1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(card1Layout.createSequentialGroup()
-                .addGap(14, 14, 14)
+                .addGap(20, 20, 20)
                 .addGroup(card1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jLabel1)
-                    .addComponent(labelTransaksi))
-                .addContainerGap(49, Short.MAX_VALUE))
+                    .addComponent(labelTransaksi)
+                    .addComponent(jLabel1))
+                .addContainerGap(74, Short.MAX_VALUE))
         );
         card1Layout.setVerticalGroup(
             card1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, card1Layout.createSequentialGroup()
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(labelTransaksi)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGap(24, 24, 24)
                 .addComponent(jLabel1)
-                .addGap(17, 17, 17))
-        );
-
-        card2.setForeground(new java.awt.Color(158, 124, 186));
-
-        labelProdukTerjual.setFont(new java.awt.Font("Rubik Medium", 1, 22)); // NOI18N
-        labelProdukTerjual.setForeground(new java.awt.Color(255, 255, 255));
-        labelProdukTerjual.setText("10");
-
-        jLabel2.setFont(new java.awt.Font("Rubik Medium", 0, 16)); // NOI18N
-        jLabel2.setForeground(new java.awt.Color(255, 255, 255));
-        jLabel2.setText("Barang terjual hari ini");
-
-        javax.swing.GroupLayout card2Layout = new javax.swing.GroupLayout(card2);
-        card2.setLayout(card2Layout);
-        card2Layout.setHorizontalGroup(
-            card2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(card2Layout.createSequentialGroup()
-                .addGap(14, 14, 14)
-                .addGroup(card2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jLabel2)
-                    .addComponent(labelProdukTerjual))
-                .addContainerGap(14, Short.MAX_VALUE))
-        );
-        card2Layout.setVerticalGroup(
-            card2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, card2Layout.createSequentialGroup()
-                .addContainerGap(17, Short.MAX_VALUE)
-                .addComponent(labelProdukTerjual)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jLabel2)
-                .addGap(17, 17, 17))
+                .addComponent(labelTransaksi)
+                .addContainerGap(24, Short.MAX_VALUE))
         );
 
         cbFilterDate.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Tanggal", "7 Hari", "14 Hari", "30 Hari" }));
@@ -227,19 +190,50 @@ public class RiwayatTransaksi extends javax.swing.JInternalFrame {
             }
         });
 
+        card3.setForeground(new java.awt.Color(111, 131, 212));
+        card3.setPreferredSize(new java.awt.Dimension(170, 82));
+
+        labelProdukTerjual.setFont(new java.awt.Font("Rubik Medium", 0, 26)); // NOI18N
+        labelProdukTerjual.setForeground(new java.awt.Color(255, 255, 255));
+        labelProdukTerjual.setText("10");
+
+        jLabel3.setFont(new java.awt.Font("Rubik Medium", 0, 18)); // NOI18N
+        jLabel3.setForeground(new java.awt.Color(255, 255, 255));
+        jLabel3.setText("Barang terjual hari ini");
+
+        javax.swing.GroupLayout card3Layout = new javax.swing.GroupLayout(card3);
+        card3.setLayout(card3Layout);
+        card3Layout.setHorizontalGroup(
+            card3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(card3Layout.createSequentialGroup()
+                .addGap(20, 20, 20)
+                .addGroup(card3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(labelProdukTerjual)
+                    .addComponent(jLabel3))
+                .addContainerGap(34, Short.MAX_VALUE))
+        );
+        card3Layout.setVerticalGroup(
+            card3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, card3Layout.createSequentialGroup()
+                .addGap(24, 24, 24)
+                .addComponent(jLabel3)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(labelProdukTerjual)
+                .addContainerGap(24, Short.MAX_VALUE))
+        );
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jLabel8, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 1176, Short.MAX_VALUE)
                     .addGroup(layout.createSequentialGroup()
-                        .addComponent(card1, javax.swing.GroupLayout.PREFERRED_SIZE, 192, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(card2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(card1, javax.swing.GroupLayout.PREFERRED_SIZE, 240, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(18, 18, 18)
+                        .addComponent(card3, javax.swing.GroupLayout.PREFERRED_SIZE, 240, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(0, 0, Short.MAX_VALUE))
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                         .addGap(0, 0, Short.MAX_VALUE)
@@ -251,12 +245,10 @@ public class RiwayatTransaksi extends javax.swing.JInternalFrame {
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addGap(29, 29, 29)
-                .addComponent(jLabel8)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 84, Short.MAX_VALUE)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(card1, javax.swing.GroupLayout.DEFAULT_SIZE, 86, Short.MAX_VALUE)
-                    .addComponent(card2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addContainerGap(116, Short.MAX_VALUE)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(card1, javax.swing.GroupLayout.PREFERRED_SIZE, 108, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(card3, javax.swing.GroupLayout.PREFERRED_SIZE, 108, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(7, 7, 7)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(tfPencarian, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -279,11 +271,10 @@ public class RiwayatTransaksi extends javax.swing.JInternalFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private TokoHp.Component.Card card1;
-    private TokoHp.Component.Card card2;
+    private TokoHp.Component.Card card3;
     private javax.swing.JComboBox<String> cbFilterDate;
     private javax.swing.JLabel jLabel1;
-    private javax.swing.JLabel jLabel2;
-    private javax.swing.JLabel jLabel8;
+    private javax.swing.JLabel jLabel3;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JLabel labelProdukTerjual;
     private javax.swing.JLabel labelTransaksi;

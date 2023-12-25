@@ -26,7 +26,6 @@ public class DaftarBrand extends javax.swing.JInternalFrame {
         setTable();
         Variable.setPlaceholderTextfield(tfPencarian, "Cari");
         textIdBrand.putClientProperty(FlatClientProperties.TEXT_FIELD_SHOW_CLEAR_BUTTON, true);
-        Variable.setFontTitle(jLabel1);
         Variable.setSearchFieldIcon(tfPencarian);
         tfNamaBrand.setColumns(10);
     }
@@ -151,7 +150,6 @@ public class DaftarBrand extends javax.swing.JInternalFrame {
         jScrollPane1 = new javax.swing.JScrollPane();
         table = new javax.swing.JTable();
         tfNamaBrand = new javax.swing.JTextField();
-        jLabel1 = new javax.swing.JLabel();
         btTambah = new javax.swing.JButton();
         btUpdate = new javax.swing.JButton();
         jLabel2 = new javax.swing.JLabel();
@@ -191,10 +189,6 @@ public class DaftarBrand extends javax.swing.JInternalFrame {
                 tfNamaBrandKeyTyped(evt);
             }
         });
-
-        jLabel1.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
-        jLabel1.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        jLabel1.setText("DAFTAR BRAND");
 
         btTambah.setBackground(javax.swing.UIManager.getDefaults().getColor("Button.default.background"));
         btTambah.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
@@ -254,7 +248,6 @@ public class DaftarBrand extends javax.swing.JInternalFrame {
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jLabel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                     .addGroup(layout.createSequentialGroup()
@@ -283,9 +276,7 @@ public class DaftarBrand extends javax.swing.JInternalFrame {
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addGap(43, 43, 43)
-                .addComponent(jLabel1)
-                .addGap(29, 29, 29)
+                .addGap(97, 97, 97)
                 .addComponent(tfPencarian, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -361,7 +352,6 @@ public class DaftarBrand extends javax.swing.JInternalFrame {
     private javax.swing.JButton btDelete1;
     private javax.swing.JButton btTambah;
     private javax.swing.JButton btUpdate;
-    private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JScrollPane jScrollPane1;

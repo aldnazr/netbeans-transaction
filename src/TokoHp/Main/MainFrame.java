@@ -27,7 +27,7 @@ public class MainFrame extends javax.swing.JFrame {
         setDefaultCloseOperation(EXIT_ON_CLOSE);
         setLocationRelativeTo(null);
         menuBar.add(drawerOpenButton());
-        switchFrame(new TransaksiBaru());
+        switchFrame(new TransaksiBaru(), "Transaksi");
         installSideBarAndToast(MainFrame.this, new DrawerNavigation(MainFrame.this));
     }
 
@@ -47,7 +47,7 @@ public class MainFrame extends javax.swing.JFrame {
         return button;
     }
 
-    public void switchFrame(JInternalFrame iFrame) {
+    public void switchFrame(JInternalFrame iFrame, String title) {
         internalFrame.dispose();
         internalFrame = iFrame;
         desktopPane.add(internalFrame);
@@ -55,6 +55,7 @@ public class MainFrame extends javax.swing.JFrame {
         BasicInternalFrameUI basicInternalFrameUI = (BasicInternalFrameUI) iFrame.getUI();
         basicInternalFrameUI.setNorthPane(null);
         iFrame.setBorder(null);
+        setTitle(title);
     }
 
     @SuppressWarnings("unchecked")

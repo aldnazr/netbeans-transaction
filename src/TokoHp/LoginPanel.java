@@ -41,8 +41,7 @@ public class LoginPanel extends javax.swing.JFrame {
         EventQueue.invokeLater(() -> {
             Variable.setLightTheme();
             new LoginPanel().setVisible(true);
-        }
-        );
+        });
     }
 
     private void checkAdmin() {
@@ -84,14 +83,15 @@ public class LoginPanel extends javax.swing.JFrame {
     }
 
     private void checkLogin() {
-        if (tfUser.getText().isEmpty() && passwordField.getPassword().length == 0) {
+        String username = tfUser.getText();
+        String password = String.valueOf(passwordField.getPassword());
+
+        if (username.isEmpty() && password.isEmpty()) {
             popUpErrorMessage("Login gagal", "Harap masukkan username dan password");
             return;
         }
-        try {
-            String username = tfUser.getText();
-            String password = String.valueOf(passwordField.getPassword());
 
+        try {
             query = "SELECT ID_USER, PASSWORD FROM USERS WHERE USERNAME = ? OR EMAIL = ?";
             pstat = connection.prepareStatement(query, ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_READ_ONLY);
             pstat.setString(1, username);

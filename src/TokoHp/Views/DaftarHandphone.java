@@ -34,7 +34,6 @@ public class DaftarHandphone extends javax.swing.JInternalFrame {
         spStok.setModel(spStokModel);
         Variable.setPlaceholderTextfield(tfPencarian, "Cari");
         Variable.setSearchFieldIcon(tfPencarian);
-        Variable.setFontTitle(jLabel9);
     }
 
     private void setComboBoxFilter() {
@@ -241,7 +240,6 @@ public class DaftarHandphone extends javax.swing.JInternalFrame {
         btDelete = new javax.swing.JButton();
         btClear = new javax.swing.JButton();
         btTambah = new javax.swing.JButton();
-        jLabel9 = new javax.swing.JLabel();
         cbBrand = new javax.swing.JComboBox<>();
         cbFilter = new javax.swing.JComboBox<>();
         jLabel6 = new javax.swing.JLabel();
@@ -340,10 +338,6 @@ public class DaftarHandphone extends javax.swing.JInternalFrame {
             }
         });
 
-        jLabel9.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
-        jLabel9.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        jLabel9.setText("DAFTAR HANDPHONE");
-
         cbBrand.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 cbBrandActionPerformed(evt);
@@ -395,14 +389,11 @@ public class DaftarHandphone extends javax.swing.JInternalFrame {
                         .addComponent(tfPencarian, javax.swing.GroupLayout.PREFERRED_SIZE, 170, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addComponent(jScrollPane1, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 730, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addContainerGap())
-            .addComponent(jLabel9, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
             .addGroup(layout.createSequentialGroup()
-                .addGap(56, 56, 56)
-                .addComponent(jLabel9)
-                .addGap(65, 65, 65)
+                .addGap(146, 146, 146)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(tfPencarian, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(cbFilter, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
@@ -511,7 +502,6 @@ public class DaftarHandphone extends javax.swing.JInternalFrame {
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
     private javax.swing.JLabel jLabel6;
-    private javax.swing.JLabel jLabel9;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JTextField jTextField1;

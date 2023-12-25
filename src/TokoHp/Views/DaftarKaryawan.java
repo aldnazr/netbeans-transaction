@@ -31,7 +31,6 @@ public class DaftarKaryawan extends javax.swing.JInternalFrame {
         Variable.setPasswordFieldRevealButton(passwordField);
         setButtonGroup();
         dateChooserTextField = Variable.disableDateTextfield(dateChooser);
-        Variable.setFontTitle(jLabel9);
         Variable.setSearchFieldIcon(tfPencarian);
         tfNamaKaryawan.setColumns(10);
     }
@@ -266,7 +265,6 @@ public class DaftarKaryawan extends javax.swing.JInternalFrame {
         jScrollPane2 = new javax.swing.JScrollPane();
         table = new javax.swing.JTable();
         tfPencarian = new javax.swing.JTextField();
-        jLabel9 = new javax.swing.JLabel();
         btClear = new javax.swing.JButton();
         btTambah = new javax.swing.JButton();
         btUpdate = new javax.swing.JButton();
@@ -335,10 +333,6 @@ public class DaftarKaryawan extends javax.swing.JInternalFrame {
                 tfPencarianKeyReleased(evt);
             }
         });
-
-        jLabel9.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
-        jLabel9.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        jLabel9.setText("DAFTAR KARYAWAN");
 
         btClear.setBackground(new java.awt.Color(142, 142, 147));
         btClear.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
@@ -413,7 +407,6 @@ public class DaftarKaryawan extends javax.swing.JInternalFrame {
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jLabel9, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
@@ -466,9 +459,7 @@ public class DaftarKaryawan extends javax.swing.JInternalFrame {
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addGap(39, 39, 39)
-                .addComponent(jLabel9)
-                .addGap(34, 34, 34)
+                .addGap(98, 98, 98)
                 .addComponent(tfPencarian, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -594,7 +585,6 @@ public class DaftarKaryawan extends javax.swing.JInternalFrame {
     private javax.swing.JLabel jLabel6;
     private javax.swing.JLabel jLabel7;
     private javax.swing.JLabel jLabel8;
-    private javax.swing.JLabel jLabel9;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JTextField jTextField4;

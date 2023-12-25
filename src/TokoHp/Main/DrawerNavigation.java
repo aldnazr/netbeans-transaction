@@ -10,12 +10,12 @@ import TokoHp.Views.RiwayatLogin;
 import TokoHp.Views.RiwayatTransaksi;
 import TokoHp.Views.TransaksiBaru;
 import java.awt.EventQueue;
+import java.sql.*;
 import raven.drawer.component.SimpleDrawerBuilder;
 import raven.drawer.component.footer.SimpleFooterData;
 import raven.drawer.component.header.SimpleHeaderData;
 import raven.drawer.component.menu.MenuAction;
 import raven.drawer.component.menu.SimpleMenuOption;
-import java.sql.*;
 
 public class DrawerNavigation extends SimpleDrawerBuilder {
 
@@ -77,23 +77,23 @@ public class DrawerNavigation extends SimpleDrawerBuilder {
                 .addMenuEvent((MenuAction action, int i, int i1) -> {
                     switch (i) {
                         case 0 ->
-                            mainFrame.switchFrame(new ProfileUser());
+                            mainFrame.switchFrame(new ProfileUser(), "Pengaturan Profil");
                         case 1 ->
-                            mainFrame.switchFrame(new TransaksiBaru());
+                            mainFrame.switchFrame(new TransaksiBaru(), "Transaksi");
                         case 2 -> {
                             switch (i1) {
                                 case 1 ->
-                                    mainFrame.switchFrame(new RiwayatTransaksi());
+                                    mainFrame.switchFrame(new RiwayatTransaksi(), "Riwayat Transaksi");
                                 case 2 ->
-                                    mainFrame.switchFrame(new RiwayatLogin());
+                                    mainFrame.switchFrame(new RiwayatLogin(), "Riwayat Login");
                             }
                         }
                         case 3 ->
-                            mainFrame.switchFrame(new DaftarKaryawan());
+                            mainFrame.switchFrame(new DaftarKaryawan(), "Daftat Karyawan");
                         case 4 ->
-                            mainFrame.switchFrame(new DaftarBrand());
+                            mainFrame.switchFrame(new DaftarBrand(), "Daftar Brand");
                         case 5 ->
-                            mainFrame.switchFrame(new DaftarHandphone());
+                            mainFrame.switchFrame(new DaftarHandphone(), "Daftar Handphone");
                         case 6 -> {
                             EventQueue.invokeLater(() -> {
                                 if (isLightMode) {
@@ -123,11 +123,11 @@ public class DrawerNavigation extends SimpleDrawerBuilder {
                 .addMenuEvent((MenuAction action, int i, int i1) -> {
                     switch (i) {
                         case 0 ->
-                            mainFrame.switchFrame(new ProfileUser());
+                            mainFrame.switchFrame(new ProfileUser(), "Pengaturan Profil");
                         case 1 ->
-                            mainFrame.switchFrame(new TransaksiBaru());
+                            mainFrame.switchFrame(new TransaksiBaru(), "Transaksi");
                         case 2 ->
-                            mainFrame.switchFrame(new RiwayatTransaksi());
+                            mainFrame.switchFrame(new RiwayatTransaksi(), "Riwayat Transaksi");
                         case 3 -> {
                             EventQueue.invokeLater(() -> {
                                 if (isLightMode) {
@@ -167,7 +167,7 @@ public class DrawerNavigation extends SimpleDrawerBuilder {
             {"~MANAJEMEN~"},
             {"Karyawan"},
             {"Brand"},
-            {"Produk"},
+            {"Handphone"},
             {"~LAINNYA~"},
             {isLightTheme ? "Dark Mode" : "Light Mode"},
             {"Logout"}
