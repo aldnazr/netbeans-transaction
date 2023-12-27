@@ -8,6 +8,7 @@ import com.formdev.flatlaf.extras.FlatSVGIcon;
 import java.awt.Insets;
 import javax.swing.JButton;
 import javax.swing.JInternalFrame;
+import javax.swing.border.EmptyBorder;
 import javax.swing.plaf.basic.BasicInternalFrameUI;
 import raven.drawer.Drawer;
 
@@ -23,6 +24,7 @@ public class MainFrame extends javax.swing.JFrame {
     private void init() {
         setResizable(false);
         setSize(1216, 780);
+        desktopPane.setBorder(new EmptyBorder(20, 20, 20, 20));
         setContentPane(desktopPane);
         setDefaultCloseOperation(EXIT_ON_CLOSE);
         setLocationRelativeTo(null);
