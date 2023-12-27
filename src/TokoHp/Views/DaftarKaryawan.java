@@ -13,7 +13,7 @@ public class DaftarKaryawan extends javax.swing.JInternalFrame {
     ResultSet rset;
     int rsetInt;
     String gender, tipeAkun;
-    String[] columntableModelValue = {"ID User", "Nama", "Tanggal lahir", "Jenis Kelamin", "Alamat", "Email", "Telepon", "Tipe akun", "Username"};
+    String[] columntableModelValue = {"ID User", "Nama", "Tanggal lahir", "Jenis Kelamin", "Alamat", "Email", "Telepon", "Jenis Akun", "Username"};
     DefaultTableModel tableModel = new DefaultTableModel(columntableModelValue, 0);
     JTextField dateChooserTextField;
 
