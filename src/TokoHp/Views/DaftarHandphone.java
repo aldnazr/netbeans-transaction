@@ -14,7 +14,7 @@ public class DaftarHandphone extends javax.swing.JInternalFrame {
     Statement stat;
     ResultSet rset;
     int rsetInt;
-    public static Object[] columnName = {"ID HP", "Brand", "Nama Handphone", "Deskripsi", "Harga", "Stok"};
+    private final Object[] columnName = {"ID Phone", "Brand", "Nama Handphone", "Deskripsi", "Harga", "Stok"};
     DefaultTableModel tableModel = new DefaultTableModel(columnName, 0);
     DefaultComboBoxModel<String> comboBoxBrand = new DefaultComboBoxModel();
     SpinnerNumberModel spHargaModel = new SpinnerNumberModel(0, 0, Integer.MAX_VALUE, 1);
