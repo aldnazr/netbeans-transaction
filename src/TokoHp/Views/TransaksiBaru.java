@@ -35,7 +35,7 @@ public class TransaksiBaru extends javax.swing.JInternalFrame {
     }
 
     private void init() {
-        String clearAllCheckoutIcon = !Variable.isDarkTheme() ? "TokoHp/Icons/trash.svg" : "TokoHp/Icons/trash_dark.svg";
+        String clearAllCheckoutIcon = !Variable.isDarkTheme() ? "TokoHp/Icons/delete.svg" : "TokoHp/Icons/delete_dark.svg";
         connection = Variable.koneksi();
         disableEditableAndVisible();
         setTableCheckout();
@@ -43,7 +43,7 @@ public class TransaksiBaru extends javax.swing.JInternalFrame {
         Variable.setPlaceholderTextfield(tfPencarian, "Cari");
         Variable.setPlaceholderTextfield(tfNamaPelanggan, "Masukkan nama pembeli");
         Variable.setSearchFieldIcon(tfPencarian);
-        btKosongkan.setIcon(new FlatSVGIcon(clearAllCheckoutIcon));
+        btKosongkan.setIcon(new FlatSVGIcon(clearAllCheckoutIcon, 1.1f));
     }
 
     private void bayarTransaksi() {
@@ -464,8 +464,8 @@ public class TransaksiBaru extends javax.swing.JInternalFrame {
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addGroup(layout.createSequentialGroup()
                         .addGap(25, 25, 25)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(layout.createSequentialGroup()
@@ -498,16 +498,16 @@ public class TransaksiBaru extends javax.swing.JInternalFrame {
                                     .addComponent(btBayar, javax.swing.GroupLayout.PREFERRED_SIZE, 210, javax.swing.GroupLayout.PREFERRED_SIZE)
                                     .addComponent(tfNamaPelanggan, javax.swing.GroupLayout.PREFERRED_SIZE, 210, javax.swing.GroupLayout.PREFERRED_SIZE))
                                 .addGap(0, 0, Short.MAX_VALUE))))
-                    .addGroup(layout.createSequentialGroup()
+                    .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
                         .addContainerGap()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(jScrollPane1)
                             .addGroup(layout.createSequentialGroup()
                                 .addComponent(jLabel3)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                .addComponent(tfPencarian, javax.swing.GroupLayout.PREFERRED_SIZE, 170, javax.swing.GroupLayout.PREFERRED_SIZE))
-                            .addComponent(jSeparator1))))
+                                .addComponent(tfPencarian, javax.swing.GroupLayout.PREFERRED_SIZE, 170, javax.swing.GroupLayout.PREFERRED_SIZE)))))
                 .addContainerGap())
+            .addComponent(jSeparator1)
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
