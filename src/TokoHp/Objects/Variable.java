@@ -126,11 +126,11 @@ public class Variable {
         ResultSet rSet;
         int resultQuery = 0;
         try {
-            sql = "SELECT ID_USER FROM SESSIONS";
-            stat = connection.createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_READ_ONLY);
+            sql = "SELECT ID_USER FROM SESSIONS WHERE ID_SESSION = (SELECT MAX(ID_SESSION) FROM SESSIONS)";
+            stat = connection.createStatement();
             rSet = stat.executeQuery(sql);
 
-            if (rSet.last()) {
+            if (rSet.next()) {
                 resultQuery = rSet.getInt(1);
             }
         } catch (SQLException ex) {

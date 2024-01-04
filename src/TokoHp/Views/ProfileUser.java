@@ -27,7 +27,7 @@ public class ProfileUser extends javax.swing.JInternalFrame {
     private void init() {
         connection = koneksi();
         setButtongroup();
-        read();
+        setForm();
         Variable.setPasswordFieldRevealButton(pwField);
         Variable.disableDateTextfield(dateChooser);
         card.setCorner(34);
@@ -47,7 +47,7 @@ public class ProfileUser extends javax.swing.JInternalFrame {
         buttonGroup.add(radioButtonPR);
     }
 
-    private void read() {
+    private void setForm() {
         int activeUserId = Variable.getActiveUserId();
         try {
             sql = "SELECT NAMA_LENGKAP, TANGGAL_LAHIR, GENDER, ALAMAT, EMAIL, NO_TELP, USERNAME, PASSWORD FROM USERS WHERE ID_USER = ?";

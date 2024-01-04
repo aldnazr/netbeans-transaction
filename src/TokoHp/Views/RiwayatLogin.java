@@ -7,7 +7,7 @@ import javax.swing.table.DefaultTableModel;
 public class RiwayatLogin extends javax.swing.JInternalFrame {
 
     Connection connection;
-    Object[] tableHead = {"ID SESSION", "ID USER", "NAMA LENGKAP", "WAKTU LOGIN"};
+    Object[] tableHead = {"ID SESSION", "ID USER", "NAMA LENGKAP", "TIPE_AKUN", "WAKTU LOGIN"};
     DefaultTableModel tableModel = new DefaultTableModel(tableHead, 0);
 
     public RiwayatLogin() {
@@ -28,7 +28,7 @@ public class RiwayatLogin extends javax.swing.JInternalFrame {
         ResultSet resultSet;
 
         try {
-            sql = "SELECT ID_SESSION, ID_USER, NAMA_LENGKAP, WAKTU_LOGIN FROM USERS JOIN SESSIONS USING(ID_USER) WHERE ID_USER LIKE ? OR LOWER(NAMA_LENGKAP) LIKE ? ORDER BY ID_SESSION DESC";
+            sql = "SELECT ID_SESSION, ID_USER, NAMA_LENGKAP, TIPE_AKUN, WAKTU_LOGIN FROM USERS JOIN SESSIONS USING(ID_USER) WHERE ID_USER LIKE ? OR LOWER(NAMA_LENGKAP) LIKE ? ORDER BY ID_SESSION DESC";
             preparedStatement = connection.prepareStatement(sql);
             preparedStatement.setString(1, "%" + tfPencarian.getText() + "%");
             preparedStatement.setString(2, "%" + tfPencarian.getText() + "%");
@@ -39,7 +39,8 @@ public class RiwayatLogin extends javax.swing.JInternalFrame {
                     resultSet.getString(1),
                     resultSet.getString(2),
                     resultSet.getString(3),
-                    resultSet.getTimestamp(4)
+                    resultSet.getString(4),
+                    resultSet.getTimestamp(5)
                 };
                 tableModel.addRow(data);
             }

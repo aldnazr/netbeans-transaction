@@ -25,25 +25,25 @@ public class DrawerNavigation extends SimpleDrawerBuilder {
         this.mainFrame = mainFrame;
     }
 
-    private boolean checkAccount() {
-        boolean isAdmin = true;
+    private boolean isLoggedAsAdmin() {
         Connection connection = Variable.koneksi();
         Statement statement;
         String sql;
         ResultSet resultSet;
 
         try {
-            sql = "SELECT TIPE_AKUN FROM SESSIONS JOIN USERS USING (ID_USER)";
-            statement = connection.createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_READ_ONLY);
+            sql = "SELECT TIPE_AKUN FROM SESSIONS JOIN USERS USING (ID_USER) WHERE ID_SESSION = (SELECT MAX(ID_SESSION) FROM SESSIONS)";
+            statement = connection.createStatement();
             resultSet = statement.executeQuery(sql);
 
-            if (resultSet.last()) {
-                isAdmin = resultSet.getString(1).equals("Admin");
+            if (resultSet.next()) {
+                System.out.println(resultSet.getString(1));
+                return resultSet.getString(1).equals("Admin");
             }
         } catch (SQLException ex) {
             System.out.println(ex.getMessage());
         }
-        return isAdmin;
+        return true;
     }
 
     private SimpleHeaderData headerData() {
@@ -54,11 +54,11 @@ public class DrawerNavigation extends SimpleDrawerBuilder {
         ResultSet resultSet;
 
         try {
-            sql = "SELECT NAMA_LENGKAP, EMAIL FROM SESSIONS JOIN USERS USING (ID_USER)";
-            statement = connection.createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_READ_ONLY);
+            sql = "SELECT NAMA_LENGKAP, EMAIL FROM SESSIONS JOIN USERS USING (ID_USER) WHERE ID_SESSION = (SELECT MAX(ID_SESSION) FROM SESSIONS)";
+            statement = connection.createStatement();
             resultSet = statement.executeQuery(sql);
 
-            if (resultSet.last()) {
+            if (resultSet.next()) {
                 simpleHeaderData.setTitle(resultSet.getString(1));
                 simpleHeaderData.setDescription(resultSet.getString(2));
             }
@@ -68,9 +68,9 @@ public class DrawerNavigation extends SimpleDrawerBuilder {
         return simpleHeaderData;
     }
 
-    private void menuAdmin(SimpleMenuOption simpleMenuOption, String[][] menuOptions, String[] icons) {
+    private SimpleMenuOption menuAdmin(String[][] menuOptions, String[] icons) {
         boolean isLightMode = !Variable.isDarkTheme();
-        simpleMenuOption
+        return new SimpleMenuOption()
                 .setMenus(menuOptions)
                 .setBaseIconPath("TokoHp/Icons")
                 .setIcons(icons)
@@ -114,9 +114,9 @@ public class DrawerNavigation extends SimpleDrawerBuilder {
                 });
     }
 
-    private void menuKaryawan(SimpleMenuOption simpleMenuOption, String[][] menuOptions, String[] icons) {
+    private SimpleMenuOption menuKaryawan(String[][] menuOptions, String[] icons) {
         boolean isLightMode = !Variable.isDarkTheme();
-        simpleMenuOption
+        return new SimpleMenuOption()
                 .setMenus(menuOptions)
                 .setBaseIconPath("TokoHp/Icons")
                 .setIcons(icons)
@@ -154,9 +154,8 @@ public class DrawerNavigation extends SimpleDrawerBuilder {
 
     @Override
     public SimpleMenuOption getSimpleMenuOption() {
-        boolean isAdmin = checkAccount();
+        boolean isAdmin = isLoggedAsAdmin();
         boolean isLightTheme = !Variable.isDarkTheme();
-        SimpleMenuOption simpleMenuOption = new SimpleMenuOption();
 
         String[][] menuOptions = {
             {"~AKUN~"},
@@ -204,11 +203,10 @@ public class DrawerNavigation extends SimpleDrawerBuilder {
         };
 
         if (isAdmin) {
-            menuAdmin(simpleMenuOption, menuOptions, icons);
+            return menuAdmin(menuOptions, icons);
         } else {
-            menuKaryawan(simpleMenuOption, menuOptionsKaryawan, iconsKaryawan);
+            return menuKaryawan(menuOptionsKaryawan, iconsKaryawan);
         }
-        return simpleMenuOption;
     }
 
     @Override

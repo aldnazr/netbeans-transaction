@@ -32,7 +32,6 @@ public class LoginPanel extends javax.swing.JFrame {
         tfUser.putClientProperty(FlatClientProperties.PLACEHOLDER_TEXT, "Masukkan username/email");
         tfUser.putClientProperty(FlatClientProperties.TEXT_FIELD_SHOW_CLEAR_BUTTON, true);
         passwordField.putClientProperty(FlatClientProperties.PLACEHOLDER_TEXT, "Masukkan password");
-//        Variable.setFontTitle(jLabel3);
         jLabel3.setFont(new Font(FlatRobotoFont.STYLE_BOLD, Font.BOLD, 24) {
         });
     }
@@ -42,29 +41,6 @@ public class LoginPanel extends javax.swing.JFrame {
             Variable.setLightTheme();
             new LoginPanel().setVisible(true);
         });
-    }
-
-    private void checkAdmin() {
-        try {
-            query = "SELECT TIPE_AKUN FROM SESSIONS JOIN USERS USING (ID_USER)";
-            statement = connection.createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_READ_ONLY);
-            rset = statement.executeQuery(query);
-
-            if (rset.last()) {
-                if (rset.getString(1).equals("Admin")) {
-                    adminFrame = new MainFrame();
-                    adminFrame.setVisible(true);
-                } else {
-                    adminFrame = new MainFrame();
-                    adminFrame.setVisible(true);
-                }
-            }
-
-            statement.close();
-            rset.close();
-        } catch (SQLException ex) {
-            System.err.print("Error in checkAdmin: " + ex.getMessage());
-        }
     }
 
     private void insertSession(String idUser) {
@@ -78,7 +54,7 @@ public class LoginPanel extends javax.swing.JFrame {
 
             pstat.close();
         } catch (SQLException ex) {
-            System.err.println("Error in insertSession: " + ex.getMessage());
+            System.err.println("Error di insertSession: " + ex.getMessage());
         }
     }
 
@@ -93,12 +69,12 @@ public class LoginPanel extends javax.swing.JFrame {
 
         try {
             query = "SELECT ID_USER, PASSWORD FROM USERS WHERE USERNAME = ? OR EMAIL = ?";
-            pstat = connection.prepareStatement(query, ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_READ_ONLY);
+            pstat = connection.prepareStatement(query);
             pstat.setString(1, username);
             pstat.setString(2, username);
             rset = pstat.executeQuery();
 
-            if (!rset.first()) {
+            if (!rset.next()) {
                 popUpErrorMessage("Login gagal", "Pengguna tidak ditemukan");
                 return;
             }
@@ -112,11 +88,12 @@ public class LoginPanel extends javax.swing.JFrame {
             }
 
             insertSession(idFromDB);
-            checkAdmin();
-            dispose();
+            adminFrame = new MainFrame();
+            adminFrame.setVisible(true);
 
             pstat.close();
             rset.close();
+            dispose();
         } catch (SQLException ex) {
             System.err.println("Error in checkLogin: " + ex.getMessage());
         }

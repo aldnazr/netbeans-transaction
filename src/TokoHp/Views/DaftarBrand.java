@@ -1,6 +1,11 @@
 package TokoHp.Views;
 
-import TokoHp.Objects.Variable;
+import static TokoHp.Objects.Variable.capitalizeFirstLetter;
+import static TokoHp.Objects.Variable.koneksi;
+import static TokoHp.Objects.Variable.popUpErrorMessage;
+import static TokoHp.Objects.Variable.popUpSuccessMessage;
+import static TokoHp.Objects.Variable.setPlaceholderTextfield;
+import static TokoHp.Objects.Variable.setSearchFieldIcon;
 import com.formdev.flatlaf.FlatClientProperties;
 import java.sql.*;
 import javax.swing.table.DefaultTableModel;
@@ -22,12 +27,11 @@ public class DaftarBrand extends javax.swing.JInternalFrame {
 
     private void init() {
         setClosable(true);
-        connection = Variable.koneksi();
+        connection = koneksi();
         setTable();
-        Variable.setPlaceholderTextfield(tfPencarian, "Cari");
-        textIdBrand.putClientProperty(FlatClientProperties.TEXT_FIELD_SHOW_CLEAR_BUTTON, true);
-        Variable.setSearchFieldIcon(tfPencarian);
-        tfNamaBrand.setColumns(10);
+        setPlaceholderTextfield(tfPencarian, "Cari");
+        tfNamaBrand.putClientProperty(FlatClientProperties.TEXT_FIELD_SHOW_CLEAR_BUTTON, true);
+        setSearchFieldIcon(tfPencarian);
     }
 
     private void setTable() {
@@ -46,8 +50,8 @@ public class DaftarBrand extends javax.swing.JInternalFrame {
                 };
                 tableModel.addRow(rowData);
             }
-
             table.setModel(tableModel);
+
             pstat.close();
             rset.close();
         } catch (SQLException ex) {
@@ -57,64 +61,70 @@ public class DaftarBrand extends javax.swing.JInternalFrame {
 
     private void tambahBrand() {
         try {
-            query = "CALL insertBrand (?)";
+            query = "CALL insertBrand(?)";
             cstat = connection.prepareCall(query);
             cstat.setString(1, tfNamaBrand.getText());
             rsetInt = cstat.executeUpdate();
 
             if (rsetInt >= 0) {
-                Variable.popUpSuccessMessage("Berhasil", "Berhasil ditambah");
+                popUpSuccessMessage("Berhasil", "Berhasil ditambah");
                 setTable();
-            } else {
-                Variable.popUpErrorMessage("Error", "Data gagal ditambah");
             }
 
-            pstat.close();
-            rset.close();
+            cstat.close();
         } catch (SQLException ex) {
-            Variable.popUpErrorMessage("Error", "Data gagal ditambah");
             System.out.println(ex.getMessage());
+
+            if (ex.getMessage().contains("ORA-00001")) {
+                popUpErrorMessage("Data Sudah Ada", "Data dengan nama yang sama sudah ada dalam sistem. Mohon pilih nama lain atau perbarui data yang sudah ada.");
+            } else {
+                popUpErrorMessage("Error", "Data gagal ditambah");
+            }
         }
     }
 
     private void updateBrand() {
         try {
-            query = "CALL updateBrand (?, ?)";
+            query = "CALL updateBrand(?, ?)";
             cstat = connection.prepareCall(query);
             cstat.setString(1, textIdBrand.getText());
             cstat.setString(2, tfNamaBrand.getText());
             rsetInt = cstat.executeUpdate();
 
             if (rsetInt >= 0) {
-                Variable.popUpSuccessMessage("Berhasil", "Data berhasil diupdate");
+                popUpSuccessMessage("Berhasil", "Data berhasil diupdate");
                 setTable();
-            } else {
-                Variable.popUpErrorMessage("Error", "Data gagal diupdate");
             }
 
-            pstat.close();
+            cstat.close();
         } catch (SQLException ex) {
             System.out.println(ex.getMessage());
+
+            popUpErrorMessage("Error", "Data gagal diupdate");
         }
     }
 
     private void deleteBrand() {
         try {
-            query = "CALL deleteBrand (?)";
+            query = "CALL deleteBrand(?)";
             cstat = connection.prepareCall(query);
             cstat.setString(1, textIdBrand.getText());
             rsetInt = cstat.executeUpdate();
 
             if (rsetInt > 0) {
-                Variable.popUpSuccessMessage("Berhasil", "Data berhasil dihapus");
+                popUpSuccessMessage("Berhasil", "Data berhasil dihapus");
                 setTable();
-            } else {
-                Variable.popUpErrorMessage("Error", "Tidak ada data yang dihapus");
             }
 
-            rset.close();
+            cstat.close();
         } catch (SQLException ex) {
             System.out.println(ex.getMessage());
+
+            if (ex.getMessage().contains("violated - child record found")) {
+                popUpErrorMessage("Error", "Brand sedang digunakan untuk produk, Anda bisa menghapus setelah menghapus seluruh produk yang ketergantungan");
+            } else {
+                popUpErrorMessage("Error", "Data gagal dihapus");
+            }
         }
     }
 
@@ -132,10 +142,9 @@ public class DaftarBrand extends javax.swing.JInternalFrame {
     }
 
     private void clearText() {
-        textIdBrand.setText("");
+        textIdBrand.setText("0");
         tfNamaBrand.setText("");
         tfPencarian.setText("");
-        setTable();
     }
 
     private boolean checkInput() {
@@ -183,7 +192,7 @@ public class DaftarBrand extends javax.swing.JInternalFrame {
             table.getColumnModel().getColumn(0).setMaxWidth(120);
         }
 
-        tfNamaBrand.setColumns(10);
+        tfNamaBrand.setColumns(1);
         tfNamaBrand.addKeyListener(new java.awt.event.KeyAdapter() {
             public void keyTyped(java.awt.event.KeyEvent evt) {
                 tfNamaBrandKeyTyped(evt);
@@ -308,26 +317,32 @@ public class DaftarBrand extends javax.swing.JInternalFrame {
 
     private void btTambahActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btTambahActionPerformed
         if (checkInput()) {
-            Variable.popUpErrorMessage("Kesalahan Pengisian Formulir", "Mohon lengkapi semua bagian formulir sebelum melanjutkan. Pastikan setiap kolom terisi dengan informasi yang diperlukan.");
+            popUpErrorMessage("Kesalahan Pengisian Formulir", "Mohon lengkapi semua bagian formulir sebelum melanjutkan. Pastikan setiap kolom terisi dengan informasi yang diperlukan.");
             return;
         }
+
         tambahBrand();
+        setTable();
     }//GEN-LAST:event_btTambahActionPerformed
 
     private void btDeleteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btDeleteActionPerformed
         if (textIdBrand.getText().equals("0")) {
-            Variable.popUpErrorMessage("Brand Belum Dipilih", "Maaf, pilih brand yang ingin Anda hapus sebelum melanjutkan. Pastikan Anda memilih brand yang benar untuk dihapus.");
+            popUpErrorMessage("Brand Belum Dipilih", "Maaf, pilih brand yang ingin Anda hapus sebelum melanjutkan. Pastikan Anda memilih brand yang benar untuk dihapus.");
             return;
         }
+
         deleteBrand();
+        setTable();
     }//GEN-LAST:event_btDeleteActionPerformed
 
     private void btUpdateActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btUpdateActionPerformed
         if (checkInput()) {
-            Variable.popUpErrorMessage("Kesalahan Pengisian Formulir", "Mohon lengkapi semua bagian formulir sebelum melanjutkan. Pastikan setiap kolom terisi dengan informasi yang diperlukan.");
+            popUpErrorMessage("Kesalahan Pengisian Formulir", "Mohon lengkapi semua bagian formulir sebelum melanjutkan. Pastikan setiap kolom terisi dengan informasi yang diperlukan.");
             return;
         }
+
         updateBrand();
+        setTable();
     }//GEN-LAST:event_btUpdateActionPerformed
 
     private void tfPencarianKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_tfPencarianKeyReleased
@@ -339,7 +354,7 @@ public class DaftarBrand extends javax.swing.JInternalFrame {
     }//GEN-LAST:event_tableMouseClicked
 
     private void tfNamaBrandKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_tfNamaBrandKeyTyped
-        Variable.capitalizeFirstLetter(tfNamaBrand);
+        capitalizeFirstLetter(tfNamaBrand);
     }//GEN-LAST:event_tfNamaBrandKeyTyped
 
     private void btDelete1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btDelete1ActionPerformed
