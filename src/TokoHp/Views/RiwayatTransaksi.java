@@ -231,7 +231,7 @@ public class RiwayatTransaksi extends javax.swing.JInternalFrame {
                 .addGap(19, 19, 19))
         );
 
-        cbFilterDate.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Tanggal", "7 Hari", "14 Hari", "30 Hari" }));
+        cbFilterDate.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Semua", "7 Hari", "14 Hari", "30 Hari" }));
         cbFilterDate.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 cbFilterDateActionPerformed(evt);
@@ -239,7 +239,7 @@ public class RiwayatTransaksi extends javax.swing.JInternalFrame {
         });
 
         jLabel5.setFont(new java.awt.Font("Poppins SemiBold", 0, 24)); // NOI18N
-        jLabel5.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
+        jLabel5.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         jLabel5.setText("Hari ini:");
 
         iconDate.setHorizontalAlignment(javax.swing.SwingConstants.TRAILING);
@@ -327,7 +327,7 @@ public class RiwayatTransaksi extends javax.swing.JInternalFrame {
                                 .addGap(18, 18, 18)
                                 .addComponent(card3, javax.swing.GroupLayout.PREFERRED_SIZE, 245, javax.swing.GroupLayout.PREFERRED_SIZE))
                             .addComponent(jLabel5))
-                        .addContainerGap(665, Short.MAX_VALUE))))
+                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)

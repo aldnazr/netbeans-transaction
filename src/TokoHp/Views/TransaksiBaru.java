@@ -43,7 +43,7 @@ public class TransaksiBaru extends javax.swing.JInternalFrame {
         Variable.setPlaceholderTextfield(tfPencarian, "Cari");
         Variable.setPlaceholderTextfield(tfNamaPelanggan, "Masukkan nama pembeli");
         Variable.setSearchFieldIcon(tfPencarian);
-        btKosongkan.setIcon(new FlatSVGIcon(clearAllCheckoutIcon, 1.1f));
+        btKosongkan.setIcon(new FlatSVGIcon(clearAllCheckoutIcon, 1.08f));
     }
 
     private void bayarTransaksi() {
@@ -453,6 +453,8 @@ public class TransaksiBaru extends javax.swing.JInternalFrame {
         btKosongkan.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
         btKosongkan.setText("Kosongkan");
         btKosongkan.setToolTipText("Bersihkan semua keranjang checkout");
+        btKosongkan.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
+        btKosongkan.setHorizontalTextPosition(javax.swing.SwingConstants.RIGHT);
         btKosongkan.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btKosongkanActionPerformed(evt);
