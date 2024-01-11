@@ -8,7 +8,6 @@ import com.formdev.flatlaf.extras.FlatSVGIcon;
 import java.awt.Insets;
 import javax.swing.JButton;
 import javax.swing.JInternalFrame;
-import javax.swing.border.EmptyBorder;
 import javax.swing.plaf.basic.BasicInternalFrameUI;
 import raven.drawer.Drawer;
 
@@ -24,27 +23,30 @@ public class MainFrame extends javax.swing.JFrame {
     private void init() {
         setResizable(false);
         setSize(1216, 780);
-        desktopPane.setBorder(new EmptyBorder(20, 20, 20, 20));
         setContentPane(desktopPane);
         setDefaultCloseOperation(EXIT_ON_CLOSE);
         setLocationRelativeTo(null);
         menuBar.add(drawerOpenButton());
         switchFrame(new TransaksiBaru(), "Transaksi");
-        installSideBarAndToast(MainFrame.this, new DrawerNavigation(MainFrame.this));
+        installSideBarAndToast(this, new DrawerNavigation(this));
     }
 
     private JButton drawerOpenButton() {
-        String directory = !Variable.isDarkTheme() ? "TokoHp/Icons/list.svg" : "TokoHp/Icons/list_dark.svg";
-        JButton button = new JButton(new FlatSVGIcon(directory, 1.1f));
+        String iconDirectory = !Variable.isDarkTheme() ? "TokoHp/Icons/list.svg" : "TokoHp/Icons/list_dark.svg";
+        JButton button = new JButton(new FlatSVGIcon(iconDirectory, 1.1f));
+
         button.addActionListener((l) -> {
             Drawer.getInstance().closeDrawer();
             Drawer.getInstance().showDrawer();
         });
+
         button.putClientProperty(FlatClientProperties.STYLE, ""
                 + "borderWidth:0;"
                 + "focusWidth:0;"
                 + "innerFocusWidth:0;"
-                + "background:null;");
+                + "background:null;"
+        );
+
         button.setMargin(new Insets(5, 5, 5, 5));
         return button;
     }
@@ -56,9 +58,11 @@ public class MainFrame extends javax.swing.JFrame {
         internalFrame.setAlignmentX(0f);
         internalFrame.setAlignmentY(0f);
         internalFrame.setVisible(true);
-        BasicInternalFrameUI basicInternalFrameUI = (BasicInternalFrameUI) iFrame.getUI();
-        basicInternalFrameUI.setNorthPane(null);
-        iFrame.setBorder(null);
+
+        BasicInternalFrameUI internalFrameUI = (BasicInternalFrameUI) internalFrame.getUI();
+        internalFrameUI.setNorthPane(null);
+        internalFrame.setBorder(null);
+
         setTitle(title);
     }
 

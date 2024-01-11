@@ -7,7 +7,7 @@ import javax.swing.table.DefaultTableModel;
 public class RiwayatLogin extends javax.swing.JInternalFrame {
 
     Connection connection;
-    Object[] tableHead = {"ID SESSION", "ID USER", "NAMA LENGKAP", "TIPE_AKUN", "WAKTU LOGIN"};
+    Object[] tableHead = {"ID SESSION", "ID USER", "NAMA LENGKAP", "JABATAN", "WAKTU LOGIN"};
     DefaultTableModel tableModel = new DefaultTableModel(tableHead, 0);
 
     public RiwayatLogin() {

@@ -37,13 +37,12 @@ public class DrawerNavigation extends SimpleDrawerBuilder {
             resultSet = statement.executeQuery(sql);
 
             if (resultSet.next()) {
-                System.out.println(resultSet.getString(1));
                 return resultSet.getString(1).equals("Admin");
             }
         } catch (SQLException ex) {
             System.out.println(ex.getMessage());
         }
-        return true;
+        return false;
     }
 
     private SimpleHeaderData headerData() {
@@ -202,11 +201,10 @@ public class DrawerNavigation extends SimpleDrawerBuilder {
             "logout.svg"
         };
 
-        if (isAdmin) {
-            return menuAdmin(menuOptions, icons);
-        } else {
-            return menuKaryawan(menuOptionsKaryawan, iconsKaryawan);
-        }
+        return isAdmin
+                ? menuAdmin(menuOptions, icons)
+                : menuKaryawan(menuOptionsKaryawan, iconsKaryawan);
+
     }
 
     @Override
