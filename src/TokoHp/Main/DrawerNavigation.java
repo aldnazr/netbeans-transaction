@@ -76,7 +76,7 @@ public class DrawerNavigation extends SimpleDrawerBuilder {
                 .addMenuEvent((MenuAction action, int i, int i1) -> {
                     switch (i) {
                         case 0 ->
-                            mainFrame.switchFrame(new ProfileUser(), "Pengaturan Profil");
+                            mainFrame.switchFrame(new ProfileUser(), "Pengaturan Akun");
                         case 1 ->
                             mainFrame.switchFrame(new TransaksiBaru(), "Transaksi");
                         case 2 -> {
@@ -88,7 +88,7 @@ public class DrawerNavigation extends SimpleDrawerBuilder {
                             }
                         }
                         case 3 ->
-                            mainFrame.switchFrame(new DaftarKaryawan(), "Daftat Karyawan");
+                            mainFrame.switchFrame(new DaftarKaryawan(), "Daftar Karyawan");
                         case 4 ->
                             mainFrame.switchFrame(new DaftarBrand(), "Daftar Brand");
                         case 5 ->
@@ -122,7 +122,7 @@ public class DrawerNavigation extends SimpleDrawerBuilder {
                 .addMenuEvent((MenuAction action, int i, int i1) -> {
                     switch (i) {
                         case 0 ->
-                            mainFrame.switchFrame(new ProfileUser(), "Pengaturan Profil");
+                            mainFrame.switchFrame(new ProfileUser(), "Pengaturan Akun");
                         case 1 ->
                             mainFrame.switchFrame(new TransaksiBaru(), "Transaksi");
                         case 2 ->

@@ -31,6 +31,7 @@ public class Variable {
         FlatMacLightLaf.setup();
         FlatRobotoFont.install();
         UIManager.put("defaultFont", new Font(FlatRobotoFont.FAMILY, Font.PLAIN, 13));
+        UIManager.put("Component.arrowType", "triangle");
         FlatLaf.updateUI();
         FlatAnimatedLafChange.hideSnapshotWithAnimation();
     }
@@ -40,6 +41,7 @@ public class Variable {
         FlatMacDarkLaf.setup();
         FlatRobotoFont.install();
         UIManager.put("defaultFont", new Font(FlatRobotoFont.FAMILY, Font.PLAIN, 13));
+        UIManager.put("Component.arrowType", "triangle");
         FlatLaf.updateUI();
         FlatAnimatedLafChange.hideSnapshotWithAnimation();
     }
