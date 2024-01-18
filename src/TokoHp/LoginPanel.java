@@ -15,7 +15,6 @@ public class LoginPanel extends javax.swing.JFrame {
 
     Connection connection;
     PreparedStatement pstat;
-    Statement statement;
     ResultSet rset;
     String query;
     MainFrame adminFrame;
@@ -29,15 +28,15 @@ public class LoginPanel extends javax.swing.JFrame {
         setResizable(false);
         connection = koneksi();
         setLocationRelativeTo(null);
-        Variable.setPasswordFieldRevealButton(passwordField);
+        jLabel3.setFont(new Font(FlatRobotoFont.STYLE_BOLD, Font.BOLD, 24));
         tfUser.putClientProperty(FlatClientProperties.PLACEHOLDER_TEXT, "Masukkan username/email");
         tfUser.putClientProperty(FlatClientProperties.TEXT_FIELD_SHOW_CLEAR_BUTTON, true);
-        passwordField.putClientProperty(FlatClientProperties.PLACEHOLDER_TEXT, "Masukkan sandi");
-        jLabel3.setFont(new Font(FlatRobotoFont.STYLE_BOLD, Font.BOLD, 24));
         tfUser.putClientProperty("JComponent.roundRect", true);
         tfUser.setMargin(new Insets(5, 11, 5, 11));
+        passwordField.putClientProperty(FlatClientProperties.PLACEHOLDER_TEXT, "Masukkan sandi");
         passwordField.putClientProperty("JComponent.roundRect", true);
         passwordField.setMargin(new Insets(5, 11, 5, 11));
+        Variable.setPasswordFieldRevealButton(passwordField);
         btLogin.putClientProperty("JButton.buttonType", "roundRect");
     }
 
@@ -105,7 +104,7 @@ public class LoginPanel extends javax.swing.JFrame {
     }
 
     void popUpErrorMessage(String title, String message) {
-        JOptionPane.showMessageDialog(null, message, title, JOptionPane.ERROR_MESSAGE);
+        JOptionPane.showMessageDialog(this, message, title, JOptionPane.ERROR_MESSAGE);
     }
 
     @SuppressWarnings("unchecked")
@@ -141,25 +140,25 @@ public class LoginPanel extends javax.swing.JFrame {
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addComponent(jLabel3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addContainerGap(101, Short.MAX_VALUE)
+                .addContainerGap(67, Short.MAX_VALUE)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addComponent(passwordField)
                     .addComponent(btLogin, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(tfUser, javax.swing.GroupLayout.PREFERRED_SIZE, 246, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(83, 83, 83))
+                .addGap(57, 57, 57))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addGap(41, 41, 41)
                 .addComponent(jLabel3)
-                .addGap(45, 45, 45)
+                .addGap(58, 58, 58)
                 .addComponent(tfUser, javax.swing.GroupLayout.PREFERRED_SIZE, 34, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(passwordField, javax.swing.GroupLayout.PREFERRED_SIZE, 34, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(18, 18, 18)
-                .addComponent(btLogin, javax.swing.GroupLayout.PREFERRED_SIZE, 34, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(75, Short.MAX_VALUE))
+                .addGap(26, 26, 26)
+                .addComponent(btLogin, javax.swing.GroupLayout.PREFERRED_SIZE, 36, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(82, Short.MAX_VALUE))
         );
 
         pack();
