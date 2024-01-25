@@ -31,7 +31,6 @@ public class Variable {
         FlatMacLightLaf.setup();
         FlatRobotoFont.install();
         UIManager.put("defaultFont", new Font(FlatRobotoFont.FAMILY, Font.PLAIN, 13));
-        UIManager.put("Component.arrowType", "triangle");
         FlatLaf.updateUI();
         FlatAnimatedLafChange.hideSnapshotWithAnimation();
     }
@@ -41,7 +40,6 @@ public class Variable {
         FlatMacDarkLaf.setup();
         FlatRobotoFont.install();
         UIManager.put("defaultFont", new Font(FlatRobotoFont.FAMILY, Font.PLAIN, 13));
-        UIManager.put("Component.arrowType", "triangle");
         FlatLaf.updateUI();
         FlatAnimatedLafChange.hideSnapshotWithAnimation();
     }
@@ -190,17 +188,31 @@ public class Variable {
                T.TANGGAL,
                BR.NAMA_BRAND,
                PH.NAMA_HANDPHONE,
-               PH.HARGA,
+               DT.HARGA_BARANG,
                DT.JUMLAH_PEMBELIAN,
-               SUM(PH.HARGA * DT.JUMLAH_PEMBELIAN) AS SUBTOTAL,
-               T.TOTAL_BAYAR
+               DT.SUBTOTAL,
+               T.TOTAL_HARGA
                FROM TRANSAKSI T
                        JOIN DETAIL_TRANSAKSI DT ON T.ID_TRANSAKSI = DT.ID_TRANSAKSI JOIN USERS USR ON T.ID_USER = USR.ID_USER JOIN PHONES PH ON DT.ID_PHONE = PH.ID_PHONE JOIN BRAND BR ON PH.ID_BRAND = BR.ID_BRAND
                        WHERE ${queryTanggal} (T.ID_TRANSAKSI LIKE ? OR LOWER(USR.NAMA_LENGKAP) LIKE ? OR LOWER(T.NAMA_PELANGGAN) LIKE ? OR TO_CHAR(T.TANGGAL, 'YYYY-MM-DD HH24:MI:SS') LIKE ?)
-                       GROUP BY T.ID_TRANSAKSI, USR.NAMA_LENGKAP, T.NAMA_PELANGGAN, T.TANGGAL, BR.NAMA_BRAND, PH.NAMA_HANDPHONE, PH.HARGA, DT.JUMLAH_PEMBELIAN, T.TOTAL_BAYAR
                        ORDER BY T.ID_TRANSAKSI DESC""";
         return query.replace("${queryTanggal}", queryTanggal);
     }
+
+    public static String daftarKaryawan(String tipeAkun) {
+        String query = """
+                    SELECT ID_USER ,
+                    NAMA_LENGKAP ,
+                    TANGGAL_LAHIR ,
+                    GENDER ,
+                    ALAMAT ,
+                    EMAIL ,
+                    NO_TELP ,
+                    TIPE_AKUN ,
+                    USERNAME FROM USERS WHERE ${tipeAkun} (LOWER(NAMA_LENGKAP) LIKE ?)""";
+        return query.replace("${tipeAkun}", tipeAkun);
+    }
+
     public static String sqlTableDaftarHP = "select id_phone, nama_brand, nama_handphone, stok, harga from phones join brand using (id_brand) where stok > 0 AND LOWER(nama_brand) LIKE ? OR LOWER(nama_handphone) LIKE ?";
 
     public static String sqlFilterPhone(String filteredQuery) {

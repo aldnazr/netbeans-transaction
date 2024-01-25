@@ -5,6 +5,10 @@ import com.formdev.flatlaf.extras.FlatSVGIcon;
 import java.awt.Color;
 import java.sql.*;
 import javax.swing.table.DefaultTableModel;
+import net.sf.jasperreports.engine.JRException;
+import net.sf.jasperreports.engine.JasperFillManager;
+import net.sf.jasperreports.engine.JasperPrint;
+import net.sf.jasperreports.view.JasperViewer;
 
 public class RiwayatTransaksi extends javax.swing.JInternalFrame {
 
@@ -33,6 +37,7 @@ public class RiwayatTransaksi extends javax.swing.JInternalFrame {
         jLabel2.setIcon(new FlatSVGIcon("TokoHp/Icons/riwayat_transaksi/shopping_bag.svg", 1.4f));
         jLabel3.setIcon(new FlatSVGIcon("TokoHp/Icons/riwayat_transaksi/box.svg", 1.4f));
         iconDate.setIcon(new FlatSVGIcon("TokoHp/Icons/riwayat_transaksi/calendar_month.svg", 0.9f));
+        btCetak.setIcon(new FlatSVGIcon("TokoHp/Icons/riwayat_transaksi/pdf_icon.svg"));
 
         if (Variable.isDarkTheme()) {
             Color darkColor = Color.decode("#363638");
@@ -135,6 +140,7 @@ public class RiwayatTransaksi extends javax.swing.JInternalFrame {
         jLabel3 = new javax.swing.JLabel();
         labelProdukTerjual = new javax.swing.JLabel();
         jLabel7 = new javax.swing.JLabel();
+        btCetak = new javax.swing.JButton();
 
         setPreferredSize(new java.awt.Dimension(1200, 740));
 
@@ -146,7 +152,7 @@ public class RiwayatTransaksi extends javax.swing.JInternalFrame {
                 {null, null, null, null, null, null, null, null, null, null}
             },
             new String [] {
-                "ID Transaksi", "Kasir", "Nama Pelanggan", "Waktu", "Brand", "Model", "Harga Per-Item", "Jumlah Pemelian", "Subtotal", "Total"
+                "ID Transaksi", "Kasir", "Nama Pelanggan", "Tanggal", "Brand", "Model", "Harga Per-Item", "Qty", "Subtotal", "Total"
             }
         ) {
             boolean[] canEdit = new boolean [] {
@@ -163,8 +169,10 @@ public class RiwayatTransaksi extends javax.swing.JInternalFrame {
             tableRiwayat.getColumnModel().getColumn(0).setMaxWidth(80);
             tableRiwayat.getColumnModel().getColumn(1).setPreferredWidth(120);
             tableRiwayat.getColumnModel().getColumn(1).setMaxWidth(120);
-            tableRiwayat.getColumnModel().getColumn(7).setPreferredWidth(110);
-            tableRiwayat.getColumnModel().getColumn(7).setMaxWidth(110);
+            tableRiwayat.getColumnModel().getColumn(3).setPreferredWidth(160);
+            tableRiwayat.getColumnModel().getColumn(3).setMaxWidth(160);
+            tableRiwayat.getColumnModel().getColumn(7).setPreferredWidth(80);
+            tableRiwayat.getColumnModel().getColumn(7).setMaxWidth(80);
         }
 
         tfPencarian.addKeyListener(new java.awt.event.KeyAdapter() {
@@ -303,48 +311,61 @@ public class RiwayatTransaksi extends javax.swing.JInternalFrame {
                 .addGap(19, 19, 19))
         );
 
+        btCetak.setBackground(javax.swing.UIManager.getDefaults().getColor("Actions.Red"));
+        btCetak.setForeground(new java.awt.Color(255, 255, 255));
+        btCetak.setText("Cetak Laporan");
+        btCetak.setAlignmentY(0.0F);
+        btCetak.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btCetakActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addGap(15, 15, 15)
+                .addGap(16, 16, 16)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addComponent(jScrollPane1, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 1159, Short.MAX_VALUE)
-                            .addGroup(layout.createSequentialGroup()
-                                .addComponent(iconDate)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(cbFilterDate, javax.swing.GroupLayout.PREFERRED_SIZE, 138, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(tfPencarian, javax.swing.GroupLayout.PREFERRED_SIZE, 170, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                        .addGap(14, 14, 14))
+                        .addComponent(card1, javax.swing.GroupLayout.PREFERRED_SIZE, 245, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(18, 18, 18)
+                        .addComponent(card3, javax.swing.GroupLayout.PREFERRED_SIZE, 245, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(jLabel5))
+                .addContainerGap(664, Short.MAX_VALUE))
+            .addGroup(layout.createSequentialGroup()
+                .addGap(10, 10, 10)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jScrollPane1)
                     .addGroup(layout.createSequentialGroup()
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(layout.createSequentialGroup()
-                                .addComponent(card1, javax.swing.GroupLayout.PREFERRED_SIZE, 245, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGap(18, 18, 18)
-                                .addComponent(card3, javax.swing.GroupLayout.PREFERRED_SIZE, 245, javax.swing.GroupLayout.PREFERRED_SIZE))
-                            .addComponent(jLabel5))
-                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
+                        .addComponent(btCetak)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(iconDate)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(cbFilterDate, javax.swing.GroupLayout.PREFERRED_SIZE, 138, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(tfPencarian, javax.swing.GroupLayout.PREFERRED_SIZE, 170, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addGap(10, 10, 10))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addContainerGap(75, Short.MAX_VALUE)
+                .addContainerGap(44, Short.MAX_VALUE)
                 .addComponent(jLabel5)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(card1, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(card3, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(7, 7, 7)
+                .addGap(32, 32, 32)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(tfPencarian, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(iconDate, javax.swing.GroupLayout.PREFERRED_SIZE, 26, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(cbFilterDate, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                        .addComponent(tfPencarian, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(iconDate, javax.swing.GroupLayout.PREFERRED_SIZE, 26, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(cbFilterDate, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(btCetak, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 431, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(10, 10, 10))
         );
 
@@ -359,7 +380,18 @@ public class RiwayatTransaksi extends javax.swing.JInternalFrame {
         setTableData();
     }//GEN-LAST:event_cbFilterDateActionPerformed
 
+    private void btCetakActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btCetakActionPerformed
+        try {
+            String jasperFilePath = "src/TokoHp/Report/report_transaksi.jasper";
+            JasperPrint jasperPrint = JasperFillManager.fillReport(jasperFilePath, null, connection);
+            JasperViewer.viewReport(jasperPrint, false);
+        } catch (JRException ex) {
+            System.err.println(ex.getMessage());
+        }
+    }//GEN-LAST:event_btCetakActionPerformed
+
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton btCetak;
     private TokoHp.Component.Card card1;
     private TokoHp.Component.Card card2;
     private TokoHp.Component.Card card3;

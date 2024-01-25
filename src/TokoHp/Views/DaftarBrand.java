@@ -1,5 +1,6 @@
 package TokoHp.Views;
 
+import TokoHp.Objects.Variable;
 import static TokoHp.Objects.Variable.capitalizeFirstLetter;
 import static TokoHp.Objects.Variable.koneksi;
 import static TokoHp.Objects.Variable.popUpErrorMessage;
@@ -7,6 +8,7 @@ import static TokoHp.Objects.Variable.popUpSuccessMessage;
 import static TokoHp.Objects.Variable.setPlaceholderTextfield;
 import static TokoHp.Objects.Variable.setSearchFieldIcon;
 import com.formdev.flatlaf.FlatClientProperties;
+import java.awt.Color;
 import java.sql.*;
 import javax.swing.table.DefaultTableModel;
 
@@ -32,6 +34,7 @@ public class DaftarBrand extends javax.swing.JInternalFrame {
         setPlaceholderTextfield(tfPencarian, "Cari");
         tfNamaBrand.putClientProperty(FlatClientProperties.TEXT_FIELD_SHOW_CLEAR_BUTTON, true);
         setSearchFieldIcon(tfPencarian);
+        card1.setForeground(!Variable.isDarkTheme() ? Color.decode("#E6E6E6") : Color.decode("#303030"));
     }
 
     private void setTable() {
@@ -158,15 +161,16 @@ public class DaftarBrand extends javax.swing.JInternalFrame {
 
         jScrollPane1 = new javax.swing.JScrollPane();
         table = new javax.swing.JTable();
-        tfNamaBrand = new javax.swing.JTextField();
-        btTambah = new javax.swing.JButton();
-        btUpdate = new javax.swing.JButton();
+        tfPencarian = new javax.swing.JTextField();
+        card1 = new TokoHp.Component.Card();
         jLabel2 = new javax.swing.JLabel();
         textIdBrand = new javax.swing.JLabel();
         btDelete = new javax.swing.JButton();
-        tfPencarian = new javax.swing.JTextField();
         jLabel3 = new javax.swing.JLabel();
         btDelete1 = new javax.swing.JButton();
+        tfNamaBrand = new javax.swing.JTextField();
+        btTambah = new javax.swing.JButton();
+        btUpdate = new javax.swing.JButton();
 
         setPreferredSize(new java.awt.Dimension(1200, 740));
 
@@ -192,6 +196,45 @@ public class DaftarBrand extends javax.swing.JInternalFrame {
             table.getColumnModel().getColumn(0).setMaxWidth(120);
         }
 
+        tfPencarian.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyReleased(java.awt.event.KeyEvent evt) {
+                tfPencarianKeyReleased(evt);
+            }
+        });
+
+        card1.setForeground(javax.swing.UIManager.getDefaults().getColor("Button.pressedBackground"));
+        card1.setCorner(26);
+
+        jLabel2.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
+        jLabel2.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        jLabel2.setText("Nama Brand :");
+
+        textIdBrand.setText("0");
+
+        btDelete.setBackground(new java.awt.Color(255, 59, 48));
+        btDelete.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
+        btDelete.setForeground(javax.swing.UIManager.getDefaults().getColor("Button.default.foreground"));
+        btDelete.setText("Hapus");
+        btDelete.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btDeleteActionPerformed(evt);
+            }
+        });
+
+        jLabel3.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
+        jLabel3.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        jLabel3.setText("ID brand :");
+
+        btDelete1.setBackground(new java.awt.Color(142, 142, 147));
+        btDelete1.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
+        btDelete1.setForeground(javax.swing.UIManager.getDefaults().getColor("Button.default.foreground"));
+        btDelete1.setText("Reset");
+        btDelete1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btDelete1ActionPerformed(evt);
+            }
+        });
+
         tfNamaBrand.setColumns(1);
         tfNamaBrand.addKeyListener(new java.awt.event.KeyAdapter() {
             public void keyTyped(java.awt.event.KeyEvent evt) {
@@ -201,7 +244,7 @@ public class DaftarBrand extends javax.swing.JInternalFrame {
 
         btTambah.setBackground(javax.swing.UIManager.getDefaults().getColor("Button.default.background"));
         btTambah.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
-        btTambah.setForeground(new java.awt.Color(235, 235, 240));
+        btTambah.setForeground(javax.swing.UIManager.getDefaults().getColor("Button.default.foreground"));
         btTambah.setText("Tambah");
         btTambah.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -211,7 +254,7 @@ public class DaftarBrand extends javax.swing.JInternalFrame {
 
         btUpdate.setBackground(javax.swing.UIManager.getDefaults().getColor("Button.default.background"));
         btUpdate.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
-        btUpdate.setForeground(new java.awt.Color(235, 235, 240));
+        btUpdate.setForeground(javax.swing.UIManager.getDefaults().getColor("Button.default.foreground"));
         btUpdate.setText("Update");
         btUpdate.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -219,98 +262,82 @@ public class DaftarBrand extends javax.swing.JInternalFrame {
             }
         });
 
-        jLabel2.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
-        jLabel2.setText("Nama Brand");
+        javax.swing.GroupLayout card1Layout = new javax.swing.GroupLayout(card1);
+        card1.setLayout(card1Layout);
+        card1Layout.setHorizontalGroup(
+            card1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(card1Layout.createSequentialGroup()
+                .addGap(26, 26, 26)
+                .addGroup(card1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(card1Layout.createSequentialGroup()
+                        .addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, 62, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(textIdBrand))
+                    .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 84, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addGroup(card1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                        .addComponent(tfNamaBrand, javax.swing.GroupLayout.Alignment.LEADING)
+                        .addGroup(card1Layout.createSequentialGroup()
+                            .addComponent(btTambah)
+                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                            .addComponent(btUpdate)
+                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                            .addComponent(btDelete, javax.swing.GroupLayout.PREFERRED_SIZE, 77, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                            .addComponent(btDelete1))))
+                .addContainerGap(26, Short.MAX_VALUE))
+        );
+        card1Layout.setVerticalGroup(
+            card1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, card1Layout.createSequentialGroup()
+                .addContainerGap(33, Short.MAX_VALUE)
+                .addGroup(card1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(textIdBrand)
+                    .addComponent(jLabel3))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(jLabel2)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(tfNamaBrand, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addGroup(card1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(btUpdate)
+                    .addGroup(card1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                        .addComponent(btTambah)
+                        .addComponent(btDelete)
+                        .addComponent(btDelete1)))
+                .addContainerGap(44, Short.MAX_VALUE))
+        );
 
-        textIdBrand.setText("0");
-
-        btDelete.setBackground(new java.awt.Color(255, 59, 48));
-        btDelete.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
-        btDelete.setForeground(new java.awt.Color(235, 235, 240));
-        btDelete.setText("Hapus");
-        btDelete.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btDeleteActionPerformed(evt);
-            }
-        });
-
-        tfPencarian.addKeyListener(new java.awt.event.KeyAdapter() {
-            public void keyReleased(java.awt.event.KeyEvent evt) {
-                tfPencarianKeyReleased(evt);
-            }
-        });
-
-        jLabel3.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
-        jLabel3.setText("ID brand :");
-
-        btDelete1.setBackground(new java.awt.Color(142, 142, 147));
-        btDelete1.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
-        btDelete1.setForeground(new java.awt.Color(235, 235, 240));
-        btDelete1.setText("Reset");
-        btDelete1.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btDelete1ActionPerformed(evt);
-            }
-        });
+        btDelete.getAccessibleContext().setAccessibleName("");
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                .addContainerGap(62, Short.MAX_VALUE)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(tfPencarian, javax.swing.GroupLayout.PREFERRED_SIZE, 170, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addGroup(layout.createSequentialGroup()
-                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(tfPencarian, javax.swing.GroupLayout.PREFERRED_SIZE, 170, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(layout.createSequentialGroup()
-                        .addGap(50, 50, 50)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jLabel2)
-                            .addGroup(layout.createSequentialGroup()
-                                .addComponent(jLabel3)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(textIdBrand))
-                            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                                .addComponent(btDelete1, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                .addComponent(btDelete, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
-                                    .addComponent(btTambah, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addGap(46, 46, 46)
-                                    .addComponent(btUpdate, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                            .addComponent(tfNamaBrand, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 246, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 210, Short.MAX_VALUE)
+                        .addComponent(card1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(61, 61, 61)
                         .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 676, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addContainerGap())
+                .addGap(10, 10, 10))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addGap(97, 97, 97)
                 .addComponent(tfPencarian, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 569, Short.MAX_VALUE)
                     .addGroup(layout.createSequentialGroup()
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(textIdBrand)
-                            .addComponent(jLabel3))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(jLabel2)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(tfNamaBrand, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(btTambah)
-                            .addComponent(btUpdate))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(btDelete)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(btDelete1)
-                        .addGap(0, 0, Short.MAX_VALUE)))
-                .addContainerGap())
+                        .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 565, Short.MAX_VALUE)
+                        .addGap(10, 10, 10))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(61, 61, 61)
+                        .addComponent(card1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
         );
-
-        btDelete.getAccessibleContext().setAccessibleName("");
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
@@ -367,6 +394,7 @@ public class DaftarBrand extends javax.swing.JInternalFrame {
     private javax.swing.JButton btDelete1;
     private javax.swing.JButton btTambah;
     private javax.swing.JButton btUpdate;
+    private TokoHp.Component.Card card1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JScrollPane jScrollPane1;

@@ -14,9 +14,6 @@ public class DaftarKaryawan extends javax.swing.JInternalFrame {
     String query;
     ResultSet rset;
     int rsetInt;
-    String gender, tipeAkun;
-    String[] columntableModelValue = {"ID User", "Nama", "Tanggal lahir", "Jenis Kelamin", "Alamat", "Email", "Telepon", "Jabatan", "Username"};
-    DefaultTableModel tableModel = new DefaultTableModel(columntableModelValue, 0);
     JTextField dateChooserTextField;
 
     public DaftarKaryawan() {
@@ -28,18 +25,12 @@ public class DaftarKaryawan extends javax.swing.JInternalFrame {
         setClosable(true);
         connection = Variable.koneksi();
         setTable();
-        table.setModel(tableModel);
         Variable.setPlaceholderTextfield(tfPencarian, "Cari");
         Variable.setPasswordFieldRevealButton(passwordField);
         setButtonGroup();
         dateChooserTextField = Variable.disableDateTextfield(dateChooser);
         Variable.setSearchFieldIcon(tfPencarian);
         tfNamaKaryawan.setColumns(10);
-    }
-
-    private void getSelectedRadio() {
-        gender = rbLaki.isSelected() ? rbLaki.getText() : rbPerempuan.getText();
-        tipeAkun = rbKaryawan.isSelected() ? rbKaryawan.getText() : rbAdmin.getText();
     }
 
     private void setButtonGroup() {
@@ -53,16 +44,15 @@ public class DaftarKaryawan extends javax.swing.JInternalFrame {
 
     private void setTable() {
         try {
-            query = """
-                    SELECT ID_USER ,
-                    NAMA_LENGKAP ,
-                    TANGGAL_LAHIR ,
-                    GENDER ,
-                    ALAMAT ,
-                    EMAIL ,
-                    NO_TELP ,
-                    TIPE_AKUN ,
-                    USERNAME FROM USERS WHERE LOWER(NAMA_LENGKAP) LIKE ?""";
+            DefaultTableModel tableModel = (DefaultTableModel) table.getModel();
+            query = switch (cbFilter.getSelectedIndex()) {
+                case 1 ->
+                    Variable.daftarKaryawan("TIPE_AKUN = 'Admin' AND");
+                case 2 ->
+                    Variable.daftarKaryawan("TIPE_AKUN = 'Karyawan' AND");
+                default ->
+                    Variable.daftarKaryawan("");
+            };
             pstat = connection.prepareStatement(query);
             pstat.setString(1, "%" + tfPencarian.getText().toLowerCase() + "%");
             rset = pstat.executeQuery();
@@ -82,13 +72,13 @@ public class DaftarKaryawan extends javax.swing.JInternalFrame {
                 };
                 tableModel.addRow(dataQuery);
             }
+            table.setModel(tableModel);
         } catch (SQLException ex) {
             System.err.println(ex.getMessage());
         }
     }
 
     private void tambahKaryawan() {
-        getSelectedRadio();
         try {
             query = """
                     INSERT INTO USERS (
@@ -103,11 +93,11 @@ public class DaftarKaryawan extends javax.swing.JInternalFrame {
             pstat = connection.prepareStatement(query);
             pstat.setString(1, tfNamaKaryawan.getText());
             pstat.setDate(2, new java.sql.Date(dateChooser.getDate().getTime()));
-            pstat.setString(3, gender);
+            pstat.setString(3, rbLaki.isSelected() ? rbLaki.getText() : rbPerempuan.getText());
             pstat.setString(4, taAlamat.getText());
             pstat.setString(5, tfEmail.getText());
             pstat.setString(6, tfPhone.getText());
-            pstat.setString(7, tipeAkun);
+            pstat.setString(7, rbKaryawan.isSelected() ? rbKaryawan.getText() : rbAdmin.getText());
             pstat.setString(8, tfUsername.getText());
             pstat.setString(9, String.valueOf(passwordField.getPassword()));
             rsetInt = pstat.executeUpdate();
@@ -129,7 +119,8 @@ public class DaftarKaryawan extends javax.swing.JInternalFrame {
     }
 
     private void updateKaryawan() {
-        getSelectedRadio();
+        String isMan = rbLaki.isSelected() ? rbLaki.getText() : rbPerempuan.getText();
+        String isAdmin = rbKaryawan.isSelected() ? rbKaryawan.getText() : rbAdmin.getText();
         try {
             query = """
                     UPDATE USERS SET NAMA_LENGKAP=?,
@@ -140,18 +131,57 @@ public class DaftarKaryawan extends javax.swing.JInternalFrame {
                     NO_TELP=?,
                     TIPE_AKUN=?,
                     USERNAME=?,
-                    PASSWORD=? WHERE ID_USER=?""";
+                    PASSWORD=?
+                    WHERE ID_USER=?""";
             pstat = connection.prepareStatement(query);
-            pstat.setString(10, textIdKaryawan.getText());
             pstat.setString(1, tfNamaKaryawan.getText());
             pstat.setDate(2, new java.sql.Date(dateChooser.getDate().getTime()));
-            pstat.setString(3, gender);
+            pstat.setString(3, isMan);
             pstat.setString(4, taAlamat.getText());
             pstat.setString(5, tfEmail.getText());
             pstat.setString(6, tfPhone.getText());
-            pstat.setString(7, tipeAkun);
+            pstat.setString(7, isAdmin);
             pstat.setString(8, tfUsername.getText());
             pstat.setString(9, String.valueOf(passwordField.getPassword()));
+            pstat.setString(10, textIdKaryawan.getText());
+            rsetInt = pstat.executeUpdate();
+
+            if (rsetInt > 0) {
+                popUpSuccessMessage("Berhasil", "Data berhasil diperbarui");
+            }
+
+            pstat.close();
+        } catch (SQLException ex) {
+            System.err.println(ex.getMessage());
+
+            popUpErrorMessage("Error", "Data gagal diupdate");
+        }
+    }
+
+    private void updateKaryawanWithoutPassword() {
+        String isMan = rbLaki.isSelected() ? rbLaki.getText() : rbPerempuan.getText();
+        String isAdmin = rbKaryawan.isSelected() ? rbKaryawan.getText() : rbAdmin.getText();
+        try {
+            query = """
+                    UPDATE USERS SET NAMA_LENGKAP=?,
+                    TANGGAL_LAHIR=?,
+                    GENDER=?,
+                    ALAMAT=?,
+                    EMAIL=?,
+                    NO_TELP=?,
+                    TIPE_AKUN=?,
+                    USERNAME=?
+                    WHERE ID_USER=?""";
+            pstat = connection.prepareStatement(query);
+            pstat.setString(1, tfNamaKaryawan.getText());
+            pstat.setDate(2, new java.sql.Date(dateChooser.getDate().getTime()));
+            pstat.setString(3, isMan);
+            pstat.setString(4, taAlamat.getText());
+            pstat.setString(5, tfEmail.getText());
+            pstat.setString(6, tfPhone.getText());
+            pstat.setString(7, isAdmin);
+            pstat.setString(8, tfUsername.getText());
+            pstat.setString(9, textIdKaryawan.getText());
             rsetInt = pstat.executeUpdate();
 
             if (rsetInt > 0) {
@@ -248,8 +278,7 @@ public class DaftarKaryawan extends javax.swing.JInternalFrame {
                 || taAlamat.getText().isEmpty()
                 || tfEmail.getText().isEmpty()
                 || tfPhone.getText().isEmpty()
-                || tfUsername.getText().isEmpty()
-                || passwordField.getPassword().length == 0;
+                || tfUsername.getText().isEmpty();
     }
 
     @SuppressWarnings("unchecked")
@@ -290,6 +319,7 @@ public class DaftarKaryawan extends javax.swing.JInternalFrame {
         rbKaryawan = new javax.swing.JRadioButton();
         rbPerempuan = new javax.swing.JRadioButton();
         rbAdmin = new javax.swing.JRadioButton();
+        cbFilter = new javax.swing.JComboBox<>();
 
         jLabel6.setText("Nama lengkap");
 
@@ -321,21 +351,33 @@ public class DaftarKaryawan extends javax.swing.JInternalFrame {
 
         table.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null}
+                {null, null, null, null, null, null, null, null, null},
+                {null, null, null, null, null, null, null, null, null},
+                {null, null, null, null, null, null, null, null, null},
+                {null, null, null, null, null, null, null, null, null}
             },
             new String [] {
-                "Title 1", "Title 2", "Title 3", "Title 4"
+                "ID User", "Nama", "Tanggal Lahir", "Jenis Kelamin", "Alamat", "Email", "Telepon", "Jabatan", "Username"
             }
-        ));
+        ) {
+            boolean[] canEdit = new boolean [] {
+                false, false, false, false, false, false, false, false, false
+            };
+
+            public boolean isCellEditable(int rowIndex, int columnIndex) {
+                return canEdit [columnIndex];
+            }
+        });
         table.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 tableMouseClicked(evt);
             }
         });
         jScrollPane2.setViewportView(table);
+        if (table.getColumnModel().getColumnCount() > 0) {
+            table.getColumnModel().getColumn(0).setPreferredWidth(70);
+            table.getColumnModel().getColumn(0).setMaxWidth(70);
+        }
 
         tfPencarian.addKeyListener(new java.awt.event.KeyAdapter() {
             public void keyReleased(java.awt.event.KeyEvent evt) {
@@ -412,6 +454,13 @@ public class DaftarKaryawan extends javax.swing.JInternalFrame {
 
         rbAdmin.setText("Admin");
 
+        cbFilter.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Semua", "Admin", "Karyawan" }));
+        cbFilter.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                cbFilterActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -437,7 +486,7 @@ public class DaftarKaryawan extends javax.swing.JInternalFrame {
                             .addComponent(tfEmail)
                             .addComponent(passwordField)
                             .addComponent(tfPhone)
-                            .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 236, Short.MAX_VALUE)
+                            .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 232, Short.MAX_VALUE)
                             .addComponent(dateChooser, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                             .addComponent(tfNamaKaryawan)
                             .addGroup(layout.createSequentialGroup()
@@ -462,14 +511,18 @@ public class DaftarKaryawan extends javax.swing.JInternalFrame {
                         .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 732, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                         .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(cbFilter, javax.swing.GroupLayout.PREFERRED_SIZE, 115, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(tfPencarian, javax.swing.GroupLayout.PREFERRED_SIZE, 170, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addContainerGap())
+                .addGap(10, 10, 10))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addGap(98, 98, 98)
-                .addComponent(tfPencarian, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(tfPencarian, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(cbFilter, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jScrollPane2)
@@ -519,9 +572,9 @@ public class DaftarKaryawan extends javax.swing.JInternalFrame {
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(btTambah)
                             .addComponent(btUpdate))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(btDelete)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(btDelete)
+                        .addGap(12, 12, 12)
                         .addComponent(btClear)
                         .addGap(0, 39, Short.MAX_VALUE)))
                 .addContainerGap())
@@ -536,10 +589,11 @@ public class DaftarKaryawan extends javax.swing.JInternalFrame {
     }//GEN-LAST:event_btClearActionPerformed
 
     private void btTambahActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btTambahActionPerformed
-        if (checkInput()) {
+        if (checkInput() || passwordField.getPassword().length == 0) {
             popUpErrorMessage("Kesalahan Pengisian Formulir", "Mohon lengkapi semua bagian formulir sebelum melanjutkan. Pastikan setiap kolom terisi dengan informasi yang diperlukan.");
             return;
         }
+
         tambahKaryawan();
         setTable();
     }//GEN-LAST:event_btTambahActionPerformed
@@ -549,6 +603,13 @@ public class DaftarKaryawan extends javax.swing.JInternalFrame {
             popUpErrorMessage("Kesalahan Pengisian Formulir", "Mohon lengkapi semua bagian formulir sebelum melanjutkan. Pastikan setiap kolom terisi dengan informasi yang diperlukan.");
             return;
         }
+
+        if (passwordField.getPassword().length == 0) {
+            updateKaryawanWithoutPassword();
+            setTable();
+            return;
+        }
+
         updateKaryawan();
         setTable();
     }//GEN-LAST:event_btUpdateActionPerformed
@@ -575,6 +636,10 @@ public class DaftarKaryawan extends javax.swing.JInternalFrame {
         dateChooserTextField = Variable.disableDateTextfield(dateChooser);
     }//GEN-LAST:event_dateChooserMouseClicked
 
+    private void cbFilterActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cbFilterActionPerformed
+        setTable();
+    }//GEN-LAST:event_cbFilterActionPerformed
+
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btClear;
     private javax.swing.JButton btDelete;
@@ -582,6 +647,7 @@ public class DaftarKaryawan extends javax.swing.JInternalFrame {
     private javax.swing.JButton btUpdate;
     private javax.swing.ButtonGroup buttonGroup1;
     private javax.swing.ButtonGroup buttonGroup2;
+    private javax.swing.JComboBox<String> cbFilter;
     private com.toedter.calendar.JDateChooser dateChooser;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel10;

@@ -4,11 +4,13 @@ import TokoHp.Main.MainFrame;
 import TokoHp.Objects.Variable;
 import static TokoHp.Objects.Variable.koneksi;
 import com.formdev.flatlaf.FlatClientProperties;
+import com.formdev.flatlaf.extras.FlatSVGIcon;
 import com.formdev.flatlaf.fonts.roboto.FlatRobotoFont;
 import java.awt.EventQueue;
 import java.awt.Font;
 import java.awt.Insets;
 import java.sql.*;
+import javax.swing.JButton;
 import javax.swing.JOptionPane;
 
 public class LoginPanel extends javax.swing.JFrame {
@@ -28,7 +30,7 @@ public class LoginPanel extends javax.swing.JFrame {
         setResizable(false);
         connection = koneksi();
         setLocationRelativeTo(null);
-        jLabel3.setFont(new Font(FlatRobotoFont.STYLE_BOLD, Font.BOLD, 24));
+        jLabel3.setFont(new Font(FlatRobotoFont.STYLE_BOLD, Font.BOLD, 26));
         tfUser.putClientProperty(FlatClientProperties.PLACEHOLDER_TEXT, "Masukkan username/email");
         tfUser.putClientProperty(FlatClientProperties.TEXT_FIELD_SHOW_CLEAR_BUTTON, true);
         tfUser.putClientProperty("JComponent.roundRect", true);
@@ -38,6 +40,7 @@ public class LoginPanel extends javax.swing.JFrame {
         passwordField.setMargin(new Insets(5, 11, 5, 11));
         Variable.setPasswordFieldRevealButton(passwordField);
         btLogin.putClientProperty("JButton.buttonType", "roundRect");
+        menuBar.add(themeSwitcher());
     }
 
     public static void main(String args[]) {
@@ -45,6 +48,35 @@ public class LoginPanel extends javax.swing.JFrame {
             Variable.setLightTheme();
             new LoginPanel().setVisible(true);
         });
+    }
+
+    private JButton themeSwitcher() {
+        boolean isLightTheme = !Variable.isDarkTheme();
+        String iconDirectory = isLightTheme ? "TokoHp/Icons/moon.svg" : "TokoHp/Icons/sun.svg";
+        JButton button = new JButton(new FlatSVGIcon(iconDirectory, 0.85f));
+
+        button.addActionListener((l) -> {
+            EventQueue.invokeLater(() -> {
+                if (isLightTheme) {
+                    Variable.setDarkTheme();
+                } else {
+                    Variable.setLightTheme();
+                }
+                dispose();
+                new LoginPanel().setVisible(true);
+            });
+
+        });
+
+        button.putClientProperty(FlatClientProperties.STYLE, ""
+                + "borderWidth:0;"
+                + "focusWidth:0;"
+                + "innerFocusWidth:0;"
+                + "background:null;"
+        );
+
+        button.setMargin(new Insets(5, 5, 5, 5));
+        return button;
     }
 
     private void insertSession(String idUser) {
@@ -115,12 +147,15 @@ public class LoginPanel extends javax.swing.JFrame {
         passwordField = new javax.swing.JPasswordField();
         jLabel3 = new javax.swing.JLabel();
         btLogin = new javax.swing.JButton();
+        jLabel1 = new javax.swing.JLabel();
+        jLabel2 = new javax.swing.JLabel();
+        menuBar = new javax.swing.JMenuBar();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
         tfUser.setToolTipText("");
 
-        jLabel3.setFont(new java.awt.Font("Segoe UI", 1, 24)); // NOI18N
+        jLabel3.setFont(new java.awt.Font("Segoe UI", 1, 26)); // NOI18N
         jLabel3.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         jLabel3.setText("Login");
 
@@ -128,37 +163,52 @@ public class LoginPanel extends javax.swing.JFrame {
         btLogin.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
         btLogin.setForeground(new java.awt.Color(235, 235, 240));
         btLogin.setText("SIGN IN");
+        btLogin.setAlignmentY(0.0F);
         btLogin.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btLoginActionPerformed(evt);
             }
         });
 
+        jLabel1.setText("Username atau email");
+
+        jLabel2.setText("Kata sandi");
+        setJMenuBar(menuBar);
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jLabel3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, 339, javax.swing.GroupLayout.PREFERRED_SIZE)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addContainerGap(67, Short.MAX_VALUE)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addComponent(passwordField)
-                    .addComponent(btLogin, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(tfUser, javax.swing.GroupLayout.PREFERRED_SIZE, 246, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(57, 57, 57))
+                    .addComponent(tfUser)
+                    .addComponent(btLogin, javax.swing.GroupLayout.PREFERRED_SIZE, 275, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(6, 6, 6)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jLabel1)
+                            .addComponent(jLabel2))))
+                .addGap(32, 32, 32))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addGap(41, 41, 41)
+                .addGap(33, 33, 33)
                 .addComponent(jLabel3)
-                .addGap(58, 58, 58)
-                .addComponent(tfUser, javax.swing.GroupLayout.PREFERRED_SIZE, 34, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(34, 34, 34)
+                .addComponent(jLabel1)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(tfUser, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(passwordField, javax.swing.GroupLayout.PREFERRED_SIZE, 34, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(26, 26, 26)
-                .addComponent(btLogin, javax.swing.GroupLayout.PREFERRED_SIZE, 36, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(82, Short.MAX_VALUE))
+                .addComponent(jLabel2)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(passwordField, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(42, 42, 42)
+                .addComponent(btLogin, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(62, 62, 62))
         );
 
         pack();
@@ -170,7 +220,10 @@ public class LoginPanel extends javax.swing.JFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btLogin;
+    private javax.swing.JLabel jLabel1;
+    private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
+    private javax.swing.JMenuBar menuBar;
     private javax.swing.JPasswordField passwordField;
     private javax.swing.JTextField tfUser;
     // End of variables declaration//GEN-END:variables

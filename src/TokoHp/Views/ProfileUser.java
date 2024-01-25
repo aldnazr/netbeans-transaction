@@ -3,8 +3,9 @@ package TokoHp.Views;
 import TokoHp.Main.MainFrame;
 import TokoHp.Objects.Variable;
 import static TokoHp.Objects.Variable.koneksi;
-import com.formdev.flatlaf.FlatClientProperties;
+import com.formdev.flatlaf.fonts.roboto.FlatRobotoFont;
 import java.awt.Color;
+import java.awt.Font;
 import java.sql.*;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
@@ -30,15 +31,14 @@ public class ProfileUser extends javax.swing.JInternalFrame {
         setForm();
         Variable.setPasswordFieldRevealButton(pwField);
         Variable.disableDateTextfield(dateChooser);
-        card.setCorner(34);
-        card.setForeground(!Variable.isDarkTheme() ? Color.decode("#D8D8DC") : Color.decode("#363638"));
+        card.setForeground(!Variable.isDarkTheme() ? Color.decode("#E6E6E6") : Color.decode("#363638"));
         JLabel[] labels = {jLabel2, jLabel3, jLabel4, jLabel5, jLabel6, jLabel7, jLabel8, jLabel9};
-        setFontSubLabel(labels);
+        setFontLabel(labels);
     }
 
-    private void setFontSubLabel(JLabel[] labels) {
+    private void setFontLabel(JLabel[] labels) {
         for (JLabel label : labels) {
-            label.putClientProperty(FlatClientProperties.STYLE, "font:$h4.font");
+            label.setFont(new Font(FlatRobotoFont.FAMILY_SEMIBOLD, Font.PLAIN, 14));
         }
     }
 
@@ -50,7 +50,7 @@ public class ProfileUser extends javax.swing.JInternalFrame {
     private void setForm() {
         int activeUserId = Variable.getActiveUserId();
         try {
-            sql = "SELECT NAMA_LENGKAP, TANGGAL_LAHIR, GENDER, ALAMAT, EMAIL, NO_TELP, USERNAME, PASSWORD FROM USERS WHERE ID_USER = ?";
+            sql = "SELECT NAMA_LENGKAP, TANGGAL_LAHIR, GENDER, ALAMAT, EMAIL, NO_TELP, USERNAME FROM USERS WHERE ID_USER = ?";
             pStat = connection.prepareStatement(sql);
             pStat.setInt(1, activeUserId);
             rSet = pStat.executeQuery();
@@ -67,7 +67,6 @@ public class ProfileUser extends javax.swing.JInternalFrame {
                 tfEmail.setText(rSet.getString(5));
                 tfPhone.setText(rSet.getString(6));
                 tfUsername.setText(rSet.getString(7));
-                pwField.setText(rSet.getString(8));
             }
         } catch (SQLException ex) {
             System.err.println(ex.getMessage());
@@ -76,13 +75,21 @@ public class ProfileUser extends javax.swing.JInternalFrame {
 
     private void update() {
         String gender = radioButtonLK.isSelected() ? radioButtonLK.getText() : radioButtonPR.getText();
-        java.util.Date getDateChooser = dateChooser.getDate();
-        java.sql.Date sqlDate = new java.sql.Date(getDateChooser.getTime());
+        java.sql.Date sqlDate = new java.sql.Date(dateChooser.getDate().getTime());
         int activeUserId = Variable.getActiveUserId();
         try {
-            sql = "UPDATE USERS SET NAMA_LENGKAP = ?, TANGGAL_LAHIR = ?, GENDER = ?, ALAMAT = ?, EMAIL = ?, NO_TELP = ?, USERNAME = ?, PASSWORD = ? WHERE ID_USER = ?";
+            sql = """
+                  UPDATE USERS SET
+                  NAMA_LENGKAP = ?,
+                  TANGGAL_LAHIR = ?,
+                  GENDER = ?,
+                  ALAMAT = ?,
+                  EMAIL = ?,
+                  NO_TELP = ?,
+                  USERNAME = ?,
+                  PASSWORD = ?
+                  WHERE ID_USER = ?""";
             pStat = connection.prepareStatement(sql);
-            pStat.setInt(9, activeUserId);
             pStat.setString(1, tfNama.getText());
             pStat.setDate(2, sqlDate);
             pStat.setString(3, gender);
@@ -91,31 +98,77 @@ public class ProfileUser extends javax.swing.JInternalFrame {
             pStat.setString(6, tfPhone.getText());
             pStat.setString(7, tfUsername.getText());
             pStat.setString(8, String.valueOf(pwField.getPassword()));
+            pStat.setInt(9, activeUserId);
             int executeResult = pStat.executeUpdate();
 
             if (executeResult > 0) {
-                MessageAlerts.getInstance().showMessage("Sukses", "Profil berhasil diperbarui", MessageAlerts.MessageType.SUCCESS, MessageAlerts.DEFAULT_OPTION, (PopupController pc, int i) -> {
-                    JFrame jFrame = (JFrame) SwingUtilities.getWindowAncestor(this.getDesktopPane());
-                    MainFrame mainFrame = new MainFrame();
-                    jFrame.dispose();
-                    mainFrame.setVisible(true);
-                    mainFrame.switchFrame(new ProfileUser(), "pengaturan Profil");
-                });
-            } else {
-                Variable.popUpErrorMessage("Error", "Profil gagal diupdate");
+                MessageAlerts.getInstance().showMessage("Berhasil", "Profil berhasil diperbarui", MessageAlerts.MessageType.SUCCESS, MessageAlerts.DEFAULT_OPTION,
+                        (PopupController pc, int i) -> {
+                            if (i == 0) {
+                                JFrame jFrame = (JFrame) SwingUtilities.getWindowAncestor(this.getDesktopPane());
+                                MainFrame mainFrame = new MainFrame();
+                                jFrame.dispose();
+                                mainFrame.setVisible(true);
+                                mainFrame.switchFrame(new ProfileUser(), "Pengaturan Profil");
+                            }
+                        });
             }
         } catch (SQLException ex) {
             System.err.println(ex.getMessage());
+            Variable.popUpErrorMessage("Gagal", "Profil gagal diupdate");
         }
     }
 
-    private boolean validation() {
-        return !tfNama.getText().isEmpty()
-                && !taAlamat.getText().isEmpty()
-                && !tfEmail.getText().isEmpty()
-                && !tfPhone.getText().isEmpty()
-                && !tfUsername.getText().isEmpty()
-                && pwField.getPassword().length != 0;
+    private void updateWithoutPassword() {
+        String gender = radioButtonLK.isSelected() ? radioButtonLK.getText() : radioButtonPR.getText();
+        java.sql.Date sqlDate = new java.sql.Date(dateChooser.getDate().getTime());
+        int activeUserId = Variable.getActiveUserId();
+        try {
+            sql = """
+                  UPDATE USERS SET
+                  NAMA_LENGKAP = ?,
+                  TANGGAL_LAHIR = ?,
+                  GENDER = ?,
+                  ALAMAT = ?,
+                  EMAIL = ?,
+                  NO_TELP = ?,
+                  USERNAME = ?
+                  WHERE ID_USER = ?""";
+            pStat = connection.prepareStatement(sql);
+            pStat.setString(1, tfNama.getText());
+            pStat.setDate(2, sqlDate);
+            pStat.setString(3, gender);
+            pStat.setString(4, taAlamat.getText());
+            pStat.setString(5, tfEmail.getText());
+            pStat.setString(6, tfPhone.getText());
+            pStat.setString(7, tfUsername.getText());
+            pStat.setInt(8, activeUserId);
+            int executeResult = pStat.executeUpdate();
+
+            if (executeResult > 0) {
+                MessageAlerts.getInstance().showMessage("Berhasil", "Profil berhasil diperbarui", MessageAlerts.MessageType.SUCCESS, MessageAlerts.DEFAULT_OPTION,
+                        (PopupController pc, int i) -> {
+                            if (i == 0) {
+                                JFrame jFrame = (JFrame) SwingUtilities.getWindowAncestor(this.getDesktopPane());
+                                MainFrame mainFrame = new MainFrame();
+                                jFrame.dispose();
+                                mainFrame.setVisible(true);
+                                mainFrame.switchFrame(new ProfileUser(), "Pengaturan Profil");
+                            }
+                        });
+            }
+        } catch (SQLException ex) {
+            System.err.println(ex.getMessage());
+            Variable.popUpErrorMessage("Gagal", "Profil gagal diupdate");
+        }
+    }
+
+    private boolean checkInput() {
+        return tfNama.getText().isEmpty()
+                || taAlamat.getText().isEmpty()
+                || tfEmail.getText().isEmpty()
+                || tfPhone.getText().isEmpty()
+                || tfUsername.getText().isEmpty();
     }
 
     @SuppressWarnings("unchecked")
@@ -132,7 +185,7 @@ public class ProfileUser extends javax.swing.JInternalFrame {
         tfUsername = new javax.swing.JTextField();
         jLabel9 = new javax.swing.JLabel();
         pwField = new javax.swing.JPasswordField();
-        jButton1 = new javax.swing.JButton();
+        btSave = new javax.swing.JButton();
         tfNama = new javax.swing.JTextField();
         dateChooser = new com.toedter.calendar.JDateChooser();
         jLabel2 = new javax.swing.JLabel();
@@ -146,7 +199,8 @@ public class ProfileUser extends javax.swing.JInternalFrame {
 
         setPreferredSize(new java.awt.Dimension(1200, 740));
 
-        card.setForeground(javax.swing.UIManager.getDefaults().getColor("Button.toolbar.hoverBackground"));
+        card.setForeground(javax.swing.UIManager.getDefaults().getColor("Button.pressedBackground"));
+        card.setCorner(38);
 
         jLabel6.setFont(new java.awt.Font("Segoe UI", 1, 13)); // NOI18N
         jLabel6.setText("Email");
@@ -162,13 +216,13 @@ public class ProfileUser extends javax.swing.JInternalFrame {
         jLabel9.setFont(new java.awt.Font("Segoe UI", 1, 13)); // NOI18N
         jLabel9.setText("Kata sandi");
 
-        jButton1.setBackground(javax.swing.UIManager.getDefaults().getColor("Button.default.background"));
-        jButton1.setFont(jButton1.getFont().deriveFont(jButton1.getFont().getStyle() | java.awt.Font.BOLD, 13));
-        jButton1.setForeground(javax.swing.UIManager.getDefaults().getColor("Button.default.foreground"));
-        jButton1.setText("Simpan Perubahan");
-        jButton1.addActionListener(new java.awt.event.ActionListener() {
+        btSave.setBackground(javax.swing.UIManager.getDefaults().getColor("Button.default.background"));
+        btSave.setFont(btSave.getFont().deriveFont(btSave.getFont().getStyle() | java.awt.Font.BOLD, 13));
+        btSave.setForeground(javax.swing.UIManager.getDefaults().getColor("Button.default.foreground"));
+        btSave.setText("Simpan Perubahan");
+        btSave.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton1ActionPerformed(evt);
+                btSaveActionPerformed(evt);
             }
         });
 
@@ -199,7 +253,7 @@ public class ProfileUser extends javax.swing.JInternalFrame {
             .addGroup(cardLayout.createSequentialGroup()
                 .addGroup(cardLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(cardLayout.createSequentialGroup()
-                        .addGap(71, 71, 71)
+                        .addGap(80, 80, 80)
                         .addGroup(cardLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(jLabel2)
                             .addGroup(cardLayout.createSequentialGroup()
@@ -227,13 +281,13 @@ public class ProfileUser extends javax.swing.JInternalFrame {
                                     .addComponent(tfNama, javax.swing.GroupLayout.PREFERRED_SIZE, 405, javax.swing.GroupLayout.PREFERRED_SIZE)))))
                     .addGroup(cardLayout.createSequentialGroup()
                         .addGap(251, 251, 251)
-                        .addComponent(jButton1)))
-                .addContainerGap(81, Short.MAX_VALUE))
+                        .addComponent(btSave)))
+                .addContainerGap(80, Short.MAX_VALUE))
         );
         cardLayout.setVerticalGroup(
             cardLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(cardLayout.createSequentialGroup()
-                .addContainerGap(47, Short.MAX_VALUE)
+                .addContainerGap(48, Short.MAX_VALUE)
                 .addGroup(cardLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(tfNama, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel3))
@@ -267,7 +321,7 @@ public class ProfileUser extends javax.swing.JInternalFrame {
                     .addComponent(pwField, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel9))
                 .addGap(34, 34, 34)
-                .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(btSave, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(28, 28, 28))
         );
 
@@ -278,32 +332,38 @@ public class ProfileUser extends javax.swing.JInternalFrame {
             .addGroup(layout.createSequentialGroup()
                 .addGap(265, 265, 265)
                 .addComponent(card, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(264, Short.MAX_VALUE))
+                .addContainerGap(256, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addContainerGap(92, Short.MAX_VALUE)
+                .addContainerGap(86, Short.MAX_VALUE)
                 .addComponent(card, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(87, 87, 87))
+                .addContainerGap(92, Short.MAX_VALUE))
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
-        if (validation()) {
-            update();
-        } else {
+    private void btSaveActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btSaveActionPerformed
+        if (checkInput()) {
             Variable.popUpErrorMessage("Form tidak terpenuhi", "Harap isi semua bidang yang diperlukan");
+            return;
         }
-    }//GEN-LAST:event_jButton1ActionPerformed
+
+        if (pwField.getPassword().length == 0) {
+            updateWithoutPassword();
+            return;
+        }
+
+        update();
+    }//GEN-LAST:event_btSaveActionPerformed
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton btSave;
     private javax.swing.ButtonGroup buttonGroup;
     private TokoHp.Component.Card card;
     private com.toedter.calendar.JDateChooser dateChooser;
-    private javax.swing.JButton jButton1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;

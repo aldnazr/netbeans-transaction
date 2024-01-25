@@ -25,54 +25,56 @@
     <DimensionLayout dim="0">
       <Group type="103" groupAlignment="0" attributes="0">
           <Group type="102" alignment="0" attributes="0">
-              <EmptySpace min="-2" pref="15" max="-2" attributes="0"/>
+              <EmptySpace min="-2" pref="16" max="-2" attributes="0"/>
               <Group type="103" groupAlignment="0" attributes="0">
-                  <Group type="102" attributes="0">
-                      <Group type="103" groupAlignment="1" attributes="0">
-                          <Component id="jScrollPane1" alignment="0" pref="1159" max="32767" attributes="0"/>
-                          <Group type="102" alignment="1" attributes="0">
-                              <Component id="iconDate" min="-2" max="-2" attributes="0"/>
-                              <EmptySpace max="-2" attributes="0"/>
-                              <Component id="cbFilterDate" min="-2" pref="138" max="-2" attributes="0"/>
-                              <EmptySpace max="-2" attributes="0"/>
-                              <Component id="tfPencarian" min="-2" pref="170" max="-2" attributes="0"/>
-                          </Group>
-                      </Group>
-                      <EmptySpace min="-2" pref="14" max="-2" attributes="0"/>
+                  <Group type="102" alignment="0" attributes="0">
+                      <Component id="card1" min="-2" pref="245" max="-2" attributes="0"/>
+                      <EmptySpace type="separate" max="-2" attributes="0"/>
+                      <Component id="card3" min="-2" pref="245" max="-2" attributes="0"/>
                   </Group>
+                  <Component id="jLabel5" alignment="0" min="-2" max="-2" attributes="0"/>
+              </Group>
+              <EmptySpace pref="664" max="32767" attributes="0"/>
+          </Group>
+          <Group type="102" alignment="0" attributes="0">
+              <EmptySpace min="-2" pref="10" max="-2" attributes="0"/>
+              <Group type="103" groupAlignment="0" attributes="0">
+                  <Component id="jScrollPane1" max="32767" attributes="0"/>
                   <Group type="102" attributes="0">
-                      <Group type="103" groupAlignment="0" attributes="0">
-                          <Group type="102" attributes="0">
-                              <Component id="card1" min="-2" pref="245" max="-2" attributes="0"/>
-                              <EmptySpace type="separate" max="-2" attributes="0"/>
-                              <Component id="card3" min="-2" pref="245" max="-2" attributes="0"/>
-                          </Group>
-                          <Component id="jLabel5" alignment="0" min="-2" max="-2" attributes="0"/>
-                      </Group>
+                      <Component id="btCetak" min="-2" max="-2" attributes="0"/>
                       <EmptySpace max="32767" attributes="0"/>
+                      <Component id="iconDate" min="-2" max="-2" attributes="0"/>
+                      <EmptySpace max="-2" attributes="0"/>
+                      <Component id="cbFilterDate" min="-2" pref="138" max="-2" attributes="0"/>
+                      <EmptySpace max="-2" attributes="0"/>
+                      <Component id="tfPencarian" min="-2" pref="170" max="-2" attributes="0"/>
                   </Group>
               </Group>
+              <EmptySpace min="-2" pref="10" max="-2" attributes="0"/>
           </Group>
       </Group>
     </DimensionLayout>
     <DimensionLayout dim="1">
       <Group type="103" groupAlignment="0" attributes="0">
           <Group type="102" alignment="1" attributes="0">
-              <EmptySpace pref="75" max="32767" attributes="0"/>
+              <EmptySpace pref="44" max="32767" attributes="0"/>
               <Component id="jLabel5" min="-2" max="-2" attributes="0"/>
               <EmptySpace type="unrelated" max="-2" attributes="0"/>
               <Group type="103" groupAlignment="0" attributes="0">
                   <Component id="card1" min="-2" pref="100" max="-2" attributes="0"/>
                   <Component id="card3" min="-2" pref="100" max="-2" attributes="0"/>
               </Group>
-              <EmptySpace min="-2" pref="7" max="-2" attributes="0"/>
+              <EmptySpace min="-2" pref="32" max="-2" attributes="0"/>
               <Group type="103" groupAlignment="0" attributes="0">
-                  <Component id="tfPencarian" min="-2" max="-2" attributes="0"/>
-                  <Component id="iconDate" alignment="0" min="-2" pref="26" max="-2" attributes="0"/>
-                  <Component id="cbFilterDate" alignment="0" min="-2" max="-2" attributes="0"/>
+                  <Group type="103" alignment="1" groupAlignment="0" attributes="0">
+                      <Component id="tfPencarian" min="-2" max="-2" attributes="0"/>
+                      <Component id="iconDate" alignment="0" min="-2" pref="26" max="-2" attributes="0"/>
+                      <Component id="cbFilterDate" alignment="0" min="-2" max="-2" attributes="0"/>
+                  </Group>
+                  <Component id="btCetak" alignment="1" min="-2" pref="32" max="-2" attributes="0"/>
               </Group>
               <EmptySpace max="-2" attributes="0"/>
-              <Component id="jScrollPane1" min="-2" max="-2" attributes="0"/>
+              <Component id="jScrollPane1" min="-2" pref="431" max="-2" attributes="0"/>
               <EmptySpace min="-2" pref="10" max="-2" attributes="0"/>
           </Group>
       </Group>
@@ -93,11 +95,11 @@
                 <Column editable="false" title="ID Transaksi" type="java.lang.Object"/>
                 <Column editable="false" title="Kasir" type="java.lang.Object"/>
                 <Column editable="false" title="Nama Pelanggan" type="java.lang.Object"/>
-                <Column editable="false" title="Waktu" type="java.lang.Object"/>
+                <Column editable="false" title="Tanggal" type="java.lang.Object"/>
                 <Column editable="false" title="Brand" type="java.lang.Object"/>
                 <Column editable="false" title="Model" type="java.lang.Object"/>
                 <Column editable="false" title="Harga Per-Item" type="java.lang.Object"/>
-                <Column editable="false" title="Jumlah Pemelian" type="java.lang.Object"/>
+                <Column editable="false" title="Qty" type="java.lang.Object"/>
                 <Column editable="false" title="Subtotal" type="java.lang.Object"/>
                 <Column editable="false" title="Total" type="java.lang.Object"/>
               </Table>
@@ -119,7 +121,7 @@
                   <Editor/>
                   <Renderer/>
                 </Column>
-                <Column maxWidth="-1" minWidth="-1" prefWidth="-1" resizable="true">
+                <Column maxWidth="160" minWidth="-1" prefWidth="160" resizable="true">
                   <Title/>
                   <Editor/>
                   <Renderer/>
@@ -139,7 +141,7 @@
                   <Editor/>
                   <Renderer/>
                 </Column>
-                <Column maxWidth="110" minWidth="-1" prefWidth="110" resizable="true">
+                <Column maxWidth="80" minWidth="-1" prefWidth="80" resizable="true">
                   <Title/>
                   <Editor/>
                   <Renderer/>
@@ -401,5 +403,20 @@
         </Component>
       </SubComponents>
     </Container>
+    <Component class="javax.swing.JButton" name="btCetak">
+      <Properties>
+        <Property name="background" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
+          <Color blue="60" green="58" id="Actions.Red" palette="3" red="db" type="palette"/>
+        </Property>
+        <Property name="foreground" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
+          <Color blue="ff" green="ff" red="ff" type="rgb"/>
+        </Property>
+        <Property name="text" type="java.lang.String" value="Cetak Laporan"/>
+        <Property name="alignmentY" type="float" value="0.0"/>
+      </Properties>
+      <Events>
+        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btCetakActionPerformed"/>
+      </Events>
+    </Component>
   </SubComponents>
 </Form>

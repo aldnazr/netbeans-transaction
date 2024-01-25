@@ -16,6 +16,8 @@ import raven.drawer.component.footer.SimpleFooterData;
 import raven.drawer.component.header.SimpleHeaderData;
 import raven.drawer.component.menu.MenuAction;
 import raven.drawer.component.menu.SimpleMenuOption;
+import raven.drawer.component.menu.data.Item;
+import raven.drawer.component.menu.data.MenuItem;
 
 public class DrawerNavigation extends SimpleDrawerBuilder {
 
@@ -67,80 +69,87 @@ public class DrawerNavigation extends SimpleDrawerBuilder {
         return simpleHeaderData;
     }
 
-    private SimpleMenuOption menuAdmin(String[][] menuOptions, String[] icons) {
+    private SimpleMenuOption menuAdmin(MenuItem[] menus) {
         boolean isLightMode = !Variable.isDarkTheme();
         return new SimpleMenuOption()
-                .setMenus(menuOptions)
+                .setMenus(menus)
                 .setBaseIconPath("TokoHp/Icons")
-                .setIcons(icons)
-                .addMenuEvent((MenuAction action, int i, int i1) -> {
-                    switch (i) {
-                        case 0 ->
-                            mainFrame.switchFrame(new ProfileUser(), "Pengaturan Akun");
-                        case 1 ->
-                            mainFrame.switchFrame(new TransaksiBaru(), "Transaksi");
-                        case 2 -> {
-                            switch (i1) {
+                .addMenuEvent((MenuAction action, int[] index) -> {
+                    switch (index.length) {
+                        case 1 -> {
+                            switch (index[0]) {
+                                case 0 ->
+                                    mainFrame.switchFrame(new ProfileUser(), "Pengaturan Akun");
                                 case 1 ->
+                                    mainFrame.switchFrame(new TransaksiBaru(), "Transaksi");
+                                case 3 ->
+                                    mainFrame.switchFrame(new DaftarKaryawan(), "Daftar Karyawan");
+                                case 4 ->
+                                    mainFrame.switchFrame(new DaftarBrand(), "Daftar Brand");
+                                case 5 ->
+                                    mainFrame.switchFrame(new DaftarHandphone(), "Daftar Handphone");
+                                case 6 -> {
+                                    EventQueue.invokeLater(() -> {
+                                        if (isLightMode) {
+                                            Variable.setDarkTheme();
+                                        } else {
+                                            Variable.setLightTheme();
+                                        }
+                                        mainFrame.dispose();
+                                        new MainFrame().setVisible(true);
+                                    });
+
+                                }
+                                case 7 -> {
+                                    mainFrame.dispose();
+                                    new LoginPanel().setVisible(true);
+                                }
+                            }
+                        }
+                        case 2 -> {
+                            switch (index[1]) {
+                                case 0 ->
                                     mainFrame.switchFrame(new RiwayatTransaksi(), "Riwayat Transaksi");
-                                case 2 ->
+                                case 1 ->
                                     mainFrame.switchFrame(new RiwayatLogin(), "Riwayat Login");
                             }
                         }
-                        case 3 ->
-                            mainFrame.switchFrame(new DaftarKaryawan(), "Daftar Karyawan");
-                        case 4 ->
-                            mainFrame.switchFrame(new DaftarBrand(), "Daftar Brand");
-                        case 5 ->
-                            mainFrame.switchFrame(new DaftarHandphone(), "Daftar Handphone");
-                        case 6 -> {
-                            EventQueue.invokeLater(() -> {
-                                if (isLightMode) {
-                                    Variable.setDarkTheme();
-                                } else {
-                                    Variable.setLightTheme();
-                                }
-                                mainFrame.dispose();
-                                new MainFrame().setVisible(true);
-                            });
-
-                        }
-                        case 7 -> {
-                            mainFrame.dispose();
-                            new LoginPanel().setVisible(true);
-                        }
                     }
-                });
+                }
+                );
     }
 
-    private SimpleMenuOption menuKaryawan(String[][] menuOptions, String[] icons) {
+    private SimpleMenuOption menuKaryawan(MenuItem[] menuOptions) {
         boolean isLightMode = !Variable.isDarkTheme();
         return new SimpleMenuOption()
                 .setMenus(menuOptions)
                 .setBaseIconPath("TokoHp/Icons")
-                .setIcons(icons)
-                .addMenuEvent((MenuAction action, int i, int i1) -> {
-                    switch (i) {
-                        case 0 ->
-                            mainFrame.switchFrame(new ProfileUser(), "Pengaturan Akun");
-                        case 1 ->
-                            mainFrame.switchFrame(new TransaksiBaru(), "Transaksi");
-                        case 2 ->
-                            mainFrame.switchFrame(new RiwayatTransaksi(), "Riwayat Transaksi");
-                        case 3 -> {
-                            EventQueue.invokeLater(() -> {
-                                if (isLightMode) {
-                                    Variable.setDarkTheme();
-                                } else {
-                                    Variable.setLightTheme();
+                .addMenuEvent((MenuAction action, int[] index) -> {
+                    switch (index.length) {
+                        case 1 -> {
+                            switch (index[0]) {
+                                case 0 ->
+                                    mainFrame.switchFrame(new ProfileUser(), "Pengaturan Akun");
+                                case 1 ->
+                                    mainFrame.switchFrame(new TransaksiBaru(), "Transaksi");
+                                case 2 ->
+                                    mainFrame.switchFrame(new RiwayatTransaksi(), "Riwayat Transaksi");
+                                case 3 -> {
+                                    EventQueue.invokeLater(() -> {
+                                        if (isLightMode) {
+                                            Variable.setDarkTheme();
+                                        } else {
+                                            Variable.setLightTheme();
+                                        }
+                                        mainFrame.dispose();
+                                        new MainFrame().setVisible(true);
+                                    });
                                 }
-                                mainFrame.dispose();
-                                new MainFrame().setVisible(true);
-                            });
-                        }
-                        case 4 -> {
-                            mainFrame.dispose();
-                            new LoginPanel().setVisible(true);
+                                case 4 -> {
+                                    mainFrame.dispose();
+                                    new LoginPanel().setVisible(true);
+                                }
+                            }
                         }
                     }
                 });
@@ -155,55 +164,40 @@ public class DrawerNavigation extends SimpleDrawerBuilder {
     public SimpleMenuOption getSimpleMenuOption() {
         boolean isAdmin = isLoggedAsAdmin();
         boolean isLightTheme = !Variable.isDarkTheme();
+        String themeName = isLightTheme ? "Dark Mode" : "Light Mode";
+        String themeIcon = isLightTheme ? "moon.svg" : "sun.svg";
 
-        String[][] menuOptions = {
-            {"~AKUN~"},
-            {"Pengaturan Akun"},
-            {"~TRANSAKSI~"},
-            {"Transaksi Baru"},
-            {"Riwayat", "Riwayat Transaksi", "Riwayat Login"},
-            {"~MANAJEMEN~"},
-            {"Karyawan"},
-            {"Brand"},
-            {"Handphone"},
-            {"~LAINNYA~"},
-            {isLightTheme ? "Dark Mode" : "Light Mode"},
-            {"Logout"}
+        MenuItem[] menuAdmin = {
+            new Item.Label("AKUN"),
+            new Item("Pengaturan Akun", "person.svg"),
+            new Item.Label("TRANSAKSI"),
+            new Item("Transaksi Baru", "bag_plus.svg"),
+            new Item("Riwayat", "history.svg")
+            .subMenu("Riwayat Transaksi")
+            .subMenu("Riwayat Login"),
+            new Item.Label("MANAJEMEN"),
+            new Item("Karyawan", "people.svg"),
+            new Item("Brand", "tags.svg"),
+            new Item("Handphone", "phone.svg"),
+            new Item.Label("LAINNYA"),
+            new Item(themeName, themeIcon),
+            new Item("Logout", "logout.svg")
         };
 
-        String[] icons = {
-            "person.svg",
-            "bag_plus.svg",
-            "history.svg",
-            "people.svg",
-            "tags.svg",
-            "phone.svg",
-            isLightTheme ? "moon.svg" : "sun.svg",
-            "logout.svg"
-        };
-
-        String[][] menuOptionsKaryawan = {
-            {"~AKUN~"},
-            {"Pengaturan Akun"},
-            {"~TRANSAKSI~"},
-            {"Transaksi Baru"},
-            {"Riwayat Transaksi"},
-            {"~LAINNYA~"},
-            {isLightTheme ? "Dark Mode" : "Light Mode"},
-            {"Logout"}
-        };
-
-        String[] iconsKaryawan = {
-            "person.svg",
-            "bag_plus.svg",
-            "history.svg",
-            isLightTheme ? "moon.svg" : "sun.svg",
-            "logout.svg"
+        MenuItem[] menuKaryawan = {
+            new Item.Label("AKUN"),
+            new Item("Pengaturan Akun", "person.svg"),
+            new Item.Label("TRANSAKSI"),
+            new Item("Transaksi Baru", "bag_plus.svg"),
+            new Item("Riwayat Transaksi", "history.svg"),
+            new Item.Label("LAINNYA"),
+            new Item(themeName, themeIcon),
+            new Item("Logout", "logout.svg")
         };
 
         return isAdmin
-                ? menuAdmin(menuOptions, icons)
-                : menuKaryawan(menuOptionsKaryawan, iconsKaryawan);
+                ? menuAdmin(menuAdmin)
+                : menuKaryawan(menuKaryawan);
 
     }
 
