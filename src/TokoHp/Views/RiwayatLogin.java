@@ -7,8 +7,6 @@ import javax.swing.table.DefaultTableModel;
 public class RiwayatLogin extends javax.swing.JInternalFrame {
 
     Connection connection;
-    Object[] tableHead = {"ID SESSION", "ID USER", "NAMA LENGKAP", "JABATAN", "WAKTU LOGIN"};
-    DefaultTableModel tableModel = new DefaultTableModel(tableHead, 0);
 
     public RiwayatLogin() {
         initComponents();
@@ -26,6 +24,7 @@ public class RiwayatLogin extends javax.swing.JInternalFrame {
         String sql;
         PreparedStatement preparedStatement;
         ResultSet resultSet;
+        DefaultTableModel tableModel = (DefaultTableModel) table.getModel();
 
         try {
             sql = "SELECT ID_SESSION, ID_USER, NAMA_LENGKAP, TIPE_AKUN, WAKTU_LOGIN FROM USERS JOIN SESSIONS USING(ID_USER) WHERE ID_USER LIKE ? OR LOWER(NAMA_LENGKAP) LIKE ? ORDER BY ID_SESSION DESC";
@@ -62,15 +61,31 @@ public class RiwayatLogin extends javax.swing.JInternalFrame {
 
         table.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null}
+                {null, null, null, null, null},
+                {null, null, null, null, null},
+                {null, null, null, null, null}
             },
             new String [] {
-                "Title 1", "Title 2", "Title 3", "Title 4"
+                "Id Session", "Id User", "Nama Lengkap", "Jabatan", "Waktu Login"
             }
-        ));
+        ) {
+            boolean[] canEdit = new boolean [] {
+                false, false, false, false, false
+            };
+
+            public boolean isCellEditable(int rowIndex, int columnIndex) {
+                return canEdit [columnIndex];
+            }
+        });
         jScrollPane1.setViewportView(table);
+        if (table.getColumnModel().getColumnCount() > 0) {
+            table.getColumnModel().getColumn(0).setPreferredWidth(120);
+            table.getColumnModel().getColumn(0).setMaxWidth(120);
+            table.getColumnModel().getColumn(1).setPreferredWidth(120);
+            table.getColumnModel().getColumn(1).setMaxWidth(120);
+            table.getColumnModel().getColumn(3).setPreferredWidth(180);
+            table.getColumnModel().getColumn(3).setMaxWidth(180);
+        }
 
         tfPencarian.addKeyListener(new java.awt.event.KeyAdapter() {
             public void keyReleased(java.awt.event.KeyEvent evt) {
