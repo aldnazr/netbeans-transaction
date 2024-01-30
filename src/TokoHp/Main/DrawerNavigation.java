@@ -34,7 +34,11 @@ public class DrawerNavigation extends SimpleDrawerBuilder {
         ResultSet resultSet;
 
         try {
-            sql = "SELECT TIPE_AKUN FROM SESSIONS JOIN USERS USING (ID_USER) WHERE ID_SESSION = (SELECT MAX(ID_SESSION) FROM SESSIONS)";
+            sql = """
+                  SELECT TIPE_AKUN
+                  FROM SESSIONS
+                  JOIN USERS USING (ID_USER)
+                  WHERE ID_SESSION = (SELECT MAX(ID_SESSION) FROM SESSIONS)""";
             statement = connection.createStatement();
             resultSet = statement.executeQuery(sql);
 
@@ -55,7 +59,11 @@ public class DrawerNavigation extends SimpleDrawerBuilder {
         ResultSet resultSet;
 
         try {
-            sql = "SELECT NAMA_LENGKAP, EMAIL FROM SESSIONS JOIN USERS USING (ID_USER) WHERE ID_SESSION = (SELECT MAX(ID_SESSION) FROM SESSIONS)";
+            sql = """
+                  SELECT NAMA_LENGKAP, EMAIL
+                  FROM SESSIONS
+                  JOIN USERS USING (ID_USER)
+                  WHERE ID_SESSION = (SELECT MAX(ID_SESSION) FROM SESSIONS)""";
             statement = connection.createStatement();
             resultSet = statement.executeQuery(sql);
 

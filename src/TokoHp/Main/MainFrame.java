@@ -26,13 +26,13 @@ public class MainFrame extends javax.swing.JFrame {
         setContentPane(desktopPane);
         setDefaultCloseOperation(EXIT_ON_CLOSE);
         setLocationRelativeTo(null);
-        menuBar.add(drawerOpenButton());
+        menuBar.add(drawerNavigationButton());
         switchFrame(new TransaksiBaru(), "Transaksi");
         installSideBarAndToast(this, new DrawerNavigation(this));
-        menuBar.setMargin(new Insets(5, 0, 0, 0));
+        menuBar.setMargin(new Insets(5, 0, 2, 0));
     }
 
-    private JButton drawerOpenButton() {
+    private JButton drawerNavigationButton() {
         String iconDirectory = !Variable.isDarkTheme() ? "TokoHp/Icons/list.svg" : "TokoHp/Icons/list_dark.svg";
         JButton button = new JButton(new FlatSVGIcon(iconDirectory, 1.1f));
 
@@ -49,6 +49,7 @@ public class MainFrame extends javax.swing.JFrame {
         );
 
         button.setMargin(new Insets(5, 5, 5, 5));
+
         return button;
     }
 
