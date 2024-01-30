@@ -16,8 +16,6 @@ public class DaftarHandphone extends javax.swing.JInternalFrame {
     Statement stat;
     ResultSet rset;
     int rsetInt;
-    private final Object[] columnName = {"ID Phone", "Brand", "Nama Handphone", "Deskripsi", "Harga", "Stok"};
-    DefaultTableModel tableModel = new DefaultTableModel(columnName, 0);
     DefaultComboBoxModel<String> comboBoxBrand = new DefaultComboBoxModel();
     SpinnerNumberModel spHargaModel = new SpinnerNumberModel(0, 0, Integer.MAX_VALUE, 1);
     SpinnerNumberModel spStokModel = new SpinnerNumberModel(0, 0, Integer.MAX_VALUE, 1);
@@ -64,15 +62,17 @@ public class DaftarHandphone extends javax.swing.JInternalFrame {
     }
 
     private void setTableRow() {
+        DefaultTableModel tableModel = (DefaultTableModel) table.getModel();
+        query = switch (cbFilter.getSelectedIndex()) {
+            case 1 ->
+                Variable.sqlFilterPhone("(STOK > 0) AND");
+            case 2 ->
+                Variable.sqlFilterPhone("(STOK = 0) AND");
+            default ->
+                Variable.sqlFilterPhone("");
+        };
+
         try {
-            query = switch (cbFilter.getSelectedIndex()) {
-                case 1 ->
-                    Variable.sqlFilterPhone("(STOK > 0) AND");
-                case 2 ->
-                    Variable.sqlFilterPhone("(STOK = 0) AND");
-                default ->
-                    Variable.sqlFilterPhone("");
-            };
             pstat = connection.prepareStatement(query);
             pstat.setString(1, "%" + tfPencarian.getText().toLowerCase() + "%");
             pstat.setString(2, "%" + tfPencarian.getText().toLowerCase() + "%");
@@ -245,7 +245,6 @@ public class DaftarHandphone extends javax.swing.JInternalFrame {
         jScrollPane2 = new javax.swing.JScrollPane();
         taDeskripsi = new javax.swing.JTextArea();
         jLabel4 = new javax.swing.JLabel();
-        spHarga = new javax.swing.JSpinner();
         jLabel5 = new javax.swing.JLabel();
         spStok = new javax.swing.JSpinner();
         textIdHp = new javax.swing.JLabel();
@@ -256,6 +255,7 @@ public class DaftarHandphone extends javax.swing.JInternalFrame {
         cbBrand = new javax.swing.JComboBox<>();
         cbFilter = new javax.swing.JComboBox<>();
         jLabel6 = new javax.swing.JLabel();
+        spHarga = new javax.swing.JSpinner();
 
         jTextField1.setText("jTextField1");
 
@@ -263,13 +263,13 @@ public class DaftarHandphone extends javax.swing.JInternalFrame {
 
         table.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null}
+                {null, null, null, null, null, null},
+                {null, null, null, null, null, null},
+                {null, null, null, null, null, null},
+                {null, null, null, null, null, null}
             },
             new String [] {
-                "Title 1", "Title 2", "Title 3", "Title 4"
+                "ID Phone", "Brand", "Nama Handphone", "Deskripsi", "Harga", "Stok"
             }
         ));
         table.addMouseListener(new java.awt.event.MouseAdapter() {
@@ -278,6 +278,12 @@ public class DaftarHandphone extends javax.swing.JInternalFrame {
             }
         });
         jScrollPane1.setViewportView(table);
+        if (table.getColumnModel().getColumnCount() > 0) {
+            table.getColumnModel().getColumn(0).setPreferredWidth(80);
+            table.getColumnModel().getColumn(0).setMaxWidth(80);
+            table.getColumnModel().getColumn(5).setPreferredWidth(60);
+            table.getColumnModel().getColumn(5).setMaxWidth(60);
+        }
 
         jLabel1.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
         jLabel1.setText("Pilih Brand");
@@ -372,28 +378,27 @@ public class DaftarHandphone extends javax.swing.JInternalFrame {
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                 .addGap(42, 42, 42)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                        .addComponent(jLabel1)
-                        .addComponent(jLabel2)
-                        .addComponent(jLabel3)
-                        .addComponent(jLabel4)
-                        .addComponent(jLabel5)
-                        .addComponent(spStok)
-                        .addComponent(spHarga)
-                        .addGroup(layout.createSequentialGroup()
-                            .addComponent(btTambah, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(btUpdate, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                        .addComponent(btDelete, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(btClear, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(jScrollPane2)
-                        .addComponent(tfNamaHP, javax.swing.GroupLayout.Alignment.TRAILING)
-                        .addComponent(cbBrand, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 238, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(jLabel1)
+                    .addComponent(jLabel2)
+                    .addComponent(jLabel3)
+                    .addComponent(jLabel4)
+                    .addComponent(jLabel5)
+                    .addComponent(spStok)
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(btTambah, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(btUpdate, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addComponent(btDelete, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(btClear, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(jScrollPane2)
+                    .addComponent(tfNamaHP, javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(cbBrand, 0, 238, Short.MAX_VALUE)
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(jLabel6)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(textIdHp)))
+                        .addComponent(textIdHp))
+                    .addComponent(spHarga))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 168, Short.MAX_VALUE)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()

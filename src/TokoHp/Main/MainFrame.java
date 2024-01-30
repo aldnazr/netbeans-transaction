@@ -29,6 +29,7 @@ public class MainFrame extends javax.swing.JFrame {
         menuBar.add(drawerOpenButton());
         switchFrame(new TransaksiBaru(), "Transaksi");
         installSideBarAndToast(this, new DrawerNavigation(this));
+        menuBar.setMargin(new Insets(5, 0, 0, 0));
     }
 
     private JButton drawerOpenButton() {

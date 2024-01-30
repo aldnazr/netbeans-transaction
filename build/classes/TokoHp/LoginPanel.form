@@ -33,7 +33,7 @@
               <EmptySpace max="32767" attributes="0"/>
               <Group type="103" groupAlignment="0" max="-2" attributes="0">
                   <Component id="passwordField" alignment="0" max="32767" attributes="0"/>
-                  <Component id="tfUser" alignment="0" max="32767" attributes="0"/>
+                  <Component id="tfUsername" alignment="0" max="32767" attributes="0"/>
                   <Component id="btLogin" alignment="0" min="-2" pref="275" max="-2" attributes="0"/>
                   <Group type="102" attributes="0">
                       <EmptySpace min="6" pref="6" max="-2" attributes="0"/>
@@ -55,7 +55,7 @@
               <EmptySpace min="-2" pref="34" max="-2" attributes="0"/>
               <Component id="jLabel1" min="-2" max="-2" attributes="0"/>
               <EmptySpace max="-2" attributes="0"/>
-              <Component id="tfUser" min="-2" pref="32" max="-2" attributes="0"/>
+              <Component id="tfUsername" min="-2" pref="32" max="-2" attributes="0"/>
               <EmptySpace type="unrelated" max="-2" attributes="0"/>
               <Component id="jLabel2" min="-2" max="-2" attributes="0"/>
               <EmptySpace max="-2" attributes="0"/>
@@ -68,7 +68,7 @@
     </DimensionLayout>
   </Layout>
   <SubComponents>
-    <Component class="javax.swing.JTextField" name="tfUser">
+    <Component class="javax.swing.JTextField" name="tfUsername">
       <Properties>
         <Property name="toolTipText" type="java.lang.String" value=""/>
       </Properties>

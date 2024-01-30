@@ -31,16 +31,18 @@ public class LoginPanel extends javax.swing.JFrame {
         connection = koneksi();
         setLocationRelativeTo(null);
         jLabel3.setFont(new Font(FlatRobotoFont.STYLE_BOLD, Font.BOLD, 26));
-        tfUser.putClientProperty(FlatClientProperties.PLACEHOLDER_TEXT, "Masukkan username/email");
-        tfUser.putClientProperty(FlatClientProperties.TEXT_FIELD_SHOW_CLEAR_BUTTON, true);
-        tfUser.putClientProperty("JComponent.roundRect", true);
-        tfUser.setMargin(new Insets(5, 11, 5, 11));
+        tfUsername.putClientProperty(FlatClientProperties.PLACEHOLDER_TEXT, "Masukkan username/email");
+        tfUsername.putClientProperty(FlatClientProperties.TEXT_FIELD_SHOW_CLEAR_BUTTON, true);
+        tfUsername.putClientProperty("JComponent.roundRect", true);
+        tfUsername.setMargin(new Insets(5, 11, 5, 11));
         passwordField.putClientProperty(FlatClientProperties.PLACEHOLDER_TEXT, "Masukkan sandi");
         passwordField.putClientProperty("JComponent.roundRect", true);
         passwordField.setMargin(new Insets(5, 11, 5, 11));
         Variable.setPasswordFieldRevealButton(passwordField);
         btLogin.putClientProperty("JButton.buttonType", "roundRect");
         menuBar.add(themeSwitcher());
+        menuBar.setMargin(new Insets(5, 0, 0, 0));
+        keyEnterPressed();
     }
 
     public static void main(String args[]) {
@@ -50,10 +52,21 @@ public class LoginPanel extends javax.swing.JFrame {
         });
     }
 
+    private void keyEnterPressed() {
+        tfUsername.addActionListener(l -> {
+            checkLogin();
+        });
+
+        passwordField.addActionListener(l -> {
+            checkLogin();
+        });
+    }
+
     private JButton themeSwitcher() {
         boolean isLightTheme = !Variable.isDarkTheme();
         String iconDirectory = isLightTheme ? "TokoHp/Icons/moon.svg" : "TokoHp/Icons/sun.svg";
         JButton button = new JButton(new FlatSVGIcon(iconDirectory, 0.85f));
+        button.setMargin(new Insets(6, 6, 6, 6));
 
         button.addActionListener((l) -> {
             EventQueue.invokeLater(() -> {
@@ -75,7 +88,6 @@ public class LoginPanel extends javax.swing.JFrame {
                 + "background:null;"
         );
 
-        button.setMargin(new Insets(5, 5, 5, 5));
         return button;
     }
 
@@ -95,7 +107,7 @@ public class LoginPanel extends javax.swing.JFrame {
     }
 
     private void checkLogin() {
-        String username = tfUser.getText();
+        String username = tfUsername.getText();
         String password = String.valueOf(passwordField.getPassword());
 
         if (username.isEmpty() && password.isEmpty()) {
@@ -135,7 +147,7 @@ public class LoginPanel extends javax.swing.JFrame {
         }
     }
 
-    void popUpErrorMessage(String title, String message) {
+    private void popUpErrorMessage(String title, String message) {
         JOptionPane.showMessageDialog(this, message, title, JOptionPane.ERROR_MESSAGE);
     }
 
@@ -143,7 +155,7 @@ public class LoginPanel extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        tfUser = new javax.swing.JTextField();
+        tfUsername = new javax.swing.JTextField();
         passwordField = new javax.swing.JPasswordField();
         jLabel3 = new javax.swing.JLabel();
         btLogin = new javax.swing.JButton();
@@ -153,7 +165,7 @@ public class LoginPanel extends javax.swing.JFrame {
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
-        tfUser.setToolTipText("");
+        tfUsername.setToolTipText("");
 
         jLabel3.setFont(new java.awt.Font("Segoe UI", 1, 26)); // NOI18N
         jLabel3.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
@@ -184,7 +196,7 @@ public class LoginPanel extends javax.swing.JFrame {
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addComponent(passwordField)
-                    .addComponent(tfUser)
+                    .addComponent(tfUsername)
                     .addComponent(btLogin, javax.swing.GroupLayout.PREFERRED_SIZE, 275, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addGroup(layout.createSequentialGroup()
                         .addGap(6, 6, 6)
@@ -201,7 +213,7 @@ public class LoginPanel extends javax.swing.JFrame {
                 .addGap(34, 34, 34)
                 .addComponent(jLabel1)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(tfUser, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(tfUsername, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(jLabel2)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
@@ -225,6 +237,6 @@ public class LoginPanel extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel3;
     private javax.swing.JMenuBar menuBar;
     private javax.swing.JPasswordField passwordField;
-    private javax.swing.JTextField tfUser;
+    private javax.swing.JTextField tfUsername;
     // End of variables declaration//GEN-END:variables
 }
