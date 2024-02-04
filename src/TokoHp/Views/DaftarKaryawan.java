@@ -1,8 +1,8 @@
 package TokoHp.Views;
 
+import TokoHp.Objects.PopUp;
+import TokoHp.Objects.QueryBuilder;
 import TokoHp.Objects.Variable;
-import static TokoHp.Objects.Variable.popUpErrorMessage;
-import static TokoHp.Objects.Variable.popUpSuccessMessage;
 import java.sql.*;
 import javax.swing.JTextField;
 import javax.swing.table.DefaultTableModel;
@@ -47,11 +47,11 @@ public class DaftarKaryawan extends javax.swing.JInternalFrame {
             DefaultTableModel tableModel = (DefaultTableModel) table.getModel();
             query = switch (cbFilter.getSelectedIndex()) {
                 case 1 ->
-                    Variable.daftarKaryawan("TIPE_AKUN = 'Admin' AND");
+                    QueryBuilder.daftarKaryawan("TIPE_AKUN = 'Admin' AND");
                 case 2 ->
-                    Variable.daftarKaryawan("TIPE_AKUN = 'Karyawan' AND");
+                    QueryBuilder.daftarKaryawan("TIPE_AKUN = 'Karyawan' AND");
                 default ->
-                    Variable.daftarKaryawan("");
+                    QueryBuilder.daftarKaryawan("");
             };
             pstat = connection.prepareStatement(query);
             pstat.setString(1, "%" + tfPencarian.getText().toLowerCase() + "%");
@@ -103,7 +103,7 @@ public class DaftarKaryawan extends javax.swing.JInternalFrame {
             rsetInt = pstat.executeUpdate();
 
             if (rsetInt > 0) {
-                popUpSuccessMessage("Berhasil", "Berhasil ditambah");
+                PopUp.successMessage("Berhasil", "Berhasil ditambah");
             }
 
             pstat.close();
@@ -111,9 +111,9 @@ public class DaftarKaryawan extends javax.swing.JInternalFrame {
             System.err.println(ex.getMessage());
 
             if (ex.getMessage().contains("ORA-00001")) {
-                popUpErrorMessage("Data Sudah Ada", "Data dengan nama yang sama sudah ada dalam sistem. Mohon pilih nama lain atau perbarui data yang sudah ada.");
+                PopUp.errorMessage("Data Sudah Ada", "Data dengan nama yang sama sudah ada dalam sistem. Mohon pilih nama lain atau perbarui data yang sudah ada.");
             } else {
-                popUpErrorMessage("Error", "Data gagal ditambah");
+                PopUp.errorMessage("Error", "Data gagal ditambah");
             }
         }
     }
@@ -147,14 +147,14 @@ public class DaftarKaryawan extends javax.swing.JInternalFrame {
             rsetInt = pstat.executeUpdate();
 
             if (rsetInt > 0) {
-                popUpSuccessMessage("Berhasil", "Data berhasil diperbarui");
+                PopUp.successMessage("Berhasil", "Data berhasil diperbarui");
             }
 
             pstat.close();
         } catch (SQLException ex) {
             System.err.println(ex.getMessage());
 
-            popUpErrorMessage("Error", "Data gagal diupdate");
+            PopUp.errorMessage("Error", "Data gagal diupdate");
         }
     }
 
@@ -185,14 +185,14 @@ public class DaftarKaryawan extends javax.swing.JInternalFrame {
             rsetInt = pstat.executeUpdate();
 
             if (rsetInt > 0) {
-                popUpSuccessMessage("Berhasil", "Data berhasil diperbarui");
+                PopUp.successMessage("Berhasil", "Data berhasil diperbarui");
             }
 
             pstat.close();
         } catch (SQLException ex) {
             System.err.println(ex.getMessage());
 
-            popUpErrorMessage("Error", "Data gagal diupdate");
+            PopUp.errorMessage("Error", "Data gagal diupdate");
         }
     }
 
@@ -204,7 +204,7 @@ public class DaftarKaryawan extends javax.swing.JInternalFrame {
             rsetInt = pstat.executeUpdate();
 
             if (rsetInt > 0) {
-                popUpSuccessMessage("Berhasil", "Data berhasil dihapus");
+                PopUp.successMessage("Berhasil", "Data berhasil dihapus");
             }
 
             pstat.close();
@@ -212,9 +212,9 @@ public class DaftarKaryawan extends javax.swing.JInternalFrame {
             System.err.println(ex.getMessage());
 
             if (ex.getMessage().contains("violated - child record found")) {
-                popUpErrorMessage("Error", "Karyawan sedang digunakan untuk riwayat transaksi");
+                PopUp.errorMessage("Error", "Karyawan sedang digunakan untuk riwayat transaksi");
             } else {
-                popUpErrorMessage("Error", "Tidak ada data yang dihapus");
+                PopUp.errorMessage("Error", "Tidak ada data yang dihapus");
             }
         }
     }
@@ -572,11 +572,11 @@ public class DaftarKaryawan extends javax.swing.JInternalFrame {
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(btTambah)
                             .addComponent(btUpdate))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addComponent(btDelete)
-                        .addGap(12, 12, 12)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addComponent(btClear)
-                        .addGap(0, 39, Short.MAX_VALUE)))
+                        .addGap(0, 33, Short.MAX_VALUE)))
                 .addContainerGap())
         );
 
@@ -590,7 +590,7 @@ public class DaftarKaryawan extends javax.swing.JInternalFrame {
 
     private void btTambahActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btTambahActionPerformed
         if (checkInput() || passwordField.getPassword().length == 0) {
-            popUpErrorMessage("Kesalahan Pengisian Formulir", "Mohon lengkapi semua bagian formulir sebelum melanjutkan. Pastikan setiap kolom terisi dengan informasi yang diperlukan.");
+            PopUp.errorMessage("Kesalahan Pengisian Formulir", "Mohon lengkapi semua bagian formulir sebelum melanjutkan. Pastikan setiap kolom terisi dengan informasi yang diperlukan.");
             return;
         }
 
@@ -600,7 +600,7 @@ public class DaftarKaryawan extends javax.swing.JInternalFrame {
 
     private void btUpdateActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btUpdateActionPerformed
         if (checkInput()) {
-            popUpErrorMessage("Kesalahan Pengisian Formulir", "Mohon lengkapi semua bagian formulir sebelum melanjutkan. Pastikan setiap kolom terisi dengan informasi yang diperlukan.");
+            PopUp.errorMessage("Kesalahan Pengisian Formulir", "Mohon lengkapi semua bagian formulir sebelum melanjutkan. Pastikan setiap kolom terisi dengan informasi yang diperlukan.");
             return;
         }
 
@@ -616,7 +616,7 @@ public class DaftarKaryawan extends javax.swing.JInternalFrame {
 
     private void btDeleteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btDeleteActionPerformed
         if (textIdKaryawan.getText().equals("0")) {
-            popUpErrorMessage("Akun Belum Dipilih", "Maaf, pilih akun yang ingin Anda hapus sebelum melanjutkan. Pastikan Anda memilih akun yang benar untuk dihapus.");
+            PopUp.errorMessage("Akun Belum Dipilih", "Maaf, pilih akun yang ingin Anda hapus sebelum melanjutkan. Pastikan Anda memilih akun yang benar untuk dihapus.");
             return;
         }
 

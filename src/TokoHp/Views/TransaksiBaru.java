@@ -1,19 +1,15 @@
 package TokoHp.Views;
 
+import TokoHp.Objects.PopUp;
 import TokoHp.Objects.Product;
+import TokoHp.Objects.QueryBuilder;
 import TokoHp.Objects.ShoppingCart;
+import TokoHp.Objects.Toast;
 import TokoHp.Objects.Variable;
-import static TokoHp.Objects.Variable.popUpErrorMessage;
-import static TokoHp.Objects.Variable.popUpSuccessMessage;
 import static TokoHp.Objects.Variable.stringToNumber;
-import static TokoHp.Objects.Variable.toastFailed;
-import static TokoHp.Objects.Variable.toastInfo;
-import static TokoHp.Objects.Variable.toastSuccess;
 import com.formdev.flatlaf.FlatClientProperties;
 import com.formdev.flatlaf.extras.FlatSVGIcon;
-import com.formdev.flatlaf.fonts.roboto.FlatRobotoFont;
 import java.awt.Color;
-import java.awt.Font;
 import java.sql.*;
 import javax.swing.SpinnerModel;
 import javax.swing.SpinnerNumberModel;
@@ -50,9 +46,7 @@ public class TransaksiBaru extends javax.swing.JInternalFrame {
         Variable.setSearchFieldIcon(tfPencarian);
         btKosongkan.setIcon(new FlatSVGIcon(clearAllCheckoutIcon, 0.75f));
         btHapus.setIcon(new FlatSVGIcon(clearSelectedIcon, 0.75f));
-        textTotal.setFont(new Font(FlatRobotoFont.FAMILY_SEMIBOLD, Font.PLAIN, 14));
-        textNominal.setFont(new Font(FlatRobotoFont.FAMILY_SEMIBOLD, Font.PLAIN, 14));
-        card1.setForeground(!Variable.isDarkTheme() ? Color.decode("#E6E6E6") : Color.decode("#303030"));
+        card1.setForeground(!Variable.isDarkTheme() ? Color.decode("#DFDFDF") : Color.decode("#333333"));
         tfNamaPelanggan.putClientProperty(FlatClientProperties.TEXT_FIELD_SHOW_CLEAR_BUTTON, true);
         jLabel5.setIcon(new FlatSVGIcon(!Variable.isDarkTheme()
                 ? "TokoHp/Icons/shopping_bag.svg"
@@ -89,7 +83,7 @@ public class TransaksiBaru extends javax.swing.JInternalFrame {
                     updatePstat.executeUpdate();
                 }
 
-                popUpSuccessMessage("Transaksi berhasil", "Transaksi berhasil dilakukan");
+                PopUp.successMessage("Transaksi berhasil", "Transaksi berhasil dilakukan");
             }
             shoppingCart.getItems().clear();
             setTableCheckout();
@@ -99,7 +93,7 @@ public class TransaksiBaru extends javax.swing.JInternalFrame {
             pstat.close();
         } catch (SQLException ex) {
             System.err.println(ex.getMessage());
-            popUpErrorMessage("Error", "Transaksi gagal");
+            PopUp.errorMessage("Error", "Transaksi gagal");
         }
     }
 
@@ -142,7 +136,7 @@ public class TransaksiBaru extends javax.swing.JInternalFrame {
     private void setTableListHp() {
         modelTbListHp = (DefaultTableModel) tbListHp.getModel();
         try {
-            query = Variable.sqlTableDaftarHP;
+            query = QueryBuilder.tableDaftarHP();
             pstat = connection.prepareStatement(query);
             pstat.setString(1, "%" + tfPencarian.getText().toLowerCase() + "%");
             pstat.setString(2, "%" + tfPencarian.getText().toLowerCase() + "%");
@@ -252,15 +246,15 @@ public class TransaksiBaru extends javax.swing.JInternalFrame {
         }
 
         if (count == 0) {
-            toastFailed("Silahkan pilih barang untuk dihapus");
+            Toast.toastFailed("Silahkan pilih barang untuk dihapus");
         } else {
-            toastSuccess(count + " Barang dihapus");
+            Toast.toastSuccess(count + " Barang dihapus");
         }
     }
 
     private void deleteAllItems() {
         int count = tbCheckout.getRowCount();
-        toastSuccess(count + " Barang dihapus");
+        Toast.toastSuccess(count + " Barang dihapus");
         shoppingCart.getItems().clear();
     }
 
@@ -461,7 +455,7 @@ public class TransaksiBaru extends javax.swing.JInternalFrame {
             }
         });
 
-        card1.setForeground(javax.swing.UIManager.getDefaults().getColor("Button.pressedBackground"));
+        card1.setForeground(new java.awt.Color(223, 223, 223));
         card1.setCorner(18);
 
         btBayar.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
@@ -639,12 +633,12 @@ public class TransaksiBaru extends javax.swing.JInternalFrame {
 
     private void btTambahActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btTambahActionPerformed
         if (textIdHp.getText().equals("0")) {
-            popUpErrorMessage("Checkout gagal", "Mohon memilih barang dahulu dari tabel");
+            PopUp.errorMessage("Checkout gagal", "Mohon memilih barang dahulu dari tabel");
             return;
         }
 
         if (spJumlah.getValue().toString().equals("0")) {
-            popUpErrorMessage("Checkout gagal", "Stok barang tidak tersedia");
+            PopUp.errorMessage("Checkout gagal", "Stok barang tidak tersedia");
             return;
         }
 
@@ -662,17 +656,17 @@ public class TransaksiBaru extends javax.swing.JInternalFrame {
     private void btClearTextActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btClearTextActionPerformed
         clearText();
         disableEditableAndVisible();
-        toastInfo("Teks dibersihkan");
+        Toast.toastInfo("Teks dibersihkan");
     }//GEN-LAST:event_btClearTextActionPerformed
 
     private void btBayarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btBayarActionPerformed
         if (shoppingCart.getItems().isEmpty()) {
-            popUpErrorMessage("Keranjang kosong", "Harap masukkan barang terlebih dahulu di keranjang");
+            PopUp.errorMessage("Keranjang kosong", "Harap masukkan barang terlebih dahulu di keranjang");
             return;
         }
 
         if (tfNamaPelanggan.getText().isEmpty()) {
-            popUpErrorMessage("Nama pelanggan diperlukan", "Harap memasukkan nama pelanggan");
+            PopUp.errorMessage("Nama pelanggan diperlukan", "Harap memasukkan nama pelanggan");
             return;
         }
 
@@ -686,7 +680,7 @@ public class TransaksiBaru extends javax.swing.JInternalFrame {
 
     private void btKosongkanActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btKosongkanActionPerformed
         if (shoppingCart.getItems().isEmpty()) {
-            toastInfo("Tidak ada barang di keranjang");
+            Toast.toastInfo("Tidak ada barang di keranjang");
             return;
         }
 
@@ -711,7 +705,7 @@ public class TransaksiBaru extends javax.swing.JInternalFrame {
 
     private void btHapusActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btHapusActionPerformed
         if (shoppingCart.getItems().isEmpty()) {
-            toastInfo("Tidak ada barang di keranjang");
+            Toast.toastInfo("Tidak ada barang di keranjang");
             return;
         }
 
@@ -749,8 +743,4 @@ public class TransaksiBaru extends javax.swing.JInternalFrame {
     private javax.swing.JTextField tfNamaPelanggan;
     private javax.swing.JTextField tfPencarian;
     // End of variables declaration//GEN-END:variables
-
-    private String numberToInt(Number harga) {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
-    }
 }

@@ -57,8 +57,6 @@ public class MainFrame extends javax.swing.JFrame {
         internalFrame.dispose();
         internalFrame = iFrame;
         desktopPane.add(internalFrame);
-        internalFrame.setAlignmentX(0f);
-        internalFrame.setAlignmentY(0f);
         internalFrame.setVisible(true);
 
         BasicInternalFrameUI internalFrameUI = (BasicInternalFrameUI) internalFrame.getUI();

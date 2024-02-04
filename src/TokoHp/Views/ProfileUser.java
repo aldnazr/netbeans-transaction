@@ -1,6 +1,8 @@
 package TokoHp.Views;
 
 import TokoHp.Main.MainFrame;
+import TokoHp.Objects.PopUp;
+import TokoHp.Objects.QueryBuilder;
 import TokoHp.Objects.Variable;
 import static TokoHp.Objects.Variable.koneksi;
 import com.formdev.flatlaf.fonts.roboto.FlatRobotoFont;
@@ -78,17 +80,7 @@ public class ProfileUser extends javax.swing.JInternalFrame {
         java.sql.Date sqlDate = new java.sql.Date(dateChooser.getDate().getTime());
         int activeUserId = Variable.getActiveUserId();
         try {
-            sql = """
-                  UPDATE USERS SET
-                  NAMA_LENGKAP = ?,
-                  TANGGAL_LAHIR = ?,
-                  GENDER = ?,
-                  ALAMAT = ?,
-                  EMAIL = ?,
-                  NO_TELP = ?,
-                  USERNAME = ?,
-                  PASSWORD = ?
-                  WHERE ID_USER = ?""";
+            sql = QueryBuilder.updateUserProfile(true);
             pStat = connection.prepareStatement(sql);
             pStat.setString(1, tfNama.getText());
             pStat.setDate(2, sqlDate);
@@ -115,7 +107,7 @@ public class ProfileUser extends javax.swing.JInternalFrame {
             }
         } catch (SQLException ex) {
             System.err.println(ex.getMessage());
-            Variable.popUpErrorMessage("Gagal", "Profil gagal diupdate");
+            PopUp.errorMessage("Gagal", "Profil gagal diupdate");
         }
     }
 
@@ -124,16 +116,7 @@ public class ProfileUser extends javax.swing.JInternalFrame {
         java.sql.Date sqlDate = new java.sql.Date(dateChooser.getDate().getTime());
         int activeUserId = Variable.getActiveUserId();
         try {
-            sql = """
-                  UPDATE USERS SET
-                  NAMA_LENGKAP = ?,
-                  TANGGAL_LAHIR = ?,
-                  GENDER = ?,
-                  ALAMAT = ?,
-                  EMAIL = ?,
-                  NO_TELP = ?,
-                  USERNAME = ?
-                  WHERE ID_USER = ?""";
+            sql = QueryBuilder.updateUserProfile(false);
             pStat = connection.prepareStatement(sql);
             pStat.setString(1, tfNama.getText());
             pStat.setDate(2, sqlDate);
@@ -159,7 +142,7 @@ public class ProfileUser extends javax.swing.JInternalFrame {
             }
         } catch (SQLException ex) {
             System.err.println(ex.getMessage());
-            Variable.popUpErrorMessage("Gagal", "Profil gagal diupdate");
+            PopUp.errorMessage("Gagal", "Profil gagal diupdate");
         }
     }
 
@@ -200,7 +183,7 @@ public class ProfileUser extends javax.swing.JInternalFrame {
         setPreferredSize(new java.awt.Dimension(1200, 740));
 
         card.setForeground(javax.swing.UIManager.getDefaults().getColor("Button.pressedBackground"));
-        card.setCorner(38);
+        card.setCorner(34);
 
         jLabel6.setFont(new java.awt.Font("Segoe UI", 1, 13)); // NOI18N
         jLabel6.setText("Email");
@@ -220,6 +203,7 @@ public class ProfileUser extends javax.swing.JInternalFrame {
         btSave.setFont(btSave.getFont().deriveFont(btSave.getFont().getStyle() | java.awt.Font.BOLD, 13));
         btSave.setForeground(javax.swing.UIManager.getDefaults().getColor("Button.default.foreground"));
         btSave.setText("Simpan Perubahan");
+        btSave.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
         btSave.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btSaveActionPerformed(evt);
@@ -347,7 +331,7 @@ public class ProfileUser extends javax.swing.JInternalFrame {
 
     private void btSaveActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btSaveActionPerformed
         if (checkInput()) {
-            Variable.popUpErrorMessage("Form tidak terpenuhi", "Harap isi semua bidang yang diperlukan");
+            PopUp.errorMessage("Form tidak terpenuhi", "Harap isi semua bidang yang diperlukan");
             return;
         }
 

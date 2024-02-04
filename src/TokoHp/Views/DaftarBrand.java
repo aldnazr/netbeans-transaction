@@ -1,10 +1,9 @@
 package TokoHp.Views;
 
+import TokoHp.Objects.PopUp;
 import TokoHp.Objects.Variable;
 import static TokoHp.Objects.Variable.capitalizeFirstLetter;
 import static TokoHp.Objects.Variable.koneksi;
-import static TokoHp.Objects.Variable.popUpErrorMessage;
-import static TokoHp.Objects.Variable.popUpSuccessMessage;
 import static TokoHp.Objects.Variable.setPlaceholderTextfield;
 import static TokoHp.Objects.Variable.setSearchFieldIcon;
 import com.formdev.flatlaf.FlatClientProperties;
@@ -35,6 +34,7 @@ public class DaftarBrand extends javax.swing.JInternalFrame {
         tfNamaBrand.putClientProperty(FlatClientProperties.TEXT_FIELD_SHOW_CLEAR_BUTTON, true);
         setSearchFieldIcon(tfPencarian);
         card1.setForeground(!Variable.isDarkTheme() ? Color.decode("#E6E6E6") : Color.decode("#303030"));
+        jPanel1.setBackground(!Variable.isDarkTheme() ? Color.decode("#E6E6E6") : Color.decode("#303030"));
     }
 
     private void setTable() {
@@ -70,7 +70,7 @@ public class DaftarBrand extends javax.swing.JInternalFrame {
             rsetInt = cstat.executeUpdate();
 
             if (rsetInt >= 0) {
-                popUpSuccessMessage("Berhasil", "Berhasil ditambah");
+                PopUp.successMessage("Berhasil", "Berhasil ditambah");
                 setTable();
             }
 
@@ -79,9 +79,9 @@ public class DaftarBrand extends javax.swing.JInternalFrame {
             System.out.println(ex.getMessage());
 
             if (ex.getMessage().contains("ORA-00001")) {
-                popUpErrorMessage("Data Sudah Ada", "Data dengan nama yang sama sudah ada dalam sistem. Mohon pilih nama lain atau perbarui data yang sudah ada.");
+                PopUp.errorMessage("Data Sudah Ada", "Data dengan nama yang sama sudah ada dalam sistem. Mohon pilih nama lain atau perbarui data yang sudah ada.");
             } else {
-                popUpErrorMessage("Error", "Data gagal ditambah");
+                PopUp.errorMessage("Error", "Data gagal ditambah");
             }
         }
     }
@@ -95,7 +95,7 @@ public class DaftarBrand extends javax.swing.JInternalFrame {
             rsetInt = cstat.executeUpdate();
 
             if (rsetInt >= 0) {
-                popUpSuccessMessage("Berhasil", "Data berhasil diupdate");
+                PopUp.successMessage("Berhasil", "Data berhasil diupdate");
                 setTable();
             }
 
@@ -103,7 +103,7 @@ public class DaftarBrand extends javax.swing.JInternalFrame {
         } catch (SQLException ex) {
             System.out.println(ex.getMessage());
 
-            popUpErrorMessage("Error", "Data gagal diupdate");
+            PopUp.errorMessage("Error", "Data gagal diupdate");
         }
     }
 
@@ -115,7 +115,7 @@ public class DaftarBrand extends javax.swing.JInternalFrame {
             rsetInt = cstat.executeUpdate();
 
             if (rsetInt > 0) {
-                popUpSuccessMessage("Berhasil", "Data berhasil dihapus");
+                PopUp.successMessage("Berhasil", "Data berhasil dihapus");
                 setTable();
             }
 
@@ -124,9 +124,9 @@ public class DaftarBrand extends javax.swing.JInternalFrame {
             System.out.println(ex.getMessage());
 
             if (ex.getMessage().contains("violated - child record found")) {
-                popUpErrorMessage("Error", "Brand sedang digunakan untuk produk, Anda bisa menghapus setelah menghapus seluruh produk yang ketergantungan");
+                PopUp.errorMessage("Error", "Brand sedang digunakan untuk produk, Anda bisa menghapus setelah menghapus seluruh produk yang ketergantungan");
             } else {
-                popUpErrorMessage("Error", "Data gagal dihapus");
+                PopUp.errorMessage("Error", "Data gagal dihapus");
             }
         }
     }
@@ -165,12 +165,13 @@ public class DaftarBrand extends javax.swing.JInternalFrame {
         card1 = new TokoHp.Component.Card();
         jLabel2 = new javax.swing.JLabel();
         textIdBrand = new javax.swing.JLabel();
-        btDelete = new javax.swing.JButton();
         jLabel3 = new javax.swing.JLabel();
-        btDelete1 = new javax.swing.JButton();
         tfNamaBrand = new javax.swing.JTextField();
+        jPanel1 = new javax.swing.JPanel();
         btTambah = new javax.swing.JButton();
         btUpdate = new javax.swing.JButton();
+        btDelete = new javax.swing.JButton();
+        btDelete1 = new javax.swing.JButton();
 
         setPreferredSize(new java.awt.Dimension(1200, 740));
 
@@ -211,29 +212,9 @@ public class DaftarBrand extends javax.swing.JInternalFrame {
 
         textIdBrand.setText("0");
 
-        btDelete.setBackground(new java.awt.Color(255, 59, 48));
-        btDelete.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
-        btDelete.setForeground(javax.swing.UIManager.getDefaults().getColor("Button.default.foreground"));
-        btDelete.setText("Hapus");
-        btDelete.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btDeleteActionPerformed(evt);
-            }
-        });
-
         jLabel3.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
         jLabel3.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         jLabel3.setText("ID brand :");
-
-        btDelete1.setBackground(new java.awt.Color(142, 142, 147));
-        btDelete1.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
-        btDelete1.setForeground(javax.swing.UIManager.getDefaults().getColor("Button.default.foreground"));
-        btDelete1.setText("Reset");
-        btDelete1.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btDelete1ActionPerformed(evt);
-            }
-        });
 
         tfNamaBrand.setColumns(1);
         tfNamaBrand.addKeyListener(new java.awt.event.KeyAdapter() {
@@ -241,6 +222,9 @@ public class DaftarBrand extends javax.swing.JInternalFrame {
                 tfNamaBrandKeyTyped(evt);
             }
         });
+
+        jPanel1.setBackground(new java.awt.Color(230, 230, 230));
+        jPanel1.setLayout(new java.awt.GridLayout(1, 0, 4, 0));
 
         btTambah.setBackground(javax.swing.UIManager.getDefaults().getColor("Button.default.background"));
         btTambah.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
@@ -251,6 +235,7 @@ public class DaftarBrand extends javax.swing.JInternalFrame {
                 btTambahActionPerformed(evt);
             }
         });
+        jPanel1.add(btTambah);
 
         btUpdate.setBackground(javax.swing.UIManager.getDefaults().getColor("Button.default.background"));
         btUpdate.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
@@ -261,6 +246,30 @@ public class DaftarBrand extends javax.swing.JInternalFrame {
                 btUpdateActionPerformed(evt);
             }
         });
+        jPanel1.add(btUpdate);
+
+        btDelete.setBackground(new java.awt.Color(255, 59, 48));
+        btDelete.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
+        btDelete.setForeground(javax.swing.UIManager.getDefaults().getColor("Button.default.foreground"));
+        btDelete.setText("Hapus");
+        btDelete.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btDeleteActionPerformed(evt);
+            }
+        });
+        jPanel1.add(btDelete);
+        btDelete.getAccessibleContext().setAccessibleName("");
+
+        btDelete1.setBackground(new java.awt.Color(142, 142, 147));
+        btDelete1.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
+        btDelete1.setForeground(javax.swing.UIManager.getDefaults().getColor("Button.default.foreground"));
+        btDelete1.setText("Reset");
+        btDelete1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btDelete1ActionPerformed(evt);
+            }
+        });
+        jPanel1.add(btDelete1);
 
         javax.swing.GroupLayout card1Layout = new javax.swing.GroupLayout(card1);
         card1.setLayout(card1Layout);
@@ -268,22 +277,14 @@ public class DaftarBrand extends javax.swing.JInternalFrame {
             card1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(card1Layout.createSequentialGroup()
                 .addGap(26, 26, 26)
-                .addGroup(card1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addGroup(card1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addGroup(card1Layout.createSequentialGroup()
                         .addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, 62, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(textIdBrand))
                     .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 84, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addGroup(card1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                        .addComponent(tfNamaBrand, javax.swing.GroupLayout.Alignment.LEADING)
-                        .addGroup(card1Layout.createSequentialGroup()
-                            .addComponent(btTambah)
-                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                            .addComponent(btUpdate)
-                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                            .addComponent(btDelete, javax.swing.GroupLayout.PREFERRED_SIZE, 77, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                            .addComponent(btDelete1))))
+                    .addComponent(tfNamaBrand)
+                    .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addContainerGap(26, Short.MAX_VALUE))
         );
         card1Layout.setVerticalGroup(
@@ -298,28 +299,21 @@ public class DaftarBrand extends javax.swing.JInternalFrame {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(tfNamaBrand, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addGroup(card1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(btUpdate)
-                    .addGroup(card1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                        .addComponent(btTambah)
-                        .addComponent(btDelete)
-                        .addComponent(btDelete1)))
+                .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap(44, Short.MAX_VALUE))
         );
-
-        btDelete.getAccessibleContext().setAccessibleName("");
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addContainerGap(62, Short.MAX_VALUE)
+                .addContainerGap(59, Short.MAX_VALUE)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                     .addComponent(tfPencarian, javax.swing.GroupLayout.PREFERRED_SIZE, 170, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(card1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(61, 61, 61)
+                        .addGap(59, 59, 59)
                         .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 676, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addGap(10, 10, 10))
         );
@@ -344,7 +338,7 @@ public class DaftarBrand extends javax.swing.JInternalFrame {
 
     private void btTambahActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btTambahActionPerformed
         if (checkInput()) {
-            popUpErrorMessage("Kesalahan Pengisian Formulir", "Mohon lengkapi semua bagian formulir sebelum melanjutkan. Pastikan setiap kolom terisi dengan informasi yang diperlukan.");
+            PopUp.errorMessage("Kesalahan Pengisian Formulir", "Mohon lengkapi semua bagian formulir sebelum melanjutkan. Pastikan setiap kolom terisi dengan informasi yang diperlukan.");
             return;
         }
 
@@ -354,7 +348,7 @@ public class DaftarBrand extends javax.swing.JInternalFrame {
 
     private void btDeleteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btDeleteActionPerformed
         if (textIdBrand.getText().equals("0")) {
-            popUpErrorMessage("Brand Belum Dipilih", "Maaf, pilih brand yang ingin Anda hapus sebelum melanjutkan. Pastikan Anda memilih brand yang benar untuk dihapus.");
+            PopUp.errorMessage("Brand Belum Dipilih", "Maaf, pilih brand yang ingin Anda hapus sebelum melanjutkan. Pastikan Anda memilih brand yang benar untuk dihapus.");
             return;
         }
 
@@ -364,7 +358,7 @@ public class DaftarBrand extends javax.swing.JInternalFrame {
 
     private void btUpdateActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btUpdateActionPerformed
         if (checkInput()) {
-            popUpErrorMessage("Kesalahan Pengisian Formulir", "Mohon lengkapi semua bagian formulir sebelum melanjutkan. Pastikan setiap kolom terisi dengan informasi yang diperlukan.");
+            PopUp.errorMessage("Kesalahan Pengisian Formulir", "Mohon lengkapi semua bagian formulir sebelum melanjutkan. Pastikan setiap kolom terisi dengan informasi yang diperlukan.");
             return;
         }
 
@@ -397,6 +391,7 @@ public class DaftarBrand extends javax.swing.JInternalFrame {
     private TokoHp.Component.Card card1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
+    private javax.swing.JPanel jPanel1;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JTable table;
     private javax.swing.JLabel textIdBrand;

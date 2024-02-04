@@ -1,7 +1,5 @@
 package TokoHp.Objects;
 
-import static TokoHp.Objects.Variable.popUpErrorMessage;
-import static TokoHp.Objects.Variable.toastSuccess;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -12,25 +10,25 @@ public class ShoppingCart {
     public void addItem(Product product) {
         for (Product item : items) {
             if (item.getIdProduk() == product.getIdProduk()) {
-                popUpErrorMessage("Barang sudah ada", "Anda hanya dapat menambah stok di keranjang jika barang sudah ada");
+                PopUp.errorMessage("Barang sudah ada", "Anda hanya dapat menambah stok di keranjang jika barang sudah ada");
                 return;
             }
         }
 
         items.add(product);
-        toastSuccess("Ditambah ke keranjang");
+        Toast.toastSuccess("Ditambah ke keranjang");
     }
 
     public void updateItemQuantity(Product product, int stokBaru) {
         for (Product item : items) {
             if (item.getIdProduk() == product.getIdProduk()) {
                 item.setStok(stokBaru);
-                toastSuccess("Jumlah barang diperbarui");
+                Toast.toastSuccess("Jumlah barang diperbarui");
                 return;
             }
         }
 
-        popUpErrorMessage("Barang tidak ada", "Silahkan tambah barang terlebih dahulu");
+        PopUp.errorMessage("Barang tidak ada", "Silahkan tambah barang terlebih dahulu");
     }
 
     public void removeItem(Product product) {

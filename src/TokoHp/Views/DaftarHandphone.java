@@ -1,8 +1,8 @@
 package TokoHp.Views;
 
+import TokoHp.Objects.PopUp;
+import TokoHp.Objects.QueryBuilder;
 import TokoHp.Objects.Variable;
-import static TokoHp.Objects.Variable.popUpErrorMessage;
-import static TokoHp.Objects.Variable.popUpSuccessMessage;
 import java.sql.*;
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.SpinnerNumberModel;
@@ -65,11 +65,11 @@ public class DaftarHandphone extends javax.swing.JInternalFrame {
         DefaultTableModel tableModel = (DefaultTableModel) table.getModel();
         query = switch (cbFilter.getSelectedIndex()) {
             case 1 ->
-                Variable.sqlFilterPhone("(STOK > 0) AND");
+                QueryBuilder.filterPhone("(STOK > 0) AND");
             case 2 ->
-                Variable.sqlFilterPhone("(STOK = 0) AND");
+                QueryBuilder.filterPhone("(STOK = 0) AND");
             default ->
-                Variable.sqlFilterPhone("");
+                QueryBuilder.filterPhone("");
         };
 
         try {
@@ -109,7 +109,7 @@ public class DaftarHandphone extends javax.swing.JInternalFrame {
             rsetInt = pstat.executeUpdate();
 
             if (rsetInt > 0) {
-                popUpSuccessMessage("Berhasil", "Berhasil ditambah");
+                PopUp.successMessage("Berhasil", "Berhasil ditambah");
             }
 
             pstat.close();
@@ -117,9 +117,9 @@ public class DaftarHandphone extends javax.swing.JInternalFrame {
             System.out.println(ex.getMessage());
 
             if (ex.getMessage().contains("ORA-00001")) {
-                popUpErrorMessage("Data Sudah Ada", "Data dengan nama yang sama sudah ada dalam sistem. Mohon pilih nama lain atau perbarui data yang sudah ada.");
+                PopUp.errorMessage("Data Sudah Ada", "Data dengan nama yang sama sudah ada dalam sistem. Mohon pilih nama lain atau perbarui data yang sudah ada.");
             } else {
-                popUpErrorMessage("Error", "Data gagal ditambah");
+                PopUp.errorMessage("Error", "Data gagal ditambah");
             }
         }
     }
@@ -138,14 +138,14 @@ public class DaftarHandphone extends javax.swing.JInternalFrame {
             rsetInt = pstat.executeUpdate();
 
             if (rsetInt > 0) {
-                popUpSuccessMessage("Berhasil", "Data berhasil diupdate");
+                PopUp.successMessage("Berhasil", "Data berhasil diupdate");
             }
 
             pstat.close();
         } catch (SQLException ex) {
             System.out.println(ex.getMessage());
 
-            popUpErrorMessage("Error", "Data gagal diupdate");
+            PopUp.errorMessage("Error", "Data gagal diupdate");
         }
     }
 
@@ -157,7 +157,7 @@ public class DaftarHandphone extends javax.swing.JInternalFrame {
             rsetInt = pstat.executeUpdate();
 
             if (rsetInt > 0) {
-                popUpSuccessMessage("Berhasil", "Data berhasil dihapus");
+                PopUp.successMessage("Berhasil", "Data berhasil dihapus");
             }
 
             pstat.close();
@@ -165,9 +165,9 @@ public class DaftarHandphone extends javax.swing.JInternalFrame {
             System.out.println(ex.getMessage());
 
             if (ex.getMessage().contains("violated - child record found")) {
-                popUpErrorMessage("Error", "Handphone sedang digunakan untuk riwayat transaksi");
+                PopUp.errorMessage("Error", "Handphone sedang digunakan untuk riwayat transaksi");
             } else {
-                popUpErrorMessage("Error", "Tidak ada data yang dihapus");
+                PopUp.errorMessage("Error", "Tidak ada data yang dihapus");
             }
         }
     }
@@ -447,9 +447,9 @@ public class DaftarHandphone extends javax.swing.JInternalFrame {
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(btTambah)
                             .addComponent(btUpdate))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addComponent(btDelete)
-                        .addGap(12, 12, 12)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addComponent(btClear)
                         .addGap(0, 0, Short.MAX_VALUE))
                     .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 520, Short.MAX_VALUE))
@@ -461,7 +461,7 @@ public class DaftarHandphone extends javax.swing.JInternalFrame {
 
     private void btUpdateActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btUpdateActionPerformed
         if (cekInput()) {
-            popUpErrorMessage("Kesalahan Pengisian Formulir", "Mohon lengkapi semua bagian formulir sebelum melanjutkan. Pastikan setiap kolom terisi dengan informasi yang diperlukan.");
+            PopUp.errorMessage("Kesalahan Pengisian Formulir", "Mohon lengkapi semua bagian formulir sebelum melanjutkan. Pastikan setiap kolom terisi dengan informasi yang diperlukan.");
             return;
         }
         updateHp();
@@ -470,7 +470,7 @@ public class DaftarHandphone extends javax.swing.JInternalFrame {
 
     private void btDeleteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btDeleteActionPerformed
         if (textIdHp.getText().equals("0")) {
-            popUpErrorMessage("Produk Belum Dipilih", "Maaf, pilih produk yang ingin Anda hapus sebelum melanjutkan. Pastikan Anda memilih produk yang benar untuk dihapus.");
+            PopUp.errorMessage("Produk Belum Dipilih", "Maaf, pilih produk yang ingin Anda hapus sebelum melanjutkan. Pastikan Anda memilih produk yang benar untuk dihapus.");
             return;
         }
         deleteHp();
@@ -484,7 +484,7 @@ public class DaftarHandphone extends javax.swing.JInternalFrame {
 
     private void btTambahActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btTambahActionPerformed
         if (cekInput()) {
-            popUpErrorMessage("Kesalahan Pengisian Formulir", "Mohon lengkapi semua bagian formulir sebelum melanjutkan. Pastikan setiap kolom terisi dengan informasi yang diperlukan.");
+            PopUp.errorMessage("Kesalahan Pengisian Formulir", "Mohon lengkapi semua bagian formulir sebelum melanjutkan. Pastikan setiap kolom terisi dengan informasi yang diperlukan.");
             return;
         }
         tambahHp();

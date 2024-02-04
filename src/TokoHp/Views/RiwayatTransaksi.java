@@ -1,5 +1,6 @@
 package TokoHp.Views;
 
+import TokoHp.Objects.QueryBuilder;
 import TokoHp.Objects.Variable;
 import com.formdev.flatlaf.extras.FlatSVGIcon;
 import java.awt.Color;
@@ -82,14 +83,15 @@ public class RiwayatTransaksi extends javax.swing.JInternalFrame {
         try {
             sql = switch (cbFilterDate.getSelectedIndex()) {
                 case 1 ->
-                    Variable.riwayatTransaksi("(TRUNC(T.TANGGAL) >= SYSDATE - 7) AND");
+                    QueryBuilder.riwayatTransaksi("(TRUNC(T.TANGGAL) >= SYSDATE - 7) AND");
                 case 2 ->
-                    Variable.riwayatTransaksi("(TRUNC(T.TANGGAL) >= SYSDATE - 14) AND");
+                    QueryBuilder.riwayatTransaksi("(TRUNC(T.TANGGAL) >= SYSDATE - 14) AND");
                 case 3 ->
-                    Variable.riwayatTransaksi("(TRUNC(T.TANGGAL) >= SYSDATE - 30) AND");
+                    QueryBuilder.riwayatTransaksi("(TRUNC(T.TANGGAL) >= SYSDATE - 30) AND");
                 default ->
-                    Variable.riwayatTransaksi("");
+                    QueryBuilder.riwayatTransaksi("");
             };
+
             preparedStatement = connection.prepareStatement(sql);
             preparedStatement.setString(1, "%" + tfPencarian.getText() + "%");
             preparedStatement.setString(2, "%" + tfPencarian.getText().toLowerCase() + "%");
@@ -116,6 +118,16 @@ public class RiwayatTransaksi extends javax.swing.JInternalFrame {
             }
             tableRiwayat.setModel(tableModel);
         } catch (SQLException ex) {
+            System.err.println(ex.getMessage());
+        }
+    }
+
+    private void printReport() {
+        try {
+            String jasperFilePath = "src/TokoHp/Report/report_transaksi.jasper";
+            JasperPrint jasperPrint = JasperFillManager.fillReport(jasperFilePath, null, connection);
+            JasperViewer.viewReport(jasperPrint, false);
+        } catch (JRException ex) {
             System.err.println(ex.getMessage());
         }
     }
@@ -381,13 +393,7 @@ public class RiwayatTransaksi extends javax.swing.JInternalFrame {
     }//GEN-LAST:event_cbFilterDateActionPerformed
 
     private void btCetakActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btCetakActionPerformed
-        try {
-            String jasperFilePath = "src/TokoHp/Report/report_transaksi.jasper";
-            JasperPrint jasperPrint = JasperFillManager.fillReport(jasperFilePath, null, connection);
-            JasperViewer.viewReport(jasperPrint, false);
-        } catch (JRException ex) {
-            System.err.println(ex.getMessage());
-        }
+        printReport();
     }//GEN-LAST:event_btCetakActionPerformed
 
     // Variables declaration - do not modify//GEN-BEGIN:variables

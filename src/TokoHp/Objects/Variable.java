@@ -17,7 +17,6 @@ import javax.swing.JLabel;
 import javax.swing.JPasswordField;
 import javax.swing.JTextField;
 import javax.swing.UIManager;
-import raven.alerts.MessageAlerts;
 import raven.drawer.Drawer;
 import raven.drawer.component.DrawerBuilder;
 import raven.popup.GlassPanePopup;
@@ -107,18 +106,6 @@ public class Variable {
         Notifications.getInstance().setJFrame(jFrame);
     }
 
-    public static void toastSuccess(String message) {
-        Notifications.getInstance().show(Notifications.Type.SUCCESS, Notifications.Location.TOP_RIGHT, message);
-    }
-
-    public static void toastFailed(String message) {
-        Notifications.getInstance().show(Notifications.Type.ERROR, Notifications.Location.TOP_RIGHT, message);
-    }
-
-    public static void toastInfo(String message) {
-        Notifications.getInstance().show(Notifications.Type.INFO, Notifications.Location.TOP_RIGHT, message);
-    }
-
     public static int getActiveUserId() {
         Connection connection = koneksi();
         String sql;
@@ -137,16 +124,6 @@ public class Variable {
             System.err.println(ex.getMessage());
         }
         return resultQuery;
-    }
-
-//    PopUp Error
-    public static void popUpErrorMessage(String title, String message) {
-        MessageAlerts.getInstance().showMessage(title, message, MessageAlerts.MessageType.ERROR);
-    }
-
-//    PopUp Sukses
-    public static void popUpSuccessMessage(String title, String message) {
-        MessageAlerts.getInstance().showMessage(title, message, MessageAlerts.MessageType.SUCCESS);
     }
 
 //    Auto uppercase kata utama
@@ -178,44 +155,5 @@ public class Variable {
         dateChooserTextField.setForeground(UIManager.getColor("RootPane.foreground"));
 
         return dateChooserTextField;
-    }
-
-    public static String riwayatTransaksi(String queryTanggal) {
-        String query = """
-               SELECT T.ID_TRANSAKSI,
-               USR.NAMA_LENGKAP AS PELAYAN,
-               T.NAMA_PELANGGAN,
-               T.TANGGAL,
-               BR.NAMA_BRAND,
-               PH.NAMA_HANDPHONE,
-               DT.HARGA_BARANG,
-               DT.JUMLAH_PEMBELIAN,
-               DT.SUBTOTAL,
-               T.TOTAL_HARGA
-               FROM TRANSAKSI T
-                       JOIN DETAIL_TRANSAKSI DT ON T.ID_TRANSAKSI = DT.ID_TRANSAKSI JOIN USERS USR ON T.ID_USER = USR.ID_USER JOIN PHONES PH ON DT.ID_PHONE = PH.ID_PHONE JOIN BRAND BR ON PH.ID_BRAND = BR.ID_BRAND
-                       WHERE ${queryTanggal} (T.ID_TRANSAKSI LIKE ? OR LOWER(USR.NAMA_LENGKAP) LIKE ? OR LOWER(T.NAMA_PELANGGAN) LIKE ? OR TO_CHAR(T.TANGGAL, 'YYYY-MM-DD HH24:MI:SS') LIKE ?)
-                       ORDER BY T.ID_TRANSAKSI DESC""";
-        return query.replace("${queryTanggal}", queryTanggal);
-    }
-
-    public static String daftarKaryawan(String tipeAkun) {
-        String query = """
-                    SELECT ID_USER ,
-                    NAMA_LENGKAP ,
-                    TANGGAL_LAHIR ,
-                    GENDER ,
-                    ALAMAT ,
-                    EMAIL ,
-                    NO_TELP ,
-                    TIPE_AKUN ,
-                    USERNAME FROM USERS WHERE ${tipeAkun} (LOWER(NAMA_LENGKAP) LIKE ?)""";
-        return query.replace("${tipeAkun}", tipeAkun);
-    }
-
-    public static String sqlTableDaftarHP = "select id_phone, nama_brand, nama_handphone, stok, harga from phones join brand using (id_brand) where stok > 0 AND LOWER(nama_brand) LIKE ? OR LOWER(nama_handphone) LIKE ?";
-
-    public static String sqlFilterPhone(String filteredQuery) {
-        return "SELECT ID_PHONE, NAMA_BRAND, NAMA_HANDPHONE, DESKRIPSI, HARGA, STOK FROM PHONES JOIN BRAND USING (ID_BRAND) WHERE " + filteredQuery + " (LOWER(NAMA_HANDPHONE) LIKE ? OR LOWER(NAMA_BRAND) LIKE ?)";
     }
 }

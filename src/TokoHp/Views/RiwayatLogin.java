@@ -66,7 +66,7 @@ public class RiwayatLogin extends javax.swing.JInternalFrame {
                 {null, null, null, null, null}
             },
             new String [] {
-                "Id Session", "Id User", "Nama Lengkap", "Jabatan", "Waktu Login"
+                "ID Session", "ID User", "Nama Lengkap", "Jabatan", "Waktu Login"
             }
         ) {
             boolean[] canEdit = new boolean [] {
