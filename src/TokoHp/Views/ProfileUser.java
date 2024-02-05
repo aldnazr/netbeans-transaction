@@ -32,6 +32,7 @@ public class ProfileUser extends javax.swing.JInternalFrame {
         setButtongroup();
         setForm();
         Variable.setPasswordFieldRevealButton(pwField);
+        Variable.setPasswordFieldRevealButton(pwRepeatField);
         Variable.disableDateTextfield(dateChooser);
         card.setForeground(!Variable.isDarkTheme() ? Color.decode("#E6E6E6") : Color.decode("#363638"));
         JLabel[] labels = {jLabel2, jLabel3, jLabel4, jLabel5, jLabel6, jLabel7, jLabel8, jLabel9};
@@ -179,6 +180,8 @@ public class ProfileUser extends javax.swing.JInternalFrame {
         taAlamat = new javax.swing.JTextArea();
         tfEmail = new javax.swing.JTextField();
         radioButtonLK = new javax.swing.JRadioButton();
+        pwRepeatField = new javax.swing.JPasswordField();
+        jLabel10 = new javax.swing.JLabel();
 
         setPreferredSize(new java.awt.Dimension(1200, 740));
 
@@ -186,18 +189,18 @@ public class ProfileUser extends javax.swing.JInternalFrame {
         card.setCorner(34);
 
         jLabel6.setFont(new java.awt.Font("Segoe UI", 1, 13)); // NOI18N
-        jLabel6.setText("Email");
+        jLabel6.setText("Email :");
 
         radioButtonPR.setText("Perempuan");
 
         jLabel7.setFont(new java.awt.Font("Segoe UI", 1, 13)); // NOI18N
-        jLabel7.setText("Telepon");
+        jLabel7.setText("Telepon :");
 
         jLabel8.setFont(new java.awt.Font("Segoe UI", 1, 13)); // NOI18N
-        jLabel8.setText("Username");
+        jLabel8.setText("Username :");
 
         jLabel9.setFont(new java.awt.Font("Segoe UI", 1, 13)); // NOI18N
-        jLabel9.setText("Kata sandi");
+        jLabel9.setText("Kata sandi :");
 
         btSave.setBackground(javax.swing.UIManager.getDefaults().getColor("Button.default.background"));
         btSave.setFont(btSave.getFont().deriveFont(btSave.getFont().getStyle() | java.awt.Font.BOLD, 13));
@@ -213,16 +216,16 @@ public class ProfileUser extends javax.swing.JInternalFrame {
         dateChooser.setDateFormatString("dd/MM/yyyy");
 
         jLabel2.setFont(new java.awt.Font("Segoe UI", 1, 13)); // NOI18N
-        jLabel2.setText("Tanggal lahir");
+        jLabel2.setText("Tanggal lahir :");
 
         jLabel3.setFont(new java.awt.Font("Segoe UI", 1, 13)); // NOI18N
-        jLabel3.setText("Nama");
+        jLabel3.setText("Nama :");
 
         jLabel4.setFont(new java.awt.Font("Segoe UI", 1, 13)); // NOI18N
-        jLabel4.setText("Kelamin");
+        jLabel4.setText("Kelamin :");
 
         jLabel5.setFont(new java.awt.Font("Segoe UI", 1, 13)); // NOI18N
-        jLabel5.setText("Alamat");
+        jLabel5.setText("Alamat :");
 
         taAlamat.setColumns(20);
         taAlamat.setRows(5);
@@ -230,48 +233,55 @@ public class ProfileUser extends javax.swing.JInternalFrame {
 
         radioButtonLK.setText("Laki-laki");
 
+        jLabel10.setFont(new java.awt.Font("Segoe UI", 1, 13)); // NOI18N
+        jLabel10.setText("Ulangi sandi :");
+
         javax.swing.GroupLayout cardLayout = new javax.swing.GroupLayout(card);
         card.setLayout(cardLayout);
         cardLayout.setHorizontalGroup(
             cardLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(cardLayout.createSequentialGroup()
                 .addGroup(cardLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(cardLayout.createSequentialGroup()
-                        .addGap(80, 80, 80)
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, cardLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                        .addGroup(cardLayout.createSequentialGroup()
+                            .addGap(195, 195, 195)
+                            .addGroup(cardLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                .addComponent(dateChooser, javax.swing.GroupLayout.PREFERRED_SIZE, 405, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGroup(cardLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                    .addGroup(cardLayout.createSequentialGroup()
+                                        .addComponent(radioButtonLK)
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                        .addComponent(radioButtonPR))
+                                    .addComponent(tfUsername)
+                                    .addComponent(tfPhone)
+                                    .addComponent(tfEmail)
+                                    .addComponent(jScrollPane1)
+                                    .addComponent(pwField, javax.swing.GroupLayout.PREFERRED_SIZE, 405, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                .addComponent(tfNama, javax.swing.GroupLayout.PREFERRED_SIZE, 405, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addGroup(cardLayout.createSequentialGroup()
+                            .addGap(264, 264, 264)
+                            .addComponent(btSave)))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, cardLayout.createSequentialGroup()
+                        .addGap(70, 70, 70)
                         .addGroup(cardLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(jLabel2)
+                            .addComponent(jLabel5)
+                            .addComponent(jLabel4)
+                            .addComponent(jLabel3)
+                            .addComponent(jLabel6)
+                            .addComponent(jLabel7)
+                            .addComponent(jLabel8)
+                            .addComponent(jLabel9)
                             .addGroup(cardLayout.createSequentialGroup()
-                                .addGroup(cardLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(jLabel5)
-                                    .addComponent(jLabel4)
-                                    .addComponent(jLabel3)
-                                    .addComponent(jLabel6)
-                                    .addComponent(jLabel7)
-                                    .addComponent(jLabel8)
-                                    .addComponent(jLabel9))
-                                .addGap(39, 39, 39)
-                                .addGroup(cardLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(dateChooser, javax.swing.GroupLayout.PREFERRED_SIZE, 405, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addGroup(cardLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                                        .addGroup(cardLayout.createSequentialGroup()
-                                            .addComponent(radioButtonLK)
-                                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                            .addComponent(radioButtonPR))
-                                        .addComponent(tfUsername)
-                                        .addComponent(tfPhone)
-                                        .addComponent(tfEmail)
-                                        .addComponent(jScrollPane1)
-                                        .addComponent(pwField, javax.swing.GroupLayout.PREFERRED_SIZE, 405, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                    .addComponent(tfNama, javax.swing.GroupLayout.PREFERRED_SIZE, 405, javax.swing.GroupLayout.PREFERRED_SIZE)))))
-                    .addGroup(cardLayout.createSequentialGroup()
-                        .addGap(251, 251, 251)
-                        .addComponent(btSave)))
-                .addContainerGap(80, Short.MAX_VALUE))
+                                .addComponent(jLabel10)
+                                .addGap(42, 42, 42)
+                                .addComponent(pwRepeatField, javax.swing.GroupLayout.PREFERRED_SIZE, 405, javax.swing.GroupLayout.PREFERRED_SIZE)))))
+                .addContainerGap(70, Short.MAX_VALUE))
         );
         cardLayout.setVerticalGroup(
             cardLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(cardLayout.createSequentialGroup()
-                .addContainerGap(48, Short.MAX_VALUE)
+                .addGap(48, 48, 48)
                 .addGroup(cardLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(tfNama, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel3))
@@ -304,9 +314,13 @@ public class ProfileUser extends javax.swing.JInternalFrame {
                 .addGroup(cardLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(pwField, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel9))
-                .addGap(34, 34, 34)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addGroup(cardLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(pwRepeatField, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel10))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 24, Short.MAX_VALUE)
                 .addComponent(btSave, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(28, 28, 28))
+                .addGap(24, 24, 24))
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -314,16 +328,16 @@ public class ProfileUser extends javax.swing.JInternalFrame {
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addGap(265, 265, 265)
+                .addGap(259, 259, 259)
                 .addComponent(card, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(256, Short.MAX_VALUE))
+                .addContainerGap(259, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addContainerGap(86, Short.MAX_VALUE)
+                .addContainerGap(74, Short.MAX_VALUE)
                 .addComponent(card, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(92, Short.MAX_VALUE))
+                .addContainerGap(76, Short.MAX_VALUE))
         );
 
         pack();
@@ -340,6 +354,11 @@ public class ProfileUser extends javax.swing.JInternalFrame {
             return;
         }
 
+        if (!String.valueOf(pwField.getPassword()).equals(String.valueOf(pwRepeatField.getPassword()))) {
+            PopUp.errorMessage("Kata sandi tidak sama", "Mohon pastikan bahwa kedua kolom kata sandi sesuai satu sama lain.");
+            return;
+        }
+
         update();
     }//GEN-LAST:event_btSaveActionPerformed
 
@@ -348,6 +367,7 @@ public class ProfileUser extends javax.swing.JInternalFrame {
     private javax.swing.ButtonGroup buttonGroup;
     private TokoHp.Component.Card card;
     private com.toedter.calendar.JDateChooser dateChooser;
+    private javax.swing.JLabel jLabel10;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
@@ -358,6 +378,7 @@ public class ProfileUser extends javax.swing.JInternalFrame {
     private javax.swing.JLabel jLabel9;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JPasswordField pwField;
+    private javax.swing.JPasswordField pwRepeatField;
     private javax.swing.JRadioButton radioButtonLK;
     private javax.swing.JRadioButton radioButtonPR;
     private javax.swing.JTextArea taAlamat;

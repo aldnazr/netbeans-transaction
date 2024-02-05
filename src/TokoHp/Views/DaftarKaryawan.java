@@ -26,7 +26,8 @@ public class DaftarKaryawan extends javax.swing.JInternalFrame {
         connection = Variable.koneksi();
         setTable();
         Variable.setPlaceholderTextfield(tfPencarian, "Cari");
-        Variable.setPasswordFieldRevealButton(passwordField);
+        Variable.setPasswordFieldRevealButton(pwField);
+        Variable.setPasswordFieldRevealButton(pwRepeatField);
         setButtonGroup();
         dateChooserTextField = Variable.disableDateTextfield(dateChooser);
         Variable.setSearchFieldIcon(tfPencarian);
@@ -99,7 +100,7 @@ public class DaftarKaryawan extends javax.swing.JInternalFrame {
             pstat.setString(6, tfPhone.getText());
             pstat.setString(7, rbKaryawan.isSelected() ? rbKaryawan.getText() : rbAdmin.getText());
             pstat.setString(8, tfUsername.getText());
-            pstat.setString(9, String.valueOf(passwordField.getPassword()));
+            pstat.setString(9, String.valueOf(pwField.getPassword()));
             rsetInt = pstat.executeUpdate();
 
             if (rsetInt > 0) {
@@ -142,7 +143,7 @@ public class DaftarKaryawan extends javax.swing.JInternalFrame {
             pstat.setString(6, tfPhone.getText());
             pstat.setString(7, isAdmin);
             pstat.setString(8, tfUsername.getText());
-            pstat.setString(9, String.valueOf(passwordField.getPassword()));
+            pstat.setString(9, String.valueOf(pwField.getPassword()));
             pstat.setString(10, textIdKaryawan.getText());
             rsetInt = pstat.executeUpdate();
 
@@ -267,7 +268,7 @@ public class DaftarKaryawan extends javax.swing.JInternalFrame {
         tfEmail.setText("");
         tfPhone.setText("");
         tfUsername.setText("");
-        passwordField.setText("");
+        pwField.setText("");
         rbLaki.setSelected(true);
         rbKaryawan.setSelected(true);
     }
@@ -314,12 +315,14 @@ public class DaftarKaryawan extends javax.swing.JInternalFrame {
         jLabel11 = new javax.swing.JLabel();
         tfPhone = new javax.swing.JTextField();
         jLabel12 = new javax.swing.JLabel();
-        passwordField = new javax.swing.JPasswordField();
+        pwField = new javax.swing.JPasswordField();
         rbLaki = new javax.swing.JRadioButton();
         rbKaryawan = new javax.swing.JRadioButton();
         rbPerempuan = new javax.swing.JRadioButton();
         rbAdmin = new javax.swing.JRadioButton();
         cbFilter = new javax.swing.JComboBox<>();
+        pwRepeatField = new javax.swing.JPasswordField();
+        jLabel9 = new javax.swing.JLabel();
 
         jLabel6.setText("Nama lengkap");
 
@@ -328,26 +331,26 @@ public class DaftarKaryawan extends javax.swing.JInternalFrame {
         tfNamaKaryawan.setColumns(10);
 
         jLabel1.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
-        jLabel1.setText("Nama lengkap");
+        jLabel1.setText("Nama lengkap :");
 
         jLabel2.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
-        jLabel2.setText("Jenis Kelamin");
+        jLabel2.setText("Jenis Kelamin :");
 
         jLabel3.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
-        jLabel3.setText("Alamat");
+        jLabel3.setText("Alamat :");
 
         taAlamat.setColumns(20);
         taAlamat.setRows(5);
         jScrollPane1.setViewportView(taAlamat);
 
         jLabel4.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
-        jLabel4.setText("Email");
+        jLabel4.setText("Email :");
 
         jLabel5.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
-        jLabel5.setText("Username");
+        jLabel5.setText("Username :");
 
         jLabel7.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
-        jLabel7.setText("Password");
+        jLabel7.setText("Kata sandi :");
 
         table.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
@@ -428,10 +431,10 @@ public class DaftarKaryawan extends javax.swing.JInternalFrame {
         textIdKaryawan.setText("0");
 
         jLabel10.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
-        jLabel10.setText("Jabatan");
+        jLabel10.setText("Jabatan :");
 
         jLabel8.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
-        jLabel8.setText("Tanggal lahir");
+        jLabel8.setText("Tanggal lahir :");
 
         dateChooser.setDateFormatString("dd/MM/yyyy");
         dateChooser.addMouseListener(new java.awt.event.MouseAdapter() {
@@ -441,10 +444,10 @@ public class DaftarKaryawan extends javax.swing.JInternalFrame {
         });
 
         jLabel11.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
-        jLabel11.setText("Telepon");
+        jLabel11.setText("Telepon :");
 
         jLabel12.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
-        jLabel12.setText("ID Karyawan");
+        jLabel12.setText("ID Karyawan :");
 
         rbLaki.setText("Laki-laki");
 
@@ -461,6 +464,9 @@ public class DaftarKaryawan extends javax.swing.JInternalFrame {
             }
         });
 
+        jLabel9.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
+        jLabel9.setText("Ulangi Sandi :");
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -468,7 +474,7 @@ public class DaftarKaryawan extends javax.swing.JInternalFrame {
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                        .addGap(29, 29, 29)
+                        .addGap(41, 41, 41)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(jLabel10)
                             .addComponent(jLabel1)
@@ -479,14 +485,15 @@ public class DaftarKaryawan extends javax.swing.JInternalFrame {
                             .addComponent(jLabel12)
                             .addComponent(jLabel4)
                             .addComponent(jLabel5)
-                            .addComponent(jLabel7))
-                        .addGap(17, 17, 17)
+                            .addComponent(jLabel7)
+                            .addComponent(jLabel9))
+                        .addGap(18, 18, 18)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(tfUsername)
                             .addComponent(tfEmail)
-                            .addComponent(passwordField)
+                            .addComponent(pwField)
                             .addComponent(tfPhone)
-                            .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 232, Short.MAX_VALUE)
+                            .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 226, Short.MAX_VALUE)
                             .addComponent(dateChooser, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                             .addComponent(tfNamaKaryawan)
                             .addGroup(layout.createSequentialGroup()
@@ -506,8 +513,9 @@ public class DaftarKaryawan extends javax.swing.JInternalFrame {
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                                 .addComponent(btUpdate, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE))
                             .addComponent(btDelete, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(btClear, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                        .addGap(87, 87, 87)
+                            .addComponent(btClear, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(pwRepeatField))
+                        .addGap(74, 74, 74)
                         .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 732, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                         .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
@@ -519,13 +527,12 @@ public class DaftarKaryawan extends javax.swing.JInternalFrame {
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addGap(98, 98, 98)
+                .addGap(68, 68, 68)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(tfPencarian, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(cbFilter, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jScrollPane2)
                     .addGroup(layout.createSequentialGroup()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(textIdKaryawan)
@@ -566,8 +573,12 @@ public class DaftarKaryawan extends javax.swing.JInternalFrame {
                             .addComponent(jLabel5))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(passwordField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(pwField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(jLabel7))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(pwRepeatField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jLabel9))
                         .addGap(18, 18, 18)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(btTambah)
@@ -576,7 +587,8 @@ public class DaftarKaryawan extends javax.swing.JInternalFrame {
                         .addComponent(btDelete)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addComponent(btClear)
-                        .addGap(0, 33, Short.MAX_VALUE)))
+                        .addGap(0, 25, Short.MAX_VALUE))
+                    .addComponent(jScrollPane2))
                 .addContainerGap())
         );
 
@@ -589,7 +601,7 @@ public class DaftarKaryawan extends javax.swing.JInternalFrame {
     }//GEN-LAST:event_btClearActionPerformed
 
     private void btTambahActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btTambahActionPerformed
-        if (checkInput() || passwordField.getPassword().length == 0) {
+        if (checkInput() || pwField.getPassword().length == 0) {
             PopUp.errorMessage("Kesalahan Pengisian Formulir", "Mohon lengkapi semua bagian formulir sebelum melanjutkan. Pastikan setiap kolom terisi dengan informasi yang diperlukan.");
             return;
         }
@@ -604,9 +616,14 @@ public class DaftarKaryawan extends javax.swing.JInternalFrame {
             return;
         }
 
-        if (passwordField.getPassword().length == 0) {
+        if (pwField.getPassword().length == 0) {
             updateKaryawanWithoutPassword();
             setTable();
+            return;
+        }
+
+        if (!String.valueOf(pwField.getPassword()).equals(String.valueOf(pwRepeatField.getPassword()))) {
+            PopUp.errorMessage("Kata sandi tidak sama", "Mohon pastikan bahwa kedua kolom kata sandi sesuai satu sama lain.");
             return;
         }
 
@@ -660,10 +677,12 @@ public class DaftarKaryawan extends javax.swing.JInternalFrame {
     private javax.swing.JLabel jLabel6;
     private javax.swing.JLabel jLabel7;
     private javax.swing.JLabel jLabel8;
+    private javax.swing.JLabel jLabel9;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JTextField jTextField4;
-    private javax.swing.JPasswordField passwordField;
+    private javax.swing.JPasswordField pwField;
+    private javax.swing.JPasswordField pwRepeatField;
     private javax.swing.JRadioButton rbAdmin;
     private javax.swing.JRadioButton rbKaryawan;
     private javax.swing.JRadioButton rbLaki;
