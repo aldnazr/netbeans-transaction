@@ -90,6 +90,7 @@ public class DaftarHandphone extends javax.swing.JInternalFrame {
                 };
                 tableModel.addRow(dataQuery);
             }
+
             table.setModel(tableModel);
         } catch (SQLException ex) {
             System.out.println(ex.getMessage());

@@ -18,6 +18,7 @@ public class QueryBuilder {
                        JOIN DETAIL_TRANSAKSI DT ON T.ID_TRANSAKSI = DT.ID_TRANSAKSI JOIN USERS USR ON T.ID_USER = USR.ID_USER JOIN PHONES PH ON DT.ID_PHONE = PH.ID_PHONE JOIN BRAND BR ON PH.ID_BRAND = BR.ID_BRAND
                        WHERE ${queryTanggal} (T.ID_TRANSAKSI LIKE ? OR LOWER(USR.NAMA_LENGKAP) LIKE ? OR LOWER(T.NAMA_PELANGGAN) LIKE ? OR TO_CHAR(T.TANGGAL, 'YYYY-MM-DD HH24:MI:SS') LIKE ?)
                        ORDER BY T.ID_TRANSAKSI DESC""";
+
         return query.replace("${queryTanggal}", queryTanggal);
     }
 
@@ -32,6 +33,7 @@ public class QueryBuilder {
                     NO_TELP ,
                     TIPE_AKUN ,
                     USERNAME FROM USERS WHERE ${tipeAkun} (LOWER(NAMA_LENGKAP) LIKE ?)""";
+
         return query.replace("${tipeAkun}", tipeAkun);
     }
 
@@ -48,16 +50,18 @@ public class QueryBuilder {
     }
 
     public static String filterPhone(String filteredQuery) {
-        return """
-               SELECT
-               ID_PHONE,
-               NAMA_BRAND,
-               NAMA_HANDPHONE,
-               DESKRIPSI,
-               HARGA,
-               STOK FROM PHONES
-               JOIN BRAND USING (ID_BRAND)
-               WHERE " + filteredQuery + " (LOWER(NAMA_HANDPHONE) LIKE ? OR LOWER(NAMA_BRAND) LIKE ?)""";
+        String query = """
+                       SELECT
+                       ID_PHONE,
+                       NAMA_BRAND,
+                       NAMA_HANDPHONE,
+                       DESKRIPSI,
+                       HARGA,
+                       STOK FROM PHONES
+                       JOIN BRAND USING (ID_BRAND)
+                       WHERE ${filteredQuery} (LOWER(NAMA_HANDPHONE) LIKE ? OR LOWER(NAMA_BRAND) LIKE ?)""";
+
+        return query.replace("${filteredQuery}", filteredQuery);
     }
 
     public static String updateUserProfile(Boolean includePassword) {
@@ -73,5 +77,33 @@ public class QueryBuilder {
                      WHERE ID_USER = ?""";
 
         return includePassword ? sql : sql.replace(", PASSWORD = ?", " ");
+    }
+
+    public static String updateKaryawan(Boolean isWithPassword) {
+        String query = """
+                    UPDATE USERS SET NAMA_LENGKAP=?,
+                    TANGGAL_LAHIR=?,
+                    GENDER=?,
+                    ALAMAT=?,
+                    EMAIL=?,
+                    NO_TELP=?,
+                    TIPE_AKUN=?,
+                    USERNAME=?, PASSWORD=?
+                    WHERE ID_USER=?""";
+
+        return isWithPassword ? query : query.replace(", PASSWORD=?", " ");
+    }
+
+    public static String tambahKaryawan() {
+        return """
+               INSERT INTO USERS (
+               NAMA_LENGKAP,
+               TANGGAL_LAHIR,
+               GENDER,
+               ALAMAT,
+               EMAIL,
+               NO_TELP,
+               TIPE_AKUN,
+               USERNAME, PASSWORD) VALUES (?,?,?,?,?,?,?,?,?)""";
     }
 }

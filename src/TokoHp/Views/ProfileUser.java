@@ -76,12 +76,12 @@ public class ProfileUser extends javax.swing.JInternalFrame {
         }
     }
 
-    private void update() {
+    private void update(Boolean isUpdatePassword) {
         String gender = radioButtonLK.isSelected() ? radioButtonLK.getText() : radioButtonPR.getText();
         java.sql.Date sqlDate = new java.sql.Date(dateChooser.getDate().getTime());
         int activeUserId = Variable.getActiveUserId();
         try {
-            sql = QueryBuilder.updateUserProfile(true);
+            sql = QueryBuilder.updateUserProfile(isUpdatePassword);
             pStat = connection.prepareStatement(sql);
             pStat.setString(1, tfNama.getText());
             pStat.setDate(2, sqlDate);
@@ -90,43 +90,10 @@ public class ProfileUser extends javax.swing.JInternalFrame {
             pStat.setString(5, tfEmail.getText());
             pStat.setString(6, tfPhone.getText());
             pStat.setString(7, tfUsername.getText());
-            pStat.setString(8, String.valueOf(pwField.getPassword()));
-            pStat.setInt(9, activeUserId);
-            int executeResult = pStat.executeUpdate();
-
-            if (executeResult > 0) {
-                MessageAlerts.getInstance().showMessage("Berhasil", "Profil berhasil diperbarui", MessageAlerts.MessageType.SUCCESS, MessageAlerts.DEFAULT_OPTION,
-                        (PopupController pc, int i) -> {
-                            if (i == 0) {
-                                JFrame jFrame = (JFrame) SwingUtilities.getWindowAncestor(this.getDesktopPane());
-                                MainFrame mainFrame = new MainFrame();
-                                jFrame.dispose();
-                                mainFrame.setVisible(true);
-                                mainFrame.switchFrame(new ProfileUser(), "Pengaturan Profil");
-                            }
-                        });
+            if (isUpdatePassword) {
+                pStat.setString(8, String.valueOf(pwField.getPassword()));
             }
-        } catch (SQLException ex) {
-            System.err.println(ex.getMessage());
-            PopUp.errorMessage("Gagal", "Profil gagal diupdate");
-        }
-    }
-
-    private void updateWithoutPassword() {
-        String gender = radioButtonLK.isSelected() ? radioButtonLK.getText() : radioButtonPR.getText();
-        java.sql.Date sqlDate = new java.sql.Date(dateChooser.getDate().getTime());
-        int activeUserId = Variable.getActiveUserId();
-        try {
-            sql = QueryBuilder.updateUserProfile(false);
-            pStat = connection.prepareStatement(sql);
-            pStat.setString(1, tfNama.getText());
-            pStat.setDate(2, sqlDate);
-            pStat.setString(3, gender);
-            pStat.setString(4, taAlamat.getText());
-            pStat.setString(5, tfEmail.getText());
-            pStat.setString(6, tfPhone.getText());
-            pStat.setString(7, tfUsername.getText());
-            pStat.setInt(8, activeUserId);
+            pStat.setInt(isUpdatePassword ? 9 : 8, activeUserId);
             int executeResult = pStat.executeUpdate();
 
             if (executeResult > 0) {
@@ -349,17 +316,12 @@ public class ProfileUser extends javax.swing.JInternalFrame {
             return;
         }
 
-        if (pwField.getPassword().length == 0) {
-            updateWithoutPassword();
-            return;
-        }
-
         if (!String.valueOf(pwField.getPassword()).equals(String.valueOf(pwRepeatField.getPassword()))) {
             PopUp.errorMessage("Kata sandi tidak sama", "Mohon pastikan bahwa kedua kolom kata sandi sesuai satu sama lain.");
             return;
         }
 
-        update();
+        update(pwField.getPassword().length != 0);
     }//GEN-LAST:event_btSaveActionPerformed
 
     // Variables declaration - do not modify//GEN-BEGIN:variables

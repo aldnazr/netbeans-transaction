@@ -81,16 +81,7 @@ public class DaftarKaryawan extends javax.swing.JInternalFrame {
 
     private void tambahKaryawan() {
         try {
-            query = """
-                    INSERT INTO USERS (
-                    NAMA_LENGKAP,
-                    TANGGAL_LAHIR,
-                    GENDER, ALAMAT,
-                    EMAIL,
-                    NO_TELP,
-                    TIPE_AKUN,
-                    USERNAME,
-                    PASSWORD) VALUES (?,?,?,?,?,?,?,?,?)""";
+            query = QueryBuilder.tambahKaryawan();
             pstat = connection.prepareStatement(query);
             pstat.setString(1, tfNamaKaryawan.getText());
             pstat.setDate(2, new java.sql.Date(dateChooser.getDate().getTime()));
@@ -119,21 +110,11 @@ public class DaftarKaryawan extends javax.swing.JInternalFrame {
         }
     }
 
-    private void updateKaryawan() {
+    private void updateKaryawan(Boolean isUpdatePassword) {
         String isMan = rbLaki.isSelected() ? rbLaki.getText() : rbPerempuan.getText();
         String isAdmin = rbKaryawan.isSelected() ? rbKaryawan.getText() : rbAdmin.getText();
         try {
-            query = """
-                    UPDATE USERS SET NAMA_LENGKAP=?,
-                    TANGGAL_LAHIR=?,
-                    GENDER=?,
-                    ALAMAT=?,
-                    EMAIL=?,
-                    NO_TELP=?,
-                    TIPE_AKUN=?,
-                    USERNAME=?,
-                    PASSWORD=?
-                    WHERE ID_USER=?""";
+            query = QueryBuilder.updateKaryawan(isUpdatePassword);
             pstat = connection.prepareStatement(query);
             pstat.setString(1, tfNamaKaryawan.getText());
             pstat.setDate(2, new java.sql.Date(dateChooser.getDate().getTime()));
@@ -143,46 +124,10 @@ public class DaftarKaryawan extends javax.swing.JInternalFrame {
             pstat.setString(6, tfPhone.getText());
             pstat.setString(7, isAdmin);
             pstat.setString(8, tfUsername.getText());
-            pstat.setString(9, String.valueOf(pwField.getPassword()));
-            pstat.setString(10, textIdKaryawan.getText());
-            rsetInt = pstat.executeUpdate();
-
-            if (rsetInt > 0) {
-                PopUp.successMessage("Berhasil", "Data berhasil diperbarui");
+            if (isUpdatePassword) {
+                pstat.setString(9, String.valueOf(pwField.getPassword()));
             }
-
-            pstat.close();
-        } catch (SQLException ex) {
-            System.err.println(ex.getMessage());
-
-            PopUp.errorMessage("Error", "Data gagal diupdate");
-        }
-    }
-
-    private void updateKaryawanWithoutPassword() {
-        String isMan = rbLaki.isSelected() ? rbLaki.getText() : rbPerempuan.getText();
-        String isAdmin = rbKaryawan.isSelected() ? rbKaryawan.getText() : rbAdmin.getText();
-        try {
-            query = """
-                    UPDATE USERS SET NAMA_LENGKAP=?,
-                    TANGGAL_LAHIR=?,
-                    GENDER=?,
-                    ALAMAT=?,
-                    EMAIL=?,
-                    NO_TELP=?,
-                    TIPE_AKUN=?,
-                    USERNAME=?
-                    WHERE ID_USER=?""";
-            pstat = connection.prepareStatement(query);
-            pstat.setString(1, tfNamaKaryawan.getText());
-            pstat.setDate(2, new java.sql.Date(dateChooser.getDate().getTime()));
-            pstat.setString(3, isMan);
-            pstat.setString(4, taAlamat.getText());
-            pstat.setString(5, tfEmail.getText());
-            pstat.setString(6, tfPhone.getText());
-            pstat.setString(7, isAdmin);
-            pstat.setString(8, tfUsername.getText());
-            pstat.setString(9, textIdKaryawan.getText());
+            pstat.setString(isUpdatePassword ? 10 : 9, textIdKaryawan.getText());
             rsetInt = pstat.executeUpdate();
 
             if (rsetInt > 0) {
@@ -606,6 +551,11 @@ public class DaftarKaryawan extends javax.swing.JInternalFrame {
             return;
         }
 
+        if (!String.valueOf(pwField.getPassword()).equals(String.valueOf(pwRepeatField.getPassword()))) {
+            PopUp.errorMessage("Kata sandi tidak sama", "Mohon pastikan bahwa kedua kolom kata sandi sesuai satu sama lain.");
+            return;
+        }
+
         tambahKaryawan();
         setTable();
     }//GEN-LAST:event_btTambahActionPerformed
@@ -616,18 +566,12 @@ public class DaftarKaryawan extends javax.swing.JInternalFrame {
             return;
         }
 
-        if (pwField.getPassword().length == 0) {
-            updateKaryawanWithoutPassword();
-            setTable();
-            return;
-        }
-
         if (!String.valueOf(pwField.getPassword()).equals(String.valueOf(pwRepeatField.getPassword()))) {
             PopUp.errorMessage("Kata sandi tidak sama", "Mohon pastikan bahwa kedua kolom kata sandi sesuai satu sama lain.");
             return;
         }
 
-        updateKaryawan();
+        updateKaryawan(pwField.getPassword().length != 0);
         setTable();
     }//GEN-LAST:event_btUpdateActionPerformed
 
