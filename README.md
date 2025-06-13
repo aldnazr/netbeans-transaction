@@ -22,6 +22,8 @@ Optimized for 1920x1080 screen resolution
       <br/>
       <sub><b>Project Title 2</b></sub>
     </td>
+  </tr>
+  <tr>
     <td align="center">
       <img src="https://raw.githubusercontent.com/aldnazr/netbeans-transaction/refs/heads/main/preview/2.png" alt="Project Screenshot" width="300" />
       <br/>
@@ -32,6 +34,8 @@ Optimized for 1920x1080 screen resolution
       <br/>
       <sub><b>Project Title 4</b></sub>
     </td>
+  </tr>
+  <tr>
     <td align="center">
       <img src="https://raw.githubusercontent.com/aldnazr/netbeans-transaction/refs/heads/main/preview/5.png" alt="Project Screenshot" width="300" />
       <br/>
