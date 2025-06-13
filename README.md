@@ -15,31 +15,26 @@ Optimized for 1920x1080 screen resolution
     <td align="center">
       <img src="https://raw.githubusercontent.com/aldnazr/netbeans-transaction/refs/heads/main/preview/1.png" alt="Project Screenshot" width="400" />
       <br/>
-      <sub><b>Project Title 1</b></sub>
     </td>
     <td align="center">
       <img src="https://raw.githubusercontent.com/aldnazr/netbeans-transaction/refs/heads/main/preview/2.png" alt="Project Screenshot" width="400" />
       <br/>
-      <sub><b>Project Title 2</b></sub>
     </td>
   </tr>
   <tr>
     <td align="center">
-      <img src="https://raw.githubusercontent.com/aldnazr/netbeans-transaction/refs/heads/main/preview/2.png" alt="Project Screenshot" width="400" />
+      <img src="https://raw.githubusercontent.com/aldnazr/netbeans-transaction/refs/heads/main/preview/3.png" alt="Project Screenshot" width="400" />
       <br/>
-      <sub><b>Project Title 3</b></sub>
     </td>
     <td align="center">
       <img src="https://raw.githubusercontent.com/aldnazr/netbeans-transaction/refs/heads/main/preview/4.png" alt="Project Screenshot" width="400" />
       <br/>
-      <sub><b>Project Title 4</b></sub>
     </td>
   </tr>
   <tr>
     <td colspan="2" align="center">
       <img src="https://raw.githubusercontent.com/aldnazr/netbeans-transaction/refs/heads/main/preview/5.png" alt="Project Screenshot" width="400" />
       <br/>
-      <sub><b>Project Title 5</b></sub>
     </td>
   </tr>
 </table>
