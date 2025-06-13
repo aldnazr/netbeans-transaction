@@ -36,7 +36,7 @@ Optimized for 1920x1080 screen resolution
     </td>
   </tr>
   <tr>
-    <td align="center">
+    <td colspan="2" align="center">
       <img src="https://raw.githubusercontent.com/aldnazr/netbeans-transaction/refs/heads/main/preview/5.png" alt="Project Screenshot" width="300" />
       <br/>
       <sub><b>Project Title 5</b></sub>
