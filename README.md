@@ -16,4 +16,6 @@ Optimized for 1920x1080 screen resolution
 | --- | --- |
 | ![a](https://raw.githubusercontent.com/aldnazr/netbeans-transaction/refs/heads/main/preview/1.png) | ![a](https://raw.githubusercontent.com/aldnazr/netbeans-transaction/refs/heads/main/preview/2.png) |
 
-![a](https://raw.githubusercontent.com/aldnazr/netbeans-transaction/refs/heads/main/preview/3.png)
+| Menu |
+| --- |
+| ![a](https://raw.githubusercontent.com/aldnazr/netbeans-transaction/refs/heads/main/preview/3.png) |
