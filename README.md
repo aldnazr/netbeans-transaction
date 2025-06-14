@@ -8,6 +8,17 @@ Optimized for 1920x1080 screen resolution
 
 ## 📌 Project Preview
 
+<table>
+  <tr>
+    <th colspan="2" style="text-align:center">Transaksi</th>
+  </tr>
+  <tr>
+    <td><img src="https://raw.githubusercontent.com/aldnazr/netbeans-transaction/refs/heads/main/preview/5.png" width="250"/></td>
+    <td><img src="https://raw.githubusercontent.com/aldnazr/netbeans-transaction/refs/heads/main/preview/5.png" width="250"/></td>
+  </tr>
+</table>
+
+
 | Transaksi |  |
 | --- | --- |
 | ![a](https://raw.githubusercontent.com/aldnazr/netbeans-transaction/refs/heads/main/preview/5.png) | ![a](https://raw.githubusercontent.com/aldnazr/netbeans-transaction/refs/heads/main/preview/5.png) |
