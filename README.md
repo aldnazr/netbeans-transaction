@@ -8,7 +8,9 @@ Optimized for 1920x1080 screen resolution
 
 ## 📌 Project Preview
 
-<div align="center">
+| Transaksi |
+| --- | --- |
+| [a](https://raw.githubusercontent.com/aldnazr/netbeans-transaction/refs/heads/main/preview/5.png) | [a](https://raw.githubusercontent.com/aldnazr/netbeans-transaction/refs/heads/main/preview/5.png) |
 
 <table>
   <tr>
@@ -38,5 +40,3 @@ Optimized for 1920x1080 screen resolution
     </td>
   </tr>
 </table>
-
-</div>
