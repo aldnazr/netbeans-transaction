@@ -8,7 +8,7 @@ Optimized for 1920x1080 screen resolution
 
 ## 📌 Project Preview
 
-| Transaksi | Transaksi |
+| Transaksi |  |
 | --- | --- |
 | ![a](https://raw.githubusercontent.com/aldnazr/netbeans-transaction/refs/heads/main/preview/5.png) | ![a](https://raw.githubusercontent.com/aldnazr/netbeans-transaction/refs/heads/main/preview/5.png) |
 
