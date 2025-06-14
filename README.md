@@ -16,32 +16,4 @@ Optimized for 1920x1080 screen resolution
 | --- | --- |
 | ![a](https://raw.githubusercontent.com/aldnazr/netbeans-transaction/refs/heads/main/preview/1.png) | ![a](https://raw.githubusercontent.com/aldnazr/netbeans-transaction/refs/heads/main/preview/2.png) |
 
-
-<table>
-  <tr>
-    <td align="center">
-      <img src="https://raw.githubusercontent.com/aldnazr/netbeans-transaction/refs/heads/main/preview/1.png" alt="Project Screenshot" width="400" />
-      <br/>
-    </td>
-    <td align="center">
-      <img src="https://raw.githubusercontent.com/aldnazr/netbeans-transaction/refs/heads/main/preview/2.png" alt="Project Screenshot" width="400" />
-      <br/>
-    </td>
-  </tr>
-  <tr>
-    <td align="center">
-      <img src="https://raw.githubusercontent.com/aldnazr/netbeans-transaction/refs/heads/main/preview/3.png" alt="Project Screenshot" width="400" />
-      <br/>
-    </td>
-    <td align="center">
-      <img src="https://raw.githubusercontent.com/aldnazr/netbeans-transaction/refs/heads/main/preview/4.png" alt="Project Screenshot" width="400" />
-      <br/>
-    </td>
-  </tr>
-  <tr>
-    <td colspan="2" align="center">
-      <img src="https://raw.githubusercontent.com/aldnazr/netbeans-transaction/refs/heads/main/preview/5.png" alt="Project Screenshot" width="400" />
-      <br/>
-    </td>
-  </tr>
-</table>
+![a](https://raw.githubusercontent.com/aldnazr/netbeans-transaction/refs/heads/main/preview/3.png)
